@@ -1,0 +1,4 @@
+id_authorized_point,id_eps,name,address,city,created_at,updated_at
+1,1,Punto Norte,Calle 72 #46-22,Barranquilla,2025-08-01 10:00:00,2025-08-10 11:00:00
+2,1,Punto Sur,Carrera 43 #85-90,Barranquilla,2025-08-02 10:15:00,2025-08-11 11:15:00
+3,1,Punto Central,Carrera 54 #75-20,Barranquilla,2025-08-03 10:30:00,2025-08-12 11:30:00
