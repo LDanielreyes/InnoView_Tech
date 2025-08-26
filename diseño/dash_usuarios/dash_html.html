@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MedicaAqui – Buscador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dash.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <img class="logo" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" alt="">
+      </div>
+      <nav class="nav">
+        <a href="#" class="nav__link">Acerca de</a>
+        <a href="#" class="nav__link">Ayuda</a>
+        <a href="#" class="button logout" >Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero__content">
+        <h1 class="hero__title">
+          ENCUENTRA TU MEDICAMENTO CERCA DE TI
+        </h1>
+        <p class="hero__subtitle">
+          Consulta disponibilidad en farmacias afiliadas a tu EPS en tiempo real
+        </p>
+
+        <div class="card search">
+          <form class="search__form" onsubmit="return false;">
+            <label class="field">
+              <span class="field__label">Nombre del Medicamento</span>
+              <input type="text" class="input" placeholder="Losartan 50mg" />
+            </label>
+
+            <label class="field">
+              <span class="field__label">EPS Actual</span>
+              <select class="input">
+                <option>Mutualser</option>
+                <option>Sanitas</option>
+                <option>SURA</option>
+                <option>Nueva EPS</option>
+              </select>
+            </label>
+
+            <div class="search__actions">
+              <button class="button button--ghost" type="button"> <img src="../img/pin-de-ubicacion 1.png" alt=""> Elegir Ubicación</button>
+              <button class="button buscar" type="submit"><img class="icon-search" src="../img/icons8-búsqueda-50 1.png" alt="">Buscar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="hero__wave" aria-hidden="true"></div>
+  </section>
+
+
+  <main class="container layout">
+    <section class="recent">
+      <h2 class="section-title">Búsquedas Recientes</h2>
+      <div class="recent__empty">
+        <img src="../img/lupa 1.png" alt="">
+        <p>No hay búsquedas recientes</p>
+      </div>
+    </section>
+
+    <section class="popular">
+      <h2 class="section-title">Medicamentos frecuentes</h2>
+      <div class="grid meds">
+        <article class="med">
+          <img class="icon" src="../img/pastillas-para-dormir 1.png" alt="">
+          <div class="med__name">Ibuprofeno</div>
+          <div class="med__dose">400mg</div>
+        </article>
+        <article class="med">
+          <img class="icon"  src="../img/medicamentos 1.png" alt="">
+          <div class="med__name">Acetaminofén</div>
+          <div class="med__dose">500mg</div>
+        </article>
+        <article class="med">
+          <img class="icon" src="../img/pastillas 1.png" alt="">
+          <div class="med__name">Diazepam</div>
+          <div class="med__dose">10mg</div>
+        </article>
+        <article class="med">
+          <img class="icon" src="../img/medicamento 2.png" alt="">
+          <div class="med__name">Losartan</div>
+          <div class="med__dose">100mg</div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__cols">
+
+      <div class="footer__col footer__brand">
+        <div class="brand">
+          <img class="logo-footer" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 4.png" alt="MedicaAqui logo">
+        </div>
+        <p class="footer__tagline">
+          Encuentra medicamentos disponibles en farmacias<br />
+          afiliadas a tu EPS en Colombia.
+        </p>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Enlaces útiles</h3>
+        <ul>
+          <li><a href="#">Acerca de</a></li>
+          <li><a href="#">Términos de uso</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Contactos</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3 class="footer__title">Aviso importante</h3>
+        <p class="footer__note">
+          La información de disponibilidad es referencial y <br />
+          puede variar por sucursal. No almacenamos <br />
+          datos personales clínicos.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer__copyright">
+      © 2025 MedicaAqui. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+</body>
+</html>

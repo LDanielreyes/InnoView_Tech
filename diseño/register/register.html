@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regístrate</title>
+    <link rel="stylesheet" href="./register.css">
+</head>
+
+<body>
+    <!-- Círculos de fondo -->
+    <div class="circles">
+        <span class="c c1"></span>
+        <span class="c c2"></span>
+        <span class="c c3"></span>
+        <span class="c c4"></span>
+    </div>
+
+    <div class="card">
+        <h2 class="title">REGÍSTRATE</h2>
+
+        <form class="form">
+            <div class="field">
+                <img class="icon" src="../img/ciudad-white.png">
+                <input type="text" placeholder="Ciudad" required>
+            </div>
+
+            <div class="field">
+                <img class="icon" src="../img/tarjeta-blanco50.png" alt="">
+                <select required>
+                    <option value="" selected disabled>Tipo de documento</option>
+                    <option>CC</option>
+                    <option>CE</option>
+                    <option>TI</option>
+                    <option>Pasaporte</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <img class="icon" src="../img/identi-blanco.png" alt="">
+                <input type="text" placeholder="Documento" required>
+            </div>
+
+            <div class="field">
+                <img class="icon" src="../img/company.png" alt="">
+                <input type="text" placeholder="EPS" required>
+            </div>
+
+            <div class="field">
+                <img class="icon" src="../img/user-white.png" alt="">
+                <input type="text" placeholder="Nombre Completo" required>
+            </div>
+
+            <div class="field">
+                <img class="icon" src="../img/email-white.png" alt="">
+                <input type="email" placeholder="E-Mail" required>
+            </div>
+
+            <div class="field">
+                <img class="icon" src="../img/password-white.png" alt="">
+                <input type="password" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit" class="btn">Crear cuenta</button>
+
+            <p class="login">¿Ya tienes cuenta? <a href="../login/login.html">Inicia sesión</a></p>
+        </form>
+    </div>
+</body>
+
+</html>
