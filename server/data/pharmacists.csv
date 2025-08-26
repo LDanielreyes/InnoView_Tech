@@ -1,0 +1,4 @@
+id_pharmacist,id_branch,name,email,created_at,updated_at
+1,1,Ana Ramírez,ana@punto1.com,2025-08-01 08:00:00,2025-08-10 08:30:00
+2,1,Carlos Mejía,carlos@punto2.com,2025-08-02 08:10:00,2025-08-11 08:40:00
+3,1,Laura Torres,laura@punto3.com,2025-08-03 08:20:00,2025-08-12 08:50:00
