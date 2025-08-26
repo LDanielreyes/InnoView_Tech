@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MedicaAqui – Medicamentos</title>
+    <link rel="stylesheet" href="./dash_admin_farmacia.css" />
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand__logo">💊</div>
+            <div class="brand__name">MedicaA<span>Qui</span></div>
+        </div>
+
+        <div class="profile">
+            <div class="avatar" aria-hidden="true"></div>
+            <div class="profile__name">Brad Pitt</div>
+            <div class="profile__role">Admin</div>
+        </div>
+
+        <nav class="menu">
+            <a class="menu__item active" href="#"><span>💊</span><b>Medicamentos</b></a>
+            <a class="menu__item" href="#"><span>ℹ️</span><b>Acerca de</b></a>
+            <a class="menu__item" href="#"><span>❓</span><b>Ayuda</b></a>
+            <a class="menu__item" href="#"><span>⚙️</span><b>Ajustes</b></a>
+        </nav>
+
+        <a class="logout" href="#"><span>⟲</span> Cerrar sesión</a>
+    </aside>
+
+    <div class="main">
+        <header class="topbar">
+            <form class="search" onsubmit="return false">
+                <input class="search__input" placeholder="Buscar…" />
+                <button class="search__btn" type="submit">🔍</button>
+            </form>
+
+            <div class="topbar__actions">
+                <button class="sort" title="Ordenar">🔽</button>
+                <button class="btn">Agregar Medicamento</button>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="content__head">
+                <h2>Medicamentos</h2>
+            </div>
+
+            <!-- Cabecera de columnas (solo desktop) -->
+            <div class="row row--head">
+                <div>Nombre</div>
+                <div>Cantidad</div>
+                <div>Descripción</div>
+                <div>Fecha de creación</div>
+                <div class="right"></div>
+            </div>
+
+            <!-- Fila -->
+            <article class="row">
+                <div class="cell">Acetaminofen</div>
+                <div class="cell">200</div>
+                <div class="cell">Medicamento para ser guapo</div>
+                <div class="cell">7-22-2025</div>
+                <div class="cell right">
+                    <button class="icon" title="Editar">✏️</button>
+                    <button class="icon" title="Eliminar">🗑️</button>
+                </div>
+            </article>
+
+            <article class="row">
+                <div class="cell">Ibuprofeno</div>
+                <div class="cell">200</div>
+                <div class="cell">Quitar el dolor de cabeza</div>
+                <div class="cell">7-22-2025</div>
+                <div class="cell right">
+                    <button class="icon" title="Editar">✏️</button>
+                    <button class="icon" title="Eliminar">🗑️</button>
+                </div>
+            </article>
+
+            <article class="row">
+                <div class="cell">Acetaminofen</div>
+                <div class="cell">200</div>
+                <div class="cell">Medicamento para ser guapo</div>
+                <div class="cell">7-22-2025</div>
+                <div class="cell right">
+                    <button class="icon" title="Editar">✏️</button>
+                    <button class="icon" title="Eliminar">🗑️</button>
+                </div>
+            </article>
+
+            <article class="row">
+                <div class="cell">Ibuprofeno</div>
+                <div class="cell">200</div>
+                <div class="cell">Quitar el dolor de cabeza</div>
+                <div class="cell">7-22-2025</div>
+                <div class="cell right">
+                    <button class="icon" title="Editar">✏️</button>
+                    <button class="icon" title="Eliminar">🗑️</button>
+                </div>
+            </article>
+        </section>
+    </div>
+</body>
+
+</html>
