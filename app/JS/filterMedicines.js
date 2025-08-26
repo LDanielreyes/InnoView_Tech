@@ -1,5 +1,5 @@
 // app/filterMedicines.js
-import { pool } from "../server/connection_db.js";
+import { pool } from "../../server/connection_db.js";
 
 /**
  * Filter medicines by availability

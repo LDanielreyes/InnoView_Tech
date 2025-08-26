@@ -1,5 +1,5 @@
 // app/stockReport.js
-import { pool } from "../server/connection_db.js";
+import { pool } from "../../server/connection_db.js";
 
 /**
  * Generate stock report by authorized point

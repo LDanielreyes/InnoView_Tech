@@ -1,5 +1,5 @@
 // app/registerAuthorizedPoint.js
-import { pool } from "../server/connection_db.js";
+import { pool } from "../../server/connection_db.js";
 
 /**
  * Register a new authorized point

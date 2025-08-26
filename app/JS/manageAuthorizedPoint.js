@@ -1,5 +1,5 @@
 // app/manageAuthorizedPoint.js
-import { pool } from "../server/connection_db.js";
+import { pool } from "../../server/connection_db.js";
 
 /**
  * Update an authorized point by ID
