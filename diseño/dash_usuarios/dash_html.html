@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./dash.css" />
 </head>
 <body>
-  <!-- Top bar -->
+
   <header class="topbar">
     <div class="container topbar__inner">
       <div class="brand">
@@ -24,7 +24,6 @@
     </div>
   </header>
 
-  <!-- Hero / search -->
   <section class="hero">
     <div class="container">
       <div class="hero__content">
@@ -53,8 +52,8 @@
             </label>
 
             <div class="search__actions">
-              <button class="button button--ghost" type="button">📍 Elegir Ubicación</button>
-              <button class="button" type="submit">🔎 Buscar</button>
+              <button class="button button--ghost" type="button"> <img src="../img/pin-de-ubicacion 1.png" alt=""> Elegir Ubicación</button>
+              <button class="button buscar" type="submit"><img class="icon-search" src="../img/icons8-búsqueda-50 1.png" alt="">Buscar</button>
             </div>
           </form>
         </div>
@@ -63,12 +62,12 @@
     <div class="hero__wave" aria-hidden="true"></div>
   </section>
 
-  <!-- Body -->
+
   <main class="container layout">
     <section class="recent">
       <h2 class="section-title">Búsquedas Recientes</h2>
       <div class="recent__empty">
-        <div class="recent__icon">🔍</div>
+        <img src="../img/lupa 1.png" alt="">
         <p>No hay búsquedas recientes</p>
       </div>
     </section>
@@ -100,12 +99,13 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__brand">
+<footer class="footer">
+  <div class="container">
+    <div class="footer__cols">
+
+      <div class="footer__col footer__brand">
         <div class="brand">
-            <img class="logo" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 4.png" alt="">
+          <img class="logo-footer" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 4.png" alt="MedicaAqui logo">
         </div>
         <p class="footer__tagline">
           Encuentra medicamentos disponibles en farmacias<br />
@@ -113,30 +113,30 @@
         </p>
       </div>
 
-      <div class="footer__cols">
-        <div class="footer__col">
-          <h3 class="footer__title">Enlaces útiles</h3>
-          <ul>
-            <li><a href="#">Acerca de</a></li>
-            <li><a href="#">Términos de uso</a></li>
-            <li><a href="#">Política de privacidad</a></li>
-            <li><a href="#">Contáctos</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h3 class="footer__title">Aviso importante</h3>
-          <p class="footer__note">
-            La información de disponibilidad es referencial y <br />
-            puede variar por sucursal. No almacenamos <br />
-            datos personales clínicos.
-          </p>
-        </div>
+      <div class="footer__col">
+        <h3 class="footer__title">Enlaces útiles</h3>
+        <ul>
+          <li><a href="#">Acerca de</a></li>
+          <li><a href="#">Términos de uso</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Contactos</a></li>
+        </ul>
       </div>
 
-      <div class="footer__copyright">
-        © 2025 MedicaAqui
+      <div class="footer__col">
+        <h3 class="footer__title">Aviso importante</h3>
+        <p class="footer__note">
+          La información de disponibilidad es referencial y <br />
+          puede variar por sucursal. No almacenamos <br />
+          datos personales clínicos.
+        </p>
       </div>
     </div>
-  </footer>
+
+    <div class="footer__copyright">
+      © 2025 MedicaAqui. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
 </body>
 </html>

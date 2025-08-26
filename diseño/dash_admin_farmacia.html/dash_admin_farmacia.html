@@ -11,8 +11,7 @@
 <body>
     <aside class="sidebar">
         <div class="brand">
-            <div class="brand__logo">💊</div>
-            <div class="brand__name">MedicaA<span>Qui</span></div>
+            <img class="logo" src="../img/logo_azul.png" alt="Ilustracion">
         </div>
 
         <div class="profile">
@@ -22,25 +21,25 @@
         </div>
 
         <nav class="menu">
-            <a class="menu__item active" href="#"><span>💊</span><b>Medicamentos</b></a>
-            <a class="menu__item" href="#"><span>ℹ️</span><b>Acerca de</b></a>
-            <a class="menu__item" href="#"><span>❓</span><b>Ayuda</b></a>
-            <a class="menu__item" href="#"><span>⚙️</span><b>Ajustes</b></a>
+            <a class="menu__item" href="#"><span><img class="icon-2" src="../img/pasti.png" alt=""></span><b>Medicamentos</b></a>
+            <a class="menu__item" href="#"><span><img class="icon-2" src="../img/acerca.png" alt=""></span><b>Acerca de</b></a>
+            <a class="menu__item" href="#"><span><img class="icon-2" src="../img/ayuda.png" alt=""></span><b>Ayuda</b></a>
+            <a class="menu__item" href="#"><span><img class="icon-2" src="../img/ajuste.png" alt=""></span><b>Ajustes</b></a>
         </nav>
 
-        <a class="logout" href="#"><span>⟲</span> Cerrar sesión</a>
+        <a class="logout" href="#">Cerrar sesión <span><img class="icon-2" src="../img/logout.png" alt=""></span></a>
     </aside>
 
     <div class="main">
         <header class="topbar">
             <form class="search" onsubmit="return false">
                 <input class="search__input" placeholder="Buscar…" />
-                <button class="search__btn" type="submit">🔍</button>
+                <button class="search__btn" type="submit"><img class="icon-search" src="../img/search.png" alt=""></button>
             </form>
 
             <div class="topbar__actions">
-                <button class="sort" title="Ordenar">🔽</button>
-                <button class="btn">Agregar Medicamento</button>
+                <button class="sort" title="Ordenar"><img class="scroll" src="../img/scroll-2.png" alt=""></button>
+                <button class="btn"><a href="../crear_medicamento/index.html">Agregar Medicamento</a></button>
             </div>
         </header>
 
@@ -49,7 +48,6 @@
                 <h2>Medicamentos</h2>
             </div>
 
-            <!-- Cabecera de columnas (solo desktop) -->
             <div class="row row--head">
                 <div>Nombre</div>
                 <div>Cantidad</div>
@@ -58,15 +56,15 @@
                 <div class="right"></div>
             </div>
 
-            <!-- Fila -->
+
             <article class="row">
                 <div class="cell">Acetaminofen</div>
                 <div class="cell">200</div>
                 <div class="cell">Medicamento para ser guapo</div>
                 <div class="cell">7-22-2025</div>
                 <div class="cell right">
-                    <button class="icon" title="Editar">✏️</button>
-                    <button class="icon" title="Eliminar">🗑️</button>
+                    <button class="icon" title="Editar"><img class="icons-crud" src="../img/lapiz.png" alt=""></button>
+                    <button class="icon" title="Eliminar"><img class="icons-crud" src="../img/basura.png" alt=""></button>
                 </div>
             </article>
 
@@ -76,8 +74,8 @@
                 <div class="cell">Quitar el dolor de cabeza</div>
                 <div class="cell">7-22-2025</div>
                 <div class="cell right">
-                    <button class="icon" title="Editar">✏️</button>
-                    <button class="icon" title="Eliminar">🗑️</button>
+                    <button class="icon" title="Editar"><img class="icons-crud" src="../img/lapiz.png" alt=""></button>
+                    <button class="icon" title="Eliminar"><img class="icons-crud" src="../img/basura.png" alt=""></button>
                 </div>
             </article>
 
@@ -87,8 +85,8 @@
                 <div class="cell">Medicamento para ser guapo</div>
                 <div class="cell">7-22-2025</div>
                 <div class="cell right">
-                    <button class="icon" title="Editar">✏️</button>
-                    <button class="icon" title="Eliminar">🗑️</button>
+                    <button class="icon" title="Editar"><img class="icons-crud" src="../img/lapiz.png" alt=""></button>
+                    <button class="icon" title="Eliminar"><img class="icons-crud" src="../img/basura.png" alt=""></button>
                 </div>
             </article>
 
@@ -98,8 +96,8 @@
                 <div class="cell">Quitar el dolor de cabeza</div>
                 <div class="cell">7-22-2025</div>
                 <div class="cell right">
-                    <button class="icon" title="Editar">✏️</button>
-                    <button class="icon" title="Eliminar">🗑️</button>
+                    <button class="icon" title="Editar"><img class="icons-crud" src="../img/lapiz.png" alt=""></button>
+                    <button class="icon" title="Eliminar"><img class="icons-crud" src="../img/basura.png" alt=""></button>
                 </div>
             </article>
         </section>

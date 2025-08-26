@@ -20,10 +20,10 @@ body{
   background: #f5f7fb;
 }
 
-/* ---------- Containers ---------- */
+
 .container{width:min(1100px, 92%); margin-inline:auto}
 
-/* ---------- Topbar ---------- */
+
 .logo{width:150px;}
 .topbar{
   background:#ffffff;
@@ -54,11 +54,12 @@ body{
 .button:hover{background:var(--primary-600)}
 .button:active{transform: translateY(1px)}
 .button--ghost{
-  background:#ede9fe; color:#4338ca; box-shadow:none; border:1px solid #ddd;
+  background-color: transparent; border: 1px solid #794CFF;width: 30%;display: flex; justify-content: center; align-items: center; padding: .6rem;
 }
+.button--ghost:hover{background:#ac1515}
 .button--small{padding:.5rem .9rem; font-weight:600}
+.buscar {font-size: 16px; display: flex; justify-content: center; align-items: center; border: none; width: 80%;}
 
-/* ---------- Hero ---------- */
 .hero{
   position:relative;
   background: linear-gradient(180deg, #47EEDA 0%, #7151A8 57%, #420665 100%);
@@ -71,7 +72,7 @@ body{
 
 
 
-/* ---------- Search Card ---------- */
+
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -96,10 +97,9 @@ body{
 .input:focus{border-color:#c4b5fd; box-shadow:0 0 0 3px rgba(167,139,250,.25)}
 
 .search__actions{display:flex; align-items:center; gap:.6rem; margin-top:.2rem}
-.search__actions .button{flex:1}
-.search__actions .button--ghost{background:#f3f4f6; color:#111827}
+.search__actions .button--ghost{background:#f3f4f6; color:#B565F6; font-size: 14px;}
 
-/* ---------- Main layout ---------- */
+
 .layout{
   padding: 1.5rem 0 2.75rem;
   display:grid; grid-template-columns: 1fr 1fr; gap:2rem;
@@ -107,13 +107,11 @@ body{
 
 .section-title{font-size:1.05rem; color:#374151; margin:.2rem 0 1rem; font-weight:800}
 
-/* Recent */
 .recent{background:#fff; border:1px solid var(--border); border-radius:12px; padding:1rem; min-height:210px}
 .recent__empty{display:grid; place-items:center; color:#6b7280; gap:.5rem; padding:1.25rem 0}
 .recent__icon{font-size:2rem}
 
-/* Popular meds */
-.popular{}
+
 .grid{display:grid; gap:1rem; grid-template-columns: repeat(2, minmax(0,1fr));}
 .med{
   background:#fff; border:1px solid var(--border); border-radius:12px; padding:1rem;
@@ -123,12 +121,12 @@ body{
 .med__name{font-weight:800}
 .med__dose{font-size:.85rem; color:#6b7280}
 
-/* ---------- Footer ---------- */
+
 .footer{background:#2b2550; color:#d6d7ff; padding:2rem 0; position:relative}
 .footer .brand__name span{color:#fff}
 .footer__brand{display:grid; gap:.5rem}
 .footer__tagline{color:#c7c9ff; margin:.25rem 0 1rem}
-.footer__cols{display:grid; grid-template-columns: 1fr 1fr; gap:2rem; align-items:start}
+.footer__cols{display:grid; grid-template-columns: repeat(3, 1fr); gap:2rem; align-items:start}
 .footer__title{margin:.25rem 0 .5rem; color:#fff}
 .footer__col ul{list-style:none; padding:0; margin:0}
 .footer__col li{margin:.35rem 0}
@@ -136,8 +134,8 @@ body{
 .footer__col a:hover{color:#fff}
 .footer__note{margin:.25rem 0 0; line-height:1.5}
 .footer__copyright{margin-top:1.5rem; color:#b8b9ff; font-size:.9rem; border-top:1px solid rgba(255,255,255,.12); padding-top:1rem; justify-content: center; text-align: center;}
+.logo-footer{width: 190px; margin-top: -0.9rem;}
 
-/* ---------- Responsive ---------- */
 @media (max-width: 900px){
   .nav{gap:.75rem}
   .layout{grid-template-columns: 1fr; gap:1.25rem}
@@ -146,7 +144,7 @@ body{
   .search{padding:.9rem}
 }
 @media (max-width: 620px){
-  .nav{display:none} /* compact like screenshot on small screens */
+  .nav{display:none} 
   .button--ghost{white-space:nowrap}
   .grid{grid-template-columns: 1fr}
   .search__actions{flex-direction:column}
