@@ -26,14 +26,14 @@ export async function updateAuthorizedPoint(id_authorized_point, data) {
     ]);
 
     if (result.affectedRows === 0) {
-      console.log("⚠️ No authorized point found to update.");
+      console.log(" No authorized point found to update.");
       return false;
     }
 
-    console.log(`✅ Authorized point ${id_authorized_point} updated.`);
+    console.log(` Authorized point ${id_authorized_point} updated.`);
     return true;
   } catch (error) {
-    console.error("❌ Error updating authorized point:", error.message);
+    console.error(" Error updating authorized point:", error.message);
     throw error;
   }
 }
@@ -53,14 +53,14 @@ export async function deleteAuthorizedPoint(id_authorized_point) {
     const [result] = await pool.query(sql, [id_authorized_point]);
 
     if (result.affectedRows === 0) {
-      console.log("⚠️ No authorized point found to delete.");
+      console.log(" No authorized point found to delete.");
       return false;
     }
 
-    console.log(`🗑️ Authorized point ${id_authorized_point} deleted.`);
+    console.log(` Authorized point ${id_authorized_point} deleted.`);
     return true;
   } catch (error) {
-    console.error("❌ Error deleting authorized point:", error.message);
+    console.error(" Error deleting authorized point:", error.message);
     throw error;
   }
 }

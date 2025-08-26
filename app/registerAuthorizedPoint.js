@@ -19,7 +19,7 @@ export async function registerAuthorizedPoint(id_eps, name, address, city) {
 
     const [result] = await pool.query(sql, [id_eps, name, address, city]);
 
-    console.log("✅ New authorized point created with ID:", result.insertId);
+    console.log(" New authorized point created with ID:", result.insertId);
 
     return {
       id_authorized_point: result.insertId,
@@ -29,7 +29,7 @@ export async function registerAuthorizedPoint(id_eps, name, address, city) {
       city,
     };
   } catch (error) {
-    console.error("❌ Error creating authorized point:", error.message);
+    console.error(" Error creating authorized point:", error.message);
     throw error;
   }
 }

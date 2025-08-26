@@ -28,14 +28,14 @@ export async function stockReportByAP(id_authorized_point) {
     const [rows] = await pool.query(sql, [id_authorized_point]);
 
     if (rows.length === 0) {
-      console.log("⚠️ No stock found for this authorized point.");
+      console.log(" No stock found for this authorized point.");
       return [];
     }
 
-    console.log(`📊 Stock report for authorized point ${id_authorized_point}:`, rows);
+    console.log(` Stock report for authorized point ${id_authorized_point}:`, rows);
     return rows;
   } catch (error) {
-    console.error("❌ Error generating stock report:", error.message);
+    console.error(" Error generating stock report:", error.message);
     throw error;
   }
 }
