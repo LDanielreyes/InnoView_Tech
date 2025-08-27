@@ -12,17 +12,21 @@ export async function loadUsers() {
       .pipe(csv())
       .on("data", (row) => {
         users.push([
+          parseInt(row.id_user),
           parseInt(row.id_eps),
-          row.name,
+          row.full_name,
           row.document_type,
+          row.document_number,
           row.email,
+          row.phone,
+          row.password_hash,
           row.created_at,
           row.updated_at
         ]);
       })
       .on("end", async () => {
         try {
-          const sql = `INSERT INTO users (id_eps, name, document_type, email, created_at, updated_at) VALUES ?`;
+          const sql = `INSERT INTO users (id_user,id_eps,full_name,document_type,document_number,email,phone,password_hash,created_at,updated_at) VALUES ?`;
           const [result] = await pool.query(sql, [users]);
           console.log(`Inserted ${result.affectedRows} users`);
           resolve();
