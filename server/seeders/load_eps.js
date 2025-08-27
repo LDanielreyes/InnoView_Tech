@@ -17,7 +17,7 @@ export async function loadEPS() {
         // Push data to the array in the order of the table columns
         EPS.push([
           parseInt(row.id_eps),
-          row.name,
+          row.name_eps,
           row.created_at,
           row.updated_at
         ]);
@@ -25,7 +25,7 @@ export async function loadEPS() {
       .on("end", async () => {
         try {
           // Query to insert multiple rows at once, efficient with the array of arrays
-          const sql = `INSERT INTO eps (id_eps,name,created_at,updated_at) VALUES ?`;
+          const sql = `INSERT INTO eps (id_eps,name_eps,created_at,updated_at) VALUES ?`;
           const [result] = await pool.query(sql, [EPS]); // Using the pool, good practice for connections
           console.log(`Inserted ${result.affectedRows} EPS`); // Clear feedback on how many rows were inserted
           resolve(); // Everything went well, resolve the promise

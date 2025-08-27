@@ -4,43 +4,15 @@ import { pool } from "./connection_db.js";
 const app = express();
 app.use(express.json());
 
-/* -------------------- EPS -------------------- */
-app.get("/eps", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM eps");
-  res.json(rows);
-});
-
-app.get("/eps/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM eps WHERE id_eps = ?", [req.params.id]);
-  res.json(rows[0] || {});
-});
-
-app.post("/eps", async (req, res) => {
-  const { name } = req.body;
-  const [result] = await pool.query("INSERT INTO eps (name) VALUES (?)", [name]);
-  res.json({ id: result.insertId, name });
-});
-
-app.put("/eps/:id", async (req, res) => {
-  const { name } = req.body;
-  await pool.query("UPDATE eps SET name = ? WHERE id_eps = ?", [name, req.params.id]);
-  res.json({ message: "EPS updated" });
-});
-
-app.delete("/eps/:id", async (req, res) => {
-  await pool.query("DELETE FROM eps WHERE id_eps = ?", [req.params.id]);
-  res.json({ message: "EPS deleted" });
-});
-
 /* -------------------- MEDICINES -------------------- */
 app.get("/medicines", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM medicines");
-  res.json(rows);
+  const [medicines] = await pool.query("SELECT * FROM medicines");
+  res.json(medicines);
 });
 
 app.get("/medicines/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM medicines WHERE id_medicine = ?", [req.params.id]);
-  res.json(rows[0] || {});
+  const [medicines] = await pool.query("SELECT * FROM medicines WHERE id_medicine = ?", [req.params.id]);
+  res.json(medicines[0] || {});
 });
 
 app.post("/medicines", async (req, res) => {
@@ -49,16 +21,15 @@ app.post("/medicines", async (req, res) => {
     "INSERT INTO medicines (name, quantity) VALUES (?, ?)",
     [name, quantity]
   );
-  res.json({ id: result.insertId, name, quantity });
+  res.json({ id_medicine: result.insertId, name, quantity });
 });
 
 app.put("/medicines/:id", async (req, res) => {
   const { name, quantity } = req.body;
-  await pool.query("UPDATE medicines SET name = ?, quantity = ? WHERE id_medicine = ?", [
-    name,
-    quantity,
-    req.params.id
-  ]);
+  await pool.query(
+    "UPDATE medicines SET name = ?, quantity = ? WHERE id_medicine = ?",
+    [name, quantity, req.params.id]
+  );
   res.json({ message: "Medicine updated" });
 });
 
@@ -69,31 +40,31 @@ app.delete("/medicines/:id", async (req, res) => {
 
 /* -------------------- AUTHORIZED POINTS -------------------- */
 app.get("/authorized_points", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM authorized_points");
-  res.json(rows);
+  const [authorizedPoints] = await pool.query("SELECT * FROM authorized_points");
+  res.json(authorizedPoints);
 });
 
 app.get("/authorized_points/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM authorized_points WHERE id_authorized_point = ?", [
+  const [authorizedPoints] = await pool.query("SELECT * FROM authorized_points WHERE id_authorized_point = ?", [
     req.params.id
   ]);
-  res.json(rows[0] || {});
+  res.json(authorizedPoints[0] || {});
 });
 
 app.post("/authorized_points", async (req, res) => {
-  const { id_eps, name, address, city } = req.body;
+  const { id_eps, point_name, address, city } = req.body;
   const [result] = await pool.query(
-    "INSERT INTO authorized_points (id_eps, name, address, city) VALUES (?, ?, ?, ?)",
-    [id_eps, name, address, city]
+    "INSERT INTO authorized_points (id_eps, point_name, address, city) VALUES (?, ?, ?, ?)",
+    [id_eps, point_name, address, city]
   );
-  res.json({ id: result.insertId, id_eps, name, address, city });
+  res.json({ id_authorized_point: result.insertId, id_eps, point_name, address, city });
 });
 
 app.put("/authorized_points/:id", async (req, res) => {
-  const { id_eps, name, address, city } = req.body;
+  const { id_eps, point_name, address, city } = req.body;
   await pool.query(
-    "UPDATE authorized_points SET id_eps = ?, name = ?, address = ?, city = ? WHERE id_authorized_point = ?",
-    [id_eps, name, address, city, req.params.id]
+    "UPDATE authorized_points SET id_eps = ?, point_name = ?, address = ?, city = ? WHERE id_authorized_point = ?",
+    [id_eps, point_name, address, city, req.params.id]
   );
   res.json({ message: "Authorized point updated" });
 });
@@ -105,29 +76,29 @@ app.delete("/authorized_points/:id", async (req, res) => {
 
 /* -------------------- USERS -------------------- */
 app.get("/users", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM users");
-  res.json(rows);
+  const [users] = await pool.query("SELECT * FROM users");
+  res.json(users);
 });
 
 app.get("/users/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM users WHERE id_user = ?", [req.params.id]);
-  res.json(rows[0] || {});
+  const [users] = await pool.query("SELECT * FROM users WHERE id_user = ?", [req.params.id]);
+  res.json(users[0] || {});
 });
 
 app.post("/users", async (req, res) => {
-  const { id_eps, name, document_type, email } = req.body;
+  const { id_eps, full_name, document_type, document_number, email, phone, password_hash } = req.body;
   const [result] = await pool.query(
-    "INSERT INTO users (id_eps, name, document_type, email) VALUES (?, ?, ?, ?)",
-    [id_eps, name, document_type, email]
+    "INSERT INTO users (id_eps, full_name, document_type, document_number, email, phone, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [id_eps, full_name, document_type, document_number, email, phone, password_hash]
   );
-  res.json({ id: result.insertId, id_eps, name, document_type, email });
+  res.json({ id_user: result.insertId, id_eps, full_name, document_type, document_number, email, phone });
 });
 
 app.put("/users/:id", async (req, res) => {
-  const { id_eps, name, document_type, email } = req.body;
+  const { id_eps, full_name, document_type, document_number, email, phone, password_hash } = req.body;
   await pool.query(
-    "UPDATE users SET id_eps = ?, name = ?, document_type = ?, email = ? WHERE id_user = ?",
-    [id_eps, name, document_type, email, req.params.id]
+    "UPDATE users SET id_eps = ?, full_name = ?, document_type = ?, document_number = ?, email = ?, phone = ?, password_hash = ? WHERE id_user = ?",
+    [id_eps, full_name, document_type, document_number, email, phone, password_hash, req.params.id]
   );
   res.json({ message: "User updated" });
 });
@@ -139,29 +110,29 @@ app.delete("/users/:id", async (req, res) => {
 
 /* -------------------- INVENTORIES -------------------- */
 app.get("/inventories", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM inventories");
-  res.json(rows);
+  const [inventories] = await pool.query("SELECT * FROM inventories");
+  res.json(inventories);
 });
 
 app.get("/inventories/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM inventories WHERE id_inventory = ?", [req.params.id]);
-  res.json(rows[0] || {});
+  const [inventories] = await pool.query("SELECT * FROM inventories WHERE id_inventory = ?", [req.params.id]);
+  res.json(inventories[0] || {});
 });
 
 app.post("/inventories", async (req, res) => {
-  const { id_authorized_point, id_medicine, quantity, stock } = req.body;
+  const { id_authorized_point, id_medicine, quantity } = req.body;
   const [result] = await pool.query(
-    "INSERT INTO inventories (id_authorized_point, id_medicine, quantity, stock) VALUES (?, ?, ?, ?)",
-    [id_authorized_point, id_medicine, quantity, stock]
+    "INSERT INTO inventories (id_authorized_point, id_medicine, quantity) VALUES (?, ?, ?)",
+    [id_authorized_point, id_medicine, quantity]
   );
-  res.json({ id: result.insertId, id_authorized_point, id_medicine, quantity, stock });
+  res.json({ id_inventory: result.insertId, id_authorized_point, id_medicine, quantity });
 });
 
 app.put("/inventories/:id", async (req, res) => {
-  const { id_authorized_point, id_medicine, quantity, stock } = req.body;
+  const { id_authorized_point, id_medicine, quantity } = req.body;
   await pool.query(
-    "UPDATE inventories SET id_authorized_point = ?, id_medicine = ?, quantity = ?, stock = ? WHERE id_inventory = ?",
-    [id_authorized_point, id_medicine, quantity, stock, req.params.id]
+    "UPDATE inventories SET id_authorized_point = ?, id_medicine = ?, quantity = ? WHERE id_inventory = ?",
+    [id_authorized_point, id_medicine, quantity, req.params.id]
   );
   res.json({ message: "Inventory updated" });
 });
@@ -173,29 +144,29 @@ app.delete("/inventories/:id", async (req, res) => {
 
 /* -------------------- PHARMACISTS -------------------- */
 app.get("/pharmacists", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM pharmacists");
-  res.json(rows);
+  const [pharmacists] = await pool.query("SELECT * FROM pharmacists");
+  res.json(pharmacists);
 });
 
 app.get("/pharmacists/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM pharmacists WHERE id_pharmacist = ?", [req.params.id]);
-  res.json(rows[0] || {});
+  const [pharmacists] = await pool.query("SELECT * FROM pharmacists WHERE id_pharmacist = ?", [req.params.id]);
+  res.json(pharmacists[0] || {});
 });
 
 app.post("/pharmacists", async (req, res) => {
-  const { id_branch, name, email } = req.body;
+  const { id_authorized_point, name, email } = req.body;
   const [result] = await pool.query(
-    "INSERT INTO pharmacists (id_branch, name, email) VALUES (?, ?, ?)",
-    [id_branch, name, email]
+    "INSERT INTO pharmacists (id_authorized_point, name, email) VALUES (?, ?, ?)",
+    [id_authorized_point, name, email]
   );
-  res.json({ id: result.insertId, id_branch, name, email });
+  res.json({ id_pharmacist: result.insertId, id_authorized_point, name, email });
 });
 
 app.put("/pharmacists/:id", async (req, res) => {
-  const { id_branch, name, email } = req.body;
+  const { id_authorized_point, name, email } = req.body;
   await pool.query(
-    "UPDATE pharmacists SET id_branch = ?, name = ?, email = ? WHERE id_pharmacist = ?",
-    [id_branch, name, email, req.params.id]
+    "UPDATE pharmacists SET id_authorized_point = ?, name = ?, email = ? WHERE id_pharmacist = ?",
+    [id_authorized_point, name, email, req.params.id]
   );
   res.json({ message: "Pharmacist updated" });
 });

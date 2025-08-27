@@ -9,9 +9,9 @@ import { loadPharmacists } from "./load_pharmacists.js"
         // Log server startup
         console.log("Starting server...")
 
-        //await loadEPS()
-        //await loadMedicines()
-        //await loadAP()
+        await loadEPS()
+        await loadMedicines()
+        await loadAP()
         await loadUsers()
         await loadInventories()
         await loadPharmacists()
