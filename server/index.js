@@ -4,62 +4,119 @@ import { pool } from "./connection_db.js";
 const app = express();
 app.use(express.json());
 
+/* -------------------- ERROR HANDLER -------------------- */
+const handleError = (res, err) => {
+  console.error(err);
+  res.status(500).json({ error: "Server error" });
+};
+
 /* -------------------- EPS -------------------- */
 app.get("/eps", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM eps");
-  res.json(rows);
+  try {
+    const [rows] = await pool.query("SELECT * FROM eps");
+    res.json(rows);
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.get("/eps/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM eps WHERE id_eps = ?", [req.params.id]);
-  res.json(rows[0] || {});
+  try {
+    const [rows] = await pool.query("SELECT * FROM eps WHERE id_eps = ?", [req.params.id]);
+    res.json(rows[0] || {});
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.post("/eps", async (req, res) => {
-  const { name } = req.body;
-  const [result] = await pool.query("INSERT INTO eps (name) VALUES (?)", [name]);
-  res.json({ id: result.insertId, name });
+  try {
+    const { name } = req.body;
+    if (!name || typeof name !== "string" || !name.trim()) 
+      return res.status(400).json({ error: "EPS name must be a non-empty string" });
+
+    const [existing] = await pool.query("SELECT 1 FROM eps WHERE name = ?", [name]);
+    if (existing.length) return res.status(400).json({ error: "EPS already exists" });
+
+    const [result] = await pool.query("INSERT INTO eps (name) VALUES (?)", [name]);
+    res.status(201).json({ id: result.insertId, name });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.put("/eps/:id", async (req, res) => {
-  const { name } = req.body;
-  await pool.query("UPDATE eps SET name = ? WHERE id_eps = ?", [name, req.params.id]);
-  res.json({ message: "EPS updated" });
+  try {
+    const { name } = req.body;
+    if (!name || typeof name !== "string" || !name.trim()) 
+      return res.status(400).json({ error: "EPS name must be a non-empty string" });
+
+    await pool.query("UPDATE eps SET name = ? WHERE id_eps = ?", [name, req.params.id]);
+    res.json({ message: "EPS updated" });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.delete("/eps/:id", async (req, res) => {
-  await pool.query("DELETE FROM eps WHERE id_eps = ?", [req.params.id]);
-  res.json({ message: "EPS deleted" });
+  try {
+    await pool.query("DELETE FROM eps WHERE id_eps = ?", [req.params.id]);
+    res.json({ message: "EPS deleted" });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 /* -------------------- MEDICINES -------------------- */
 app.get("/medicines", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM medicines");
-  res.json(rows);
+  try {
+    const [rows] = await pool.query("SELECT * FROM medicines");
+    res.json(rows);
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.get("/medicines/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM medicines WHERE id_medicine = ?", [req.params.id]);
-  res.json(rows[0] || {});
+  try {
+    const [rows] = await pool.query("SELECT * FROM medicines WHERE id_medicine = ?", [req.params.id]);
+    res.json(rows[0] || {});
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.post("/medicines", async (req, res) => {
-  const { name, quantity } = req.body;
-  const [result] = await pool.query(
-    "INSERT INTO medicines (name, quantity) VALUES (?, ?)",
-    [name, quantity]
-  );
-  res.json({ id: result.insertId, name, quantity });
+  try {
+    const { name, quantity } = req.body;
+    if (!name || typeof name !== "string" || !name.trim()) 
+      return res.status(400).json({ error: "Medicine name must be a non-empty string" });
+    if (typeof quantity !== "number" || quantity < 0) 
+      return res.status(400).json({ error: "Quantity must be a non-negative number" });
+
+    const [existing] = await pool.query("SELECT 1 FROM medicines WHERE name = ?", [name]);
+    if (existing.length) return res.status(400).json({ error: "Medicine already exists" });
+
+    const [result] = await pool.query("INSERT INTO medicines (name, quantity) VALUES (?, ?)", [name, quantity]);
+    res.status(201).json({ id: result.insertId, name, quantity });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.put("/medicines/:id", async (req, res) => {
-  const { name, quantity } = req.body;
-  await pool.query("UPDATE medicines SET name = ?, quantity = ? WHERE id_medicine = ?", [
-    name,
-    quantity,
-    req.params.id
-  ]);
-  res.json({ message: "Medicine updated" });
+  try {
+    const { name, quantity } = req.body;
+    if (!name || typeof name !== "string" || !name.trim()) 
+      return res.status(400).json({ error: "Medicine name must be a non-empty string" });
+    if (typeof quantity !== "number" || quantity < 0) 
+      return res.status(400).json({ error: "Quantity must be a non-negative number" });
+
+    await pool.query("UPDATE medicines SET name = ?, quantity = ? WHERE id_medicine = ?", [name, quantity, req.params.id]);
+    res.json({ message: "Medicine updated" });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.delete("/medicines/:id", async (req, res) => {
@@ -73,33 +130,60 @@ app.delete("/medicines/:id", async (req, res) => {
 
 /* -------------------- AUTHORIZED POINTS -------------------- */
 app.get("/authorized_points", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM authorized_points");
-  res.json(rows);
+  try {
+    const [rows] = await pool.query("SELECT * FROM authorized_points");
+    res.json(rows);
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.get("/authorized_points/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM authorized_points WHERE id_authorized_point = ?", [
-    req.params.id
-  ]);
-  res.json(rows[0] || {});
+  try {
+    const [rows] = await pool.query("SELECT * FROM authorized_points WHERE id_authorized_point = ?", [req.params.id]);
+    res.json(rows[0] || {});
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.post("/authorized_points", async (req, res) => {
-  const { id_eps, name, address, city } = req.body;
-  const [result] = await pool.query(
-    "INSERT INTO authorized_points (id_eps, name, address, city) VALUES (?, ?, ?, ?)",
-    [id_eps, name, address, city]
-  );
-  res.json({ id: result.insertId, id_eps, name, address, city });
+  try {
+    const { id_eps, name, address, city } = req.body;
+    if (!id_eps || typeof id_eps !== "number" || id_eps <= 0) 
+      return res.status(400).json({ error: "EPS ID must be a positive number" });
+    if (!name?.trim() || !address?.trim() || !city?.trim()) 
+      return res.status(400).json({ error: "Name, address and city must be non-empty strings" });
+
+    const [eps] = await pool.query("SELECT 1 FROM eps WHERE id_eps = ?", [id_eps]);
+    if (!eps.length) return res.status(400).json({ error: "EPS not found" });
+
+    const [result] = await pool.query(
+      "INSERT INTO authorized_points (id_eps, name, address, city) VALUES (?, ?, ?, ?)",
+      [id_eps, name, address, city]
+    );
+    res.status(201).json({ id: result.insertId, id_eps, name, address, city });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.put("/authorized_points/:id", async (req, res) => {
-  const { id_eps, name, address, city } = req.body;
-  await pool.query(
-    "UPDATE authorized_points SET id_eps = ?, name = ?, address = ?, city = ? WHERE id_authorized_point = ?",
-    [id_eps, name, address, city, req.params.id]
-  );
-  res.json({ message: "Authorized point updated" });
+  try {
+    const { id_eps, name, address, city } = req.body;
+    if (!id_eps || typeof id_eps !== "number" || id_eps <= 0) 
+      return res.status(400).json({ error: "EPS ID must be a positive number" });
+    if (!name?.trim() || !address?.trim() || !city?.trim()) 
+      return res.status(400).json({ error: "Name, address and city must be non-empty strings" });
+
+    await pool.query(
+      "UPDATE authorized_points SET id_eps = ?, name = ?, address = ?, city = ? WHERE id_authorized_point = ?",
+      [id_eps, name, address, city, req.params.id]
+    );
+    res.json({ message: "Authorized point updated" });
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 app.delete("/authorized_points/:id", async (req, res) => {
@@ -111,106 +195,32 @@ app.delete("/authorized_points/:id", async (req, res) => {
   }
 });
 
-/* -------------------- USERS -------------------- */
-app.get("/users", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM users");
-  res.json(rows);
-});
+/* -------------------- SEARCH MEDICINE BY EPS -------------------- */
+app.get("/search_medicine", async (req, res) => {
+  try {
+    const { medicine_name, eps_id } = req.query;
+    if (!medicine_name || !eps_id) 
+      return res.status(400).json({ error: "medicine_name and eps_id are required" });
 
-app.get("/users/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM users WHERE id_user = ?", [req.params.id]);
-  res.json(rows[0] || {});
-});
+    const query = `
+      SELECT 
+        ap.name AS point_name,
+        ap.address,
+        ms.quantity
+      FROM medicine_stock ms
+      JOIN medicines m ON ms.id_medicine = m.id_medicine
+      JOIN authorized_points ap ON ms.id_authorized_point = ap.id_authorized_point
+      WHERE m.name = ? AND ap.id_eps = ? AND ms.quantity > 0
+    `;
+    const [rows] = await pool.query(query, [medicine_name, eps_id]);
 
-app.post("/users", async (req, res) => {
-  const { id_eps, name, document_type, email } = req.body;
-  const [result] = await pool.query(
-    "INSERT INTO users (id_eps, name, document_type, email) VALUES (?, ?, ?, ?)",
-    [id_eps, name, document_type, email]
-  );
-  res.json({ id: result.insertId, id_eps, name, document_type, email });
-});
+    if (!rows.length) 
+      return res.status(404).json({ message: "No medicine found in the authorized points of this EPS" });
 
-app.put("/users/:id", async (req, res) => {
-  const { id_eps, name, document_type, email } = req.body;
-  await pool.query(
-    "UPDATE users SET id_eps = ?, name = ?, document_type = ?, email = ? WHERE id_user = ?",
-    [id_eps, name, document_type, email, req.params.id]
-  );
-  res.json({ message: "User updated" });
-});
-
-app.delete("/users/:id", async (req, res) => {
-  await pool.query("DELETE FROM users WHERE id_user = ?", [req.params.id]);
-  res.json({ message: "User deleted" });
-});
-
-/* -------------------- INVENTORIES -------------------- */
-app.get("/inventories", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM inventories");
-  res.json(rows);
-});
-
-app.get("/inventories/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM inventories WHERE id_inventory = ?", [req.params.id]);
-  res.json(rows[0] || {});
-});
-
-app.post("/inventories", async (req, res) => {
-  const { id_authorized_point, id_medicine, quantity, stock } = req.body;
-  const [result] = await pool.query(
-    "INSERT INTO inventories (id_authorized_point, id_medicine, quantity, stock) VALUES (?, ?, ?, ?)",
-    [id_authorized_point, id_medicine, quantity, stock]
-  );
-  res.json({ id: result.insertId, id_authorized_point, id_medicine, quantity, stock });
-});
-
-app.put("/inventories/:id", async (req, res) => {
-  const { id_authorized_point, id_medicine, quantity, stock } = req.body;
-  await pool.query(
-    "UPDATE inventories SET id_authorized_point = ?, id_medicine = ?, quantity = ?, stock = ? WHERE id_inventory = ?",
-    [id_authorized_point, id_medicine, quantity, stock, req.params.id]
-  );
-  res.json({ message: "Inventory updated" });
-});
-
-app.delete("/inventories/:id", async (req, res) => {
-  await pool.query("DELETE FROM inventories WHERE id_inventory = ?", [req.params.id]);
-  res.json({ message: "Inventory deleted" });
-});
-
-/* -------------------- PHARMACISTS -------------------- */
-app.get("/pharmacists", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM pharmacists");
-  res.json(rows);
-});
-
-app.get("/pharmacists/:id", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM pharmacists WHERE id_pharmacist = ?", [req.params.id]);
-  res.json(rows[0] || {});
-});
-
-app.post("/pharmacists", async (req, res) => {
-  const { id_branch, name, email } = req.body;
-  const [result] = await pool.query(
-    "INSERT INTO pharmacists (id_branch, name, email) VALUES (?, ?, ?)",
-    [id_branch, name, email]
-  );
-  res.json({ id: result.insertId, id_branch, name, email });
-});
-
-app.put("/pharmacists/:id", async (req, res) => {
-  const { id_branch, name, email } = req.body;
-  await pool.query(
-    "UPDATE pharmacists SET id_branch = ?, name = ?, email = ? WHERE id_pharmacist = ?",
-    [id_branch, name, email, req.params.id]
-  );
-  res.json({ message: "Pharmacist updated" });
-});
-
-app.delete("/pharmacists/:id", async (req, res) => {
-  await pool.query("DELETE FROM pharmacists WHERE id_pharmacist = ?", [req.params.id]);
-  res.json({ message: "Pharmacist deleted" });
+    res.json(rows);
+  } catch (err) {
+    handleError(res, err);
+  }
 });
 
 /* -------------------- SERVER -------------------- */
