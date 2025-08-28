@@ -1,4 +1,4 @@
-import { fetchFromAPI, getMedicines, searchMedicineInPoints } from './api.js';
+import { fetchFromAPI, getMedicines, searchMedicineInPoints } from './api_map.js';
 import { calculateDistance, transformToPharmacyFormat } from './utils.js';
 import { initializeMap, addPharmacyMarkers, toggleMap } from './map.js';
 import { displayResults, createPharmacyCard, showNoResults } from './ui.js';
