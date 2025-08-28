@@ -2,71 +2,82 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regístrate</title>
-    <link rel="stylesheet" href="../css/register.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regístrate</title>
+  <link rel="stylesheet" href="../css/register.css">
 </head>
 
 <body>
-    <!-- Círculos de fondo -->
-    <div class="circles">
-        <span class="c c1"></span>
-        <span class="c c2"></span>
-        <span class="c c3"></span>
-        <span class="c c4"></span>
-    </div>
+  <!-- Círculos de fondo -->
+  <div class="circles">
+    <span class="c c1"></span>
+    <span class="c c2"></span>
+    <span class="c c3"></span>
+    <span class="c c4"></span>
+  </div>
 
-    <div class="card">
-        <h2 class="title">REGÍSTRATE</h2>
+  <div class="card">
+    <h2 class="title">REGÍSTRATE</h2>
 
-        <form class="form">
-            <div class="field">
-                <img class="icon" src="../img/ciudad-white.png">
-                <input type="text" placeholder="Ciudad" required>
-            </div>
+    <!-- Breadcrumb para volver al inicio -->
+    <p class="back-home">
+      <a href="../home/home.html">← Volver al inicio</a>
+    </p>
 
-            <div class="field">
-                <img class="icon" src="../img/tarjeta-blanco50.png" alt="">
-                <select required>
-                    <option value="" selected disabled>Tipo de documento</option>
-                    <option>CC</option>
-                    <option>CE</option>
-                    <option>TI</option>
-                    <option>Pasaporte</option>
-                </select>
-            </div>
+    <!-- Formulario con id -->
+    <form class="form" id="registerForm">
+      <div class="field">
+        <img class="icon" src="../img/ciudad-white.png" alt="Icono ciudad">
+        <input type="text" id="city" placeholder="Ciudad" required>
+      </div>
 
-            <div class="field">
-                <img class="icon" src="../img/identi-blanco.png" alt="">
-                <input type="text" placeholder="Documento" required>
-            </div>
+      <div class="field">
+        <img class="icon" src="../img/tarjeta-blanco50.png" alt="Icono documento">
+        <select id="document_type" required>
+          <option value="" selected disabled>Tipo de documento</option>
+          <option value="CC">CC</option>
+          <option value="CE">CE</option>
+          <option value="TI">TI</option>
+          <option value="PAS">Pasaporte</option>
+        </select>
+      </div>
 
-            <div class="field">
-                <img class="icon" src="../img/company.png" alt="">
-                <input type="text" placeholder="EPS" required>
-            </div>
+      <div class="field">
+        <img class="icon" src="../img/identi-blanco.png" alt="Icono identificación">
+        <input type="text" id="document_number" placeholder="Documento" required>
+      </div>
 
-            <div class="field">
-                <img class="icon" src="../img/user-white.png" alt="">
-                <input type="text" placeholder="Nombre Completo" required>
-            </div>
+      <div class="field">
+        <img class="icon" src="../img/company.png" alt="Icono EPS">
+        <input type="text" id="eps" placeholder="EPS" required>
+      </div>
 
-            <div class="field">
-                <img class="icon" src="../img/email-white.png" alt="">
-                <input type="email" placeholder="E-Mail" required>
-            </div>
+      <div class="field">
+        <img class="icon" src="../img/user-white.png" alt="Icono usuario">
+        <input type="text" id="name" placeholder="Nombre Completo" required>
+      </div>
 
-            <div class="field">
-                <img class="icon" src="../img/password-white.png" alt="">
-                <input type="password" placeholder="Contraseña" required>
-            </div>
+      <div class="field">
+        <img class="icon" src="../img/email-white.png" alt="Icono email">
+        <input type="email" id="email" placeholder="E-Mail" required>
+      </div>
 
-            <button type="submit" class="btn">Crear cuenta</button>
+      <div class="field">
+        <img class="icon" src="../img/password-white.png" alt="Icono contraseña">
+        <input type="password" id="password" placeholder="Contraseña" required>
+      </div>
 
-            <p class="login">¿Ya tienes cuenta? <a href="../login/login.html">Inicia sesión</a></p>
-        </form>
-    </div>
+      <button type="submit" class="btn">Crear cuenta</button>
+
+      <p class="login">¿Ya tienes cuenta? 
+        <a href="../login/login.html">Inicia sesión</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- Conexión con JS (módulo) -->
+  <script type="module" src="../js/auth.js"></script>
 </body>
 
 </html>

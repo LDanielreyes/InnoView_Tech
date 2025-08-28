@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventory – Medicamentos</title>
+  <link rel="stylesheet" href="../css/inventory.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="logo" src="../img/logo_azul.png" alt="Logo">
+    </div>
+
+    <div class="profile">
+      <div class="avatar" aria-hidden="true"></div>
+      <div class="profile__name">Brad Pitt</div>
+      <div class="profile__role">Farmacéutico</div>
+    </div>
+
+    <nav class="menu">
+      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/pasti.png" alt=""></span><b>Medicamentos</b></a>
+      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/acerca.png" alt=""></span><b>Acerca de</b></a>
+      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/ayuda.png" alt=""></span><b>Ayuda</b></a>
+      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/ajuste.png" alt=""></span><b>Ajustes</b></a>
+    </nav>
+
+    <a class="logout" href="#">Cerrar sesión <span><img class="icon-2" src="../img/logout.png" alt=""></span></a>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <form class="search" onsubmit="return false">
+        <input class="search__input" placeholder="Buscar…" />
+        <button class="search__btn" type="submit">
+          <img class="icon-search" src="../img/search.png" alt="">
+        </button>
+      </form>
+
+      <div class="topbar__actions">
+        <button class="sort" title="Ordenar">
+          <img class="scroll" src="../img/scroll-2.png" alt="">
+        </button>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="content__head">
+        <h2>Medicamentos</h2>
+      </div>
+
+      <!-- Formulario para agregar/editar medicamentos -->
+      <form id="medicineForm" class="medicine-form">
+        <input type="hidden" id="medicineId">
+        <input type="text" id="name" placeholder="Nombre del medicamento" required>
+        <input type="number" id="quantity" placeholder="Cantidad" required>
+        <input type="text" id="description" placeholder="Descripción">
+        <button type="submit">Guardar</button>
+      </form>
+
+      <!-- Cabecera de tabla -->
+      <div class="row row--head">
+        <div>Nombre</div>
+        <div>Cantidad</div>
+        <div>Descripción</div>
+        <div>Fecha de creación</div>
+        <div class="right"></div>
+      </div>
+
+      <!-- Contenedor dinámico -->
+      <div id="inventoryList"></div>
+    </section>
+  </div>
+
+  <!-- Conexión con inventory.js -->
+  <script src="../js/inventory.js"></script>
+</body>
+
+</html>
