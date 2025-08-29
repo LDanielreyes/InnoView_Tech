@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MedicaAqui – Buscador</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="../css/search.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <div class="brand">
+                <img class="logo" src="../img/logo-calidad.webp" alt="Logo MedicaAqui">
+            </div>
+            <nav class="nav">
+                <a href="../../index.html" class="nav__link">Inicio</a>
+                <a href="#" class="nav__link">Acerca de</a>
+                <a href="#" class="nav__link">Ayuda</a>
+                <a href="#" class="button logout" id="logoutBtn">Cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero__content">
+                <h1 class="hero__title">ENCUENTRA TU MEDICAMENTO CERCA DE TI</h1>
+                <p class="hero__subtitle">
+                    Consulta disponibilidad en farmacias afiliadas a tu EPS en tiempo real
+                </p>
+
+                <div class="card search">
+                    <form class="search__form" id="searchForm">
+                        <label class="field">
+                            <span class="field__label">Nombre del Medicamento</span>
+                            <input type="text" class="input" id="medicine" placeholder="Losartan 50mg" required />
+                        </label>
+
+                        <label class="field" id="epsField">
+                            <span class="field__label">EPS Actual</span>
+                            <select class="input" id="epsSelect" >
+                                <option value="" >Seleccione EPS</option>
+                                <option value="SURA">SURA</option>
+                            </select>
+                        </label>
+
+                        <div class="search__actions">
+                            <button class="button buscar" type="submit">
+                                <img class="icon-search" src="../img/icons8-búsqueda-50 1.png" alt="Buscar"> Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="hero__wave" aria-hidden="true"></div>
+    </section>
+
+    <main class="container layout">
+        <section class="map-section">
+            <h2 class="section-title">Mapa de Puntos Autorizados</h2>
+            <div id="map" style="height: 400px; border-radius: 8px; margin-bottom: 1rem;"></div>
+        </section>
+
+        <section class="results">
+            <h2 class="section-title">Resultados</h2>
+            <ul id="pointsList" class="points-list">
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__cols">
+
+                <div class="footer__col footer__brand">
+                    <div class="brand">
+                        <img class="logo-footer" src="../img/logo-calidad.webp" alt="Logo MedicaAqui">
+                    </div>
+                    <p class="footer__tagline">
+                        Encuentra medicamentos disponibles en farmacias<br />
+                        afiliadas a tu EPS en Colombia.
+                    </p>
+                </div>
+
+                <div class="footer__col">
+                    <h3 class="footer__title">Enlaces útiles</h3>
+                    <ul>
+                        <li><a href="#">Acerca de</a></li>
+                        <li><a href="#">Términos de uso</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                        <li><a href="#">Contactos</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__col">
+                    <h3 class="footer__title">Aviso importante</h3>
+                    <p class="footer__note">
+                        La información de disponibilidad es referencial y <br />
+                        puede variar por sucursal. No almacenamos <br />
+                        datos personales clínicos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer__copyright">
+                © 2025 MedicaAqui. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script type="module" src="../js/router.js"></script>
+    <script type="module" src="../js/map/search.js"></script>
+</body>
+</html>

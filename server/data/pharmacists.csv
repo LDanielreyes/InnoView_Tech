@@ -1,4 +1,5 @@
-id_pharmacist,id_branch,name,email,created_at,updated_at
-1,1,Ana Ramírez,ana@punto1.com,2025-08-01 08:00:00,2025-08-10 08:30:00
-2,1,Carlos Mejía,carlos@punto2.com,2025-08-02 08:10:00,2025-08-11 08:40:00
-3,1,Laura Torres,laura@punto3.com,2025-08-03 08:20:00,2025-08-12 08:50:00
+id_pharmacist,id_authorized_point,name,email,password_hash,created_at,updated_at
+1,4,Ana Torres,ana.torres@example.com,123456789,2025-01-15 10:23:45,2025-06-01 08:12:34
+2,5,Carlos Medina,carlos.medina@example.com,$2b$12$6uMyZlFY8U3npFq2HgfX/OuCVpW1HdQ2LZrQ9qg9Kz6eqzLbI8mMy,2025-02-10 09:00:00,2025-06-05 11:00:00
+3,6,Lorena Díaz,lorena.diaz@example.com,$2b$12$hfjf7uH8s3sjkl82Jj8aSe7afJHWeEbl7jH8ZfJ6AdsaPddjL7uR2,2025-03-05 14:40:30,2025-06-10 14:00:10
+4,4,Diego Ruiz,diego.ruiz@example.com,$2b$12$ds8fuaH7823fLsLJH8Jdfuwy1AseL2H7gsfK1lL8kHJk2sO9W1D7g,2025-04-12 08:45:00,2025-06-15 12:12:12

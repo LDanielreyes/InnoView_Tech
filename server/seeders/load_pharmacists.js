@@ -12,7 +12,9 @@ export async function loadPharmacists() {
       .pipe(csv())
       .on("data", (row) => {
         pharmacists.push([
-          parseInt(row.id_branch),
+          parseInt(row.id_pharmacist),
+          parseInt(row.id_authorized_point),
+          row.password_hash,
           row.name,
           row.email,
           row.created_at,
@@ -21,7 +23,7 @@ export async function loadPharmacists() {
       })
       .on("end", async () => {
         try {
-          const sql = `INSERT INTO pharmacists (id_branch, name, email, created_at, updated_at) VALUES ?`;
+          const sql = `INSERT INTO pharmacists (id_pharmacist,id_authorized_point,name,email,password_hash,created_at,updated_at) VALUES ?`;
           const [result] = await pool.query(sql, [pharmacists]);
           console.log(`Inserted ${result.affectedRows} pharmacists`);
           resolve();

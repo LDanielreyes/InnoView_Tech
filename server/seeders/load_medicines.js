@@ -18,7 +18,6 @@ export async function loadMedicines() {
         medicines.push([
           parseInt(row.id_medicine),
           row.name,
-          row.quantity,
           row.created_at,
           row.updated_at
         ]);
@@ -32,7 +31,7 @@ export async function loadMedicines() {
             return;
           }
           // Query to insert multiple rows at once, efficient with the array of arrays
-          const sql = `INSERT INTO medicines (id_medicine,name,quantity,created_at,updated_at) VALUES ?`;
+          const sql = `INSERT INTO medicines (id_medicine,name,created_at,updated_at) VALUES ?`;
           const [result] = await pool.query(sql, [medicines]); // Using the pool, good practice for connections
           console.log(`Inserted ${result.affectedRows} medicines`); // Clear feedback on how many rows were inserted
           resolve(); // Everything went well, resolve the promise

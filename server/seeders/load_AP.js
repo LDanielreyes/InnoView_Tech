@@ -18,7 +18,7 @@ export async function loadAP() {
         AP.push([
           parseInt(row.id_authorized_point),
           parseInt(row.id_eps),
-          row.name,
+          row.point_name,
           row.address,
           row.city,
           row.created_at,
@@ -28,7 +28,7 @@ export async function loadAP() {
       .on("end", async () => {
         try {
           // Query to insert multiple rows at once, efficient with the array of arrays
-          const sql = `INSERT INTO authorized_points (id_authorized_point,id_eps,name,address,city,created_at,updated_at) VALUES ?`;
+          const sql = `INSERT INTO authorized_points (id_authorized_point,id_eps,point_name,address,city,created_at,updated_at) VALUES ?`;
           const [result] = await pool.query(sql, [AP]); // Using the pool, good practice for connections
           console.log(`Inserted ${result.affectedRows} AP`); // Clear feedback on how many rows were inserted
           resolve(); // Everything went well, resolve the promise

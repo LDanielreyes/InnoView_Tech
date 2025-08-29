@@ -12,9 +12,9 @@ import { loadPharmacists } from "./load_pharmacists.js"
         //await loadEPS()
         //await loadMedicines()
         //await loadAP()
-        await loadUsers()
-        await loadInventories()
-        await loadPharmacists()
+        //await loadUsers()
+        //await loadInventories()
+        //await loadPharmacists()
         
         // Log completion of seeders
         console.log("Seeders load complete")

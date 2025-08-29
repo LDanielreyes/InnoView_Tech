@@ -12,10 +12,10 @@ export async function loadInventories() {
       .pipe(csv())
       .on("data", (row) => {
         inventories.push([
+          parseInt(row.id_inventory),
           parseInt(row.id_authorized_point),
           parseInt(row.id_medicine),
           parseInt(row.quantity),
-          row.stock,
           row.created_at,
           row.updated_at
         ]);
@@ -23,7 +23,7 @@ export async function loadInventories() {
       .on("end", async () => {
         try {
           const sql = `INSERT INTO inventories 
-            (id_authorized_point, id_medicine, quantity, stock, created_at, updated_at) VALUES ?`;
+            (id_inventory,id_authorized_point,id_medicine,quantity,created_at,updated_at) VALUES ?`;
           const [result] = await pool.query(sql, [inventories]);
           console.log(`Inserted ${result.affectedRows} inventories`);
           resolve();

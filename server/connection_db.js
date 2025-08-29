@@ -7,7 +7,7 @@ export const pool = mysql.createPool({
     port:"3306",
     user:"uimqguissolxfkzc",
     password:"aMJyB55bLYlDe8O1dvbF",
-    connectionLimit: 10, // Maximum number of simultaneous connections
+    connectionLimit: 20, // Maximum number of simultaneous connections
     waitForConnections: true, // Allows new connections to wait for an available slot
     queueLimit: 0 // Maximum number of connections in the queue; 0 means no limit
 })

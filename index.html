@@ -1,13 +1,99 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MedicaAqui – Inicio</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" 
+    rel="stylesheet">
+
+  <!-- CSS styles -->
+  <link rel="stylesheet" href="app/css/index.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="top">
+    <div class="wrap top__inner">
+      <div class="logo">
+        <img src="app/img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" alt="Logo MedicaAqui" class="logo-img">
+      </div>
+      <nav class="menu">
+        <a class="menu__link" href="app/view/login.html">Iniciar Sesión</a>
+        <a class="btn btn--primary" href="app/view/register.html">Registrarse</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <main class="hero-page">
+    <div class="wrap grid">
+      <div class="text">
+        <h1 class="title">
+          Consulta rápida y gratuita la disponibilidad de tus medicamentos en las EPS de Colombia
+        </h1>
+        <p class="lead">¿Tu medicamento está disponible?</p>
+        <p class="desc">
+          Ahorra tiempo y evita filas. Con MedicaAqui consulta en segundos si tu EPS tiene existencias del medicamento que necesitas.
+        </p>
+        <a href="app/view/login.html" class="cta">Buscar medicamento</a>
+      </div>
+
+      <div class="media">
+        <div class="ph">
+          <img src="app/img/home.webp" alt="Ilustración de medicamentos" class="hero-img">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- How it works section -->
+  <section class="features">
+    <div class="wrap">
+      <h2 class="section-title">¿Cómo funciona?</h2>
+      <div class="grid features-grid">
+
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <img src="https://unpkg.com/feather-icons/dist/icons/search.svg" alt="Buscar" class="feature-icon">
+          <h3>1. Busca tu medicamento</h3>
+          <p>Ingresa el nombre y selecciona tu EPS para verificar disponibilidad.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <img src="https://unpkg.com/feather-icons/dist/icons/map-pin.svg" alt="Mapa" class="feature-icon">
+          <h3>2. Encuentra el punto más cercano</h3>
+          <p>Visualiza en el mapa las farmacias autorizadas y su stock en tiempo real.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <img src="https://unpkg.com/feather-icons/dist/icons/check-circle.svg" alt="Confirmar" class="feature-icon">
+          <h3>3. Retira tu medicamento</h3>
+          <p>Dirígete a la farmacia con disponibilidad y ahorra tiempo en tu proceso.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="foot">
+    <div class="wrap footer__inner">
+      <p>© 2025 MedicaAqui. Todos los derechos reservados</p>
+      <nav class="footer-menu">
+        <a href="#">Acerca de</a>
+        <a href="#">Ayuda</a>
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+      </nav>
+    </div>
+  </footer>
+</body>
 </html>
