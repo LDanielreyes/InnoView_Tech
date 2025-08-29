@@ -65,7 +65,6 @@ if (searchForm) {
           longitude: -74.79,
         },
       ];
-      
 
       // Clear previous markers and list
       markersGroup.clearLayers();
@@ -93,44 +92,4 @@ if (searchForm) {
       alert("Error while searching medicine");
     }
   });
-}
-/**
- * Intenta obtener la ubicación actual del usuario y agrega un marcador al mapa.
- */
-function getUserLocation() {
-    // Comprueba si el navegador soporta la geolocalización
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const userLocation = [lat, lon];
-                const accuracy = position.coords.accuracy;
-
-                // Crea un icono personalizado para el marcador del usuario
-                const userIcon = L.icon({
-                    iconUrl: '../img/pin-de-ubicacion%201.png', // Usa el mismo icono de ubicación
-                    iconSize: [38, 38],
-                    iconAnchor: [19, 38],
-                    popupAnchor: [0, -30]
-                });
-
-                // Agrega un marcador para la ubicación del usuario
-                L.marker(userLocation, { icon: userIcon }).addTo(map)
-                    .bindPopup("¡Estás aquí!").openPopup();
-
-                // Centra el mapa en la ubicación del usuario
-                map.setView(userLocation, 15);
-
-                console.log(`Ubicación del usuario: Latitud ${lat}, Longitud ${lon}`);
-            },
-            (error) => {
-                // Maneja errores si el usuario deniega el permiso o si hay un problema
-                console.error("Error al obtener la ubicación del usuario:", error);
-                alert("No se pudo obtener tu ubicación. Por favor, asegúrate de haber dado permiso para la geolocalización en tu navegador.");
-            }
-        );
-    } else {
-        alert("Tu navegador no soporta la geolocalización.");
-    }
 }

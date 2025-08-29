@@ -1,8 +1,12 @@
 import express from "express";
 import { pool } from "./connection_db.js";
+import cors from "cors";
+
 
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 
 /* -------------------- ERROR HANDLER -------------------- */
 const handleError = (res, err) => {
@@ -197,30 +201,32 @@ app.delete("/authorized_points/:id", async (req, res) => {
 
 /* -------------------- SEARCH MEDICINE BY EPS -------------------- */
 app.get("/search_medicine", async (req, res) => {
-  try {
-    const { medicine_name, eps_id } = req.query;
-    if (!medicine_name || !eps_id) 
-      return res.status(400).json({ error: "medicine_name and eps_id are required" });
+    try {
+        const { medicine_name, eps_id } = req.query;
+        if (!medicine_name || !eps_id) 
+            return res.status(400).json({ error: "medicine_name and eps_id are required" });
 
-    const query = `
-      SELECT 
-        ap.name AS point_name,
-        ap.address,
-        ms.quantity
-      FROM medicine_stock ms
-      JOIN medicines m ON ms.id_medicine = m.id_medicine
-      JOIN authorized_points ap ON ms.id_authorized_point = ap.id_authorized_point
-      WHERE m.name = ? AND ap.id_eps = ? AND ms.quantity > 0
-    `;
-    const [rows] = await pool.query(query, [medicine_name, eps_id]);
+        const query = `
+            SELECT 
+                ap.point_name AS point_name,
+                ap.address,
+                ap.latitude,
+                ap.longitude,
+                i.quantity
+            FROM inventories i
+            JOIN medicines m ON i.id_medicine = m.id_medicine
+            JOIN authorized_points ap ON i.id_authorized_point = ap.id_authorized_point
+            WHERE m.name = ? AND ap.id_eps = ? AND i.quantity > 0
+        `;
+        const [rows] = await pool.query(query, [medicine_name, eps_id]);
 
-    if (!rows.length) 
-      return res.status(404).json({ message: "No medicine found in the authorized points of this EPS" });
+        if (!rows.length) 
+            return res.status(404).json({ message: "No medicine found in the authorized points of this EPS" });
 
-    res.json(rows);
-  } catch (err) {
-    handleError(res, err);
-  }
+        res.json(rows);
+    } catch (err) {
+        handleError(res, err);
+    }
 });
 
 /* -------------------- SERVER -------------------- */
