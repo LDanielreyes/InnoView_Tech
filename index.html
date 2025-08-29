@@ -12,71 +12,91 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" 
     rel="stylesheet">
 
-  <!-- CSS styles -->
-  <link rel="stylesheet" href="app/css/index.css" />
+  <!-- Tailwind CSS -->
+  <link href="app/css/tailwind.css" rel="stylesheet">
 </head>
-<body>
+<body class="font-[Inter] flex flex-col min-h-screen">
 
   <!-- Header -->
-  <header class="top">
-    <div class="wrap top__inner">
-      <div class="logo">
-        <img src="app/img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" alt="Logo MedicaAqui" class="logo-img">
+  <header class="bg-white text-gray-900 sticky top-0 shadow z-50">
+    <div class="max-w-[1100px] w-[92%] mx-auto flex items-center justify-between py-4">
+      <!-- Logo -->
+      <div>
+        <img src="app/img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" 
+             alt="Logo MedicaAqui" 
+             class="w-[140px]">
       </div>
-      <nav class="menu">
-        <a class="menu__link" href="app/view/login.html">Iniciar Sesión</a>
-        <a class="btn btn--primary" href="app/view/register.html">Registrarse</a>
+      <!-- Menu -->
+      <nav class="flex items-center gap-4">
+        <a href="app/view/login.html" 
+           class="text-gray-800 font-semibold hover:text-purple-700 transition">Iniciar Sesión</a>
+        <a href="app/view/register.html" 
+           class="bg-purple-700 text-white font-bold px-4 py-2 rounded-lg shadow hover:bg-purple-800 transition">
+           Registrarse
+        </a>
       </nav>
     </div>
   </header>
 
   <!-- Hero section -->
-  <main class="hero-page">
-    <div class="wrap grid">
-      <div class="text">
-        <h1 class="title">
+  <main class="flex-1 w-full bg-purple-700 text-white">
+    <div class="max-w-[1100px] w-[92%] mx-auto grid lg:grid-cols-2 gap-8 items-center py-16 px-4">
+      
+      <!-- Texto -->
+      <div class="space-y-4 text-center lg:text-left">
+        <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight">
           Consulta rápida y gratuita la disponibilidad de tus medicamentos en las EPS de Colombia
         </h1>
-        <p class="lead">¿Tu medicamento está disponible?</p>
-        <p class="desc">
+        <p class="text-lg font-semibold text-purple-200">¿Tu medicamento está disponible?</p>
+        <p class="text-purple-100 max-w-prose">
           Ahorra tiempo y evita filas. Con MedicaAqui consulta en segundos si tu EPS tiene existencias del medicamento que necesitas.
         </p>
-        <a href="app/view/login.html" class="cta">Buscar medicamento</a>
+        <a href="app/view/login.html" 
+           class="inline-block bg-white text-purple-700 px-6 py-3 rounded-lg font-bold border border-white/60 hover:bg-gray-50 hover:-translate-y-1 transition">
+          Buscar medicamento
+        </a>
       </div>
 
-      <div class="media">
-        <div class="ph">
-          <img src="app/img/home.webp" alt="Ilustración de medicamentos" class="hero-img">
-        </div>
+      <!-- Imagen -->
+      <div class="grid place-items-center order-first lg:order-none">
+        <img src="app/img/home.webp" 
+             alt="Ilustración de medicamentos" 
+             class="w-full max-w-md rounded-md shadow-md object-cover">
       </div>
     </div>
   </main>
 
-  <!-- How it works section -->
-  <section class="features">
-    <div class="wrap">
-      <h2 class="section-title">¿Cómo funciona?</h2>
-      <div class="grid features-grid">
-
+  <!-- Features section -->
+  <section class="bg-white text-gray-900 py-16 px-4">
+    <div class="max-w-[1100px] w-[92%] mx-auto">
+      <h2 class="text-center text-2xl font-extrabold text-purple-700 mb-12">¿Cómo funciona?</h2>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        
         <!-- Feature 1 -->
-        <div class="feature-card">
-          <img src="https://unpkg.com/feather-icons/dist/icons/search.svg" alt="Buscar" class="feature-icon">
-          <h3>1. Busca tu medicamento</h3>
-          <p>Ingresa el nombre y selecciona tu EPS para verificar disponibilidad.</p>
+        <div class="bg-purple-50 rounded-xl p-6 text-center shadow hover:shadow-lg hover:-translate-y-1 transition">
+          <img src="https://unpkg.com/feather-icons/dist/icons/search.svg" 
+               alt="Buscar" 
+               class="w-14 mx-auto mb-4">
+          <h3 class="text-lg font-bold text-purple-700 mb-2">1. Busca tu medicamento</h3>
+          <p class="text-sm text-gray-600">Ingresa el nombre y selecciona tu EPS para verificar disponibilidad.</p>
         </div>
 
         <!-- Feature 2 -->
-        <div class="feature-card">
-          <img src="https://unpkg.com/feather-icons/dist/icons/map-pin.svg" alt="Mapa" class="feature-icon">
-          <h3>2. Encuentra el punto más cercano</h3>
-          <p>Visualiza en el mapa las farmacias autorizadas y su stock en tiempo real.</p>
+        <div class="bg-purple-50 rounded-xl p-6 text-center shadow hover:shadow-lg hover:-translate-y-1 transition">
+          <img src="https://unpkg.com/feather-icons/dist/icons/map-pin.svg" 
+               alt="Mapa" 
+               class="w-14 mx-auto mb-4">
+          <h3 class="text-lg font-bold text-purple-700 mb-2">2. Encuentra el punto más cercano</h3>
+          <p class="text-sm text-gray-600">Visualiza en el mapa las farmacias autorizadas y su stock en tiempo real.</p>
         </div>
 
         <!-- Feature 3 -->
-        <div class="feature-card">
-          <img src="https://unpkg.com/feather-icons/dist/icons/check-circle.svg" alt="Confirmar" class="feature-icon">
-          <h3>3. Retira tu medicamento</h3>
-          <p>Dirígete a la farmacia con disponibilidad y ahorra tiempo en tu proceso.</p>
+        <div class="bg-purple-50 rounded-xl p-6 text-center shadow hover:shadow-lg hover:-translate-y-1 transition">
+          <img src="https://unpkg.com/feather-icons/dist/icons/check-circle.svg" 
+               alt="Confirmar" 
+               class="w-14 mx-auto mb-4">
+          <h3 class="text-lg font-bold text-purple-700 mb-2">3. Retira tu medicamento</h3>
+          <p class="text-sm text-gray-600">Dirígete a la farmacia con disponibilidad y ahorra tiempo en tu proceso.</p>
         </div>
 
       </div>
@@ -84,14 +104,14 @@
   </section>
 
   <!-- Footer -->
-  <footer class="foot">
-    <div class="wrap footer__inner">
+  <footer class="bg-gray-900 text-purple-100 py-8 px-4 text-sm">
+    <div class="max-w-[1100px] w-[92%] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
       <p>© 2025 MedicaAqui. Todos los derechos reservados</p>
-      <nav class="footer-menu">
-        <a href="#">Acerca de</a>
-        <a href="#">Ayuda</a>
-        <a href="#">Términos</a>
-        <a href="#">Privacidad</a>
+      <nav class="flex gap-4">
+        <a href="#" class="hover:text-white">Acerca de</a>
+        <a href="#" class="hover:text-white">Ayuda</a>
+        <a href="#" class="hover:text-white">Términos</a>
+        <a href="#" class="hover:text-white">Privacidad</a>
       </nav>
     </div>
   </footer>
