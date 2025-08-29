@@ -6,11 +6,20 @@
 import { initMap, addMarkersToMap, clearMarkers } from "./mapManager.js";
 import { searchMedicine } from "./api.js";
 import { updateResultsList } from "./uiManager.js";
+import { protectRoute , logout } from "../router.js";
+
+protectRoute("PACIENTE"); // Protege la ruta para usuarios con rol "PACIENTE"
+
+
 
 // CONSTANTES Y SELECTORES DEL DOM
 const medicineInput = document.getElementById("medicine");
 const searchForm = document.getElementById("searchForm");
 const epsField = document.getElementById("epsSelect").closest(".field");
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", logout);
+}
 const EPS_ID = 1;
 
 // VARIABLES GLOBALES (manejadas por los módulos)
