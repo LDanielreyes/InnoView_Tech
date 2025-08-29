@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Regístrate</title>
+  <title>Register – MedicaAqui</title>
   <link rel="stylesheet" href="../css/register.css">
 </head>
 
 <body>
-  <!-- Círculos de fondo -->
+  <!-- Background decorative circles -->
   <div class="circles">
     <span class="c c1"></span>
     <span class="c c2"></span>
@@ -20,20 +20,23 @@
   <div class="card">
     <h2 class="title">REGÍSTRATE</h2>
 
-    <!-- Breadcrumb para volver al inicio -->
+    <!-- Breadcrumb link corrected: back to root index.html -->
     <p class="back-home">
-      <a href="../home/home.html">← Volver al inicio</a>
+      <a href="../../index.html">← Volver al inicio</a>
     </p>
 
-    <!-- Formulario con id -->
+    <!-- Registration form (maps directly to 'users' table) -->
     <form class="form" id="registerForm">
+
+      <!-- Full name -->
       <div class="field">
-        <img class="icon" src="../img/ciudad-white.png" alt="Icono ciudad">
-        <input type="text" id="city" placeholder="Ciudad" required>
+        <img class="icon" src="../img/user-white.png" alt="User icon">
+        <input type="text" id="name" placeholder="Nombre Completo" required>
       </div>
 
+      <!-- Document type -->
       <div class="field">
-        <img class="icon" src="../img/tarjeta-blanco50.png" alt="Icono documento">
+        <img class="icon" src="../img/tarjeta-blanco50.png" alt="Document type icon">
         <select id="document_type" required>
           <option value="" selected disabled>Tipo de documento</option>
           <option value="CC">CC</option>
@@ -43,40 +46,47 @@
         </select>
       </div>
 
+      <!-- Document number -->
       <div class="field">
-        <img class="icon" src="../img/identi-blanco.png" alt="Icono identificación">
+        <img class="icon" src="../img/identi-blanco.png" alt="Document number icon">
         <input type="text" id="document_number" placeholder="Documento" required>
       </div>
-
+ 
+      <!-- Phone number -->
       <div class="field">
-        <img class="icon" src="../img/company.png" alt="Icono EPS">
+        <img class="icon" src="../img/phone.png" alt="Phone icon">
+        <input type="text" id="phone" placeholder="Teléfono" required>
+      </div>
+
+      <!-- EPS (health provider) -->
+      <div class="field">
+        <img class="icon" src="../img/company.png" alt="EPS icon">
         <input type="text" id="eps" placeholder="EPS" required>
       </div>
 
+      <!-- Email -->
       <div class="field">
-        <img class="icon" src="../img/user-white.png" alt="Icono usuario">
-        <input type="text" id="name" placeholder="Nombre Completo" required>
-      </div>
-
-      <div class="field">
-        <img class="icon" src="../img/email-white.png" alt="Icono email">
+        <img class="icon" src="../img/email-white.png" alt="Email icon">
         <input type="email" id="email" placeholder="E-Mail" required>
       </div>
 
+      <!-- Password (will be hashed in backend) -->
       <div class="field">
-        <img class="icon" src="../img/password-white.png" alt="Icono contraseña">
+        <img class="icon" src="../img/password-white.png" alt="Password icon">
         <input type="password" id="password" placeholder="Contraseña" required>
       </div>
 
+      <!-- Submit button -->
       <button type="submit" class="btn">Crear cuenta</button>
 
+      <!-- Link to login page if user already has an account -->
       <p class="login">¿Ya tienes cuenta? 
-        <a href="../login/login.html">Inicia sesión</a>
+        <a href="login.html">Inicia sesión</a>
       </p>
     </form>
   </div>
 
-  <!-- Conexión con JS (módulo) -->
+  <!-- Connect JS logic (auth.js handles register/login) -->
   <script type="module" src="../js/auth.js"></script>
 </body>
 

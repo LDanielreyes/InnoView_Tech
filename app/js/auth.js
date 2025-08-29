@@ -1,82 +1,84 @@
-// ---- REGISTER ----
+// ==========================
+// auth.js
+// Handles user authentication (register and login)
+// ==========================
+
+import { register, login } from "./api.js";
+import { saveUserSession } from "./storage.js";
+
+// ==========================
+// REGISTER LOGIC
+// ==========================
 const registerForm = document.getElementById("registerForm");
+
 if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Capture values from form
-    const city = document.getElementById("city").value;
-    const document_type = document.getElementById("document_type").value;
-    const document_number = document.getElementById("document_number").value;
-    const eps = document.getElementById("eps").value;
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const data = { city, document_type, document_number, eps, name, email, password };
+    // Collect form data (mapped to "users" table)
+    const data = {
+      name: document.getElementById("name").value,
+      document_type: document.getElementById("document_type").value,
+      document_number: document.getElementById("document_number").value,
+      phone: document.getElementById("phone").value,
+      eps: document.getElementById("eps").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value, // will be hashed in backend
+    };
 
     try {
-      // Send to backend
-      const res = await fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const result = await register(data);
 
-      const result = await res.json();
-      alert(result.message);
-
-      // Redirect to login page if success
-      if (res.ok) {
-        window.location.href = "../view/login.html";
+      // If backend confirms success → redirect to login
+      if (result.success) {
+        alert("User registered successfully! Please log in.");
+        window.location.href = "../login/login.html";
+      } else {
+        alert(result.message || "Error during registration");
       }
     } catch (err) {
       console.error("Register error:", err);
-      alert("Error registering user.");
+      alert("Server error during registration");
     }
   });
 }
 
-// ---- LOGIN ----
+// ==========================
+// LOGIN LOGIC
+// ==========================
 const loginForm = document.getElementById("loginForm");
+
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Collect login credentials
     const data = {
       email: document.getElementById("email").value,
       password: document.getElementById("password").value,
     };
 
     try {
-      // Send data to backend
-      const res = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const result = await login(data);
 
-      const result = await res.json();
+      if (result.success) {
+        // Save session in localStorage
+        saveUserSession(result.user);
 
-      if (!res.ok) {
-        alert(result.message || "Invalid credentials");
-        return;
-      }
-
-      alert("Login successful!");
-
-      // Redirect by role (example)
-      if (result.role === "PACIENTE") {
-        window.location.href = "../view/search.html";
-      } else if (result.role === "FARMACEUTICO") {
-        window.location.href = "../view/inventory.html";
+        // Redirect based on role
+        if (result.user.role === "PACIENTE") {
+          window.location.href = "../search/search.html";
+        } else if (result.user.role === "FARMACEUTICO") {
+          window.location.href = "../inventory/inventory.html";
+        } else {
+          window.location.href = "../../index.html"; // fallback
+        }
       } else {
-        window.location.href = "../view/home.html"; // fallback
+        alert(result.message || "Invalid credentials");
       }
-
     } catch (err) {
       console.error("Login error:", err);
-      alert("Error logging in.");
+      alert("Server error during login");
     }
   });
 }

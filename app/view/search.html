@@ -4,10 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MedicaAqui – Buscador</title>
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/dash_usuarios.css" />
+
+  <!-- Leaflet CSS for the map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="../css/search.css">
 </head>
 <body>
 
@@ -18,17 +25,17 @@
         <img class="logo" src="../img/logo.png" alt="Logo MedicaAqui">
       </div>
       <nav class="nav">
-        <!-- Botón breadcrumb para volver a Home -->
-        <a href="../home/home.html" class="nav__link">Inicio</a>
+        <!-- Breadcrumb to return home -->
+        <a href="../../index.html" class="nav__link">Inicio</a>
         <a href="#" class="nav__link">Acerca de</a>
         <a href="#" class="nav__link">Ayuda</a>
-        <!-- Botón logout -->
+        <!-- Logout button -->
         <a href="#" class="button logout" id="logoutBtn">Cerrar sesión</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero section -->
   <section class="hero">
     <div class="container">
       <div class="hero__content">
@@ -37,7 +44,7 @@
           Consulta disponibilidad en farmacias afiliadas a tu EPS en tiempo real
         </p>
 
-        <!-- Formulario de búsqueda -->
+        <!-- Search Form -->
         <div class="card search">
           <form class="search__form" id="searchForm">
             <label class="field">
@@ -47,11 +54,12 @@
 
             <label class="field">
               <span class="field__label">EPS Actual</span>
-              <select class="input" id="epsSelect">
-                <option>Mutualser</option>
-                <option>Sanitas</option>
-                <option>SURA</option>
-                <option>Nueva EPS</option>
+              <select class="input" id="epsSelect" required>
+                <option value="" selected disabled>Seleccione EPS</option>
+                <option value="Mutualser">Mutualser</option>
+                <option value="Sanitas">Sanitas</option>
+                <option value="SURA">SURA</option>
+                <option value="Nueva EPS">Nueva EPS</option>
               </select>
             </label>
 
@@ -70,40 +78,20 @@
     <div class="hero__wave" aria-hidden="true"></div>
   </section>
 
-  <!-- Main content -->
+  <!-- Results section -->
   <main class="container layout">
-    <section class="recent">
-      <h2 class="section-title">Búsquedas Recientes</h2>
-      <div class="recent__empty">
-        <img src="../img/lupa 1.png" alt="Icono lupa">
-        <p>No hay búsquedas recientes</p>
-      </div>
+    <!-- Map container -->
+    <section class="map-section">
+      <h2 class="section-title">Mapa de Puntos Autorizados</h2>
+      <div id="map" style="height: 400px; border-radius: 8px; margin-bottom: 1rem;"></div>
     </section>
 
-    <section class="popular">
-      <h2 class="section-title">Medicamentos frecuentes</h2>
-      <div class="grid meds">
-        <article class="med">
-          <img class="icon" src="../img/pastillas-para-dormir 1.png" alt="Icono pastilla">
-          <div class="med__name">Ibuprofeno</div>
-          <div class="med__dose">400mg</div>
-        </article>
-        <article class="med">
-          <img class="icon" src="../img/medicamentos 1.png" alt="Icono medicamento">
-          <div class="med__name">Acetaminofén</div>
-          <div class="med__dose">500mg</div>
-        </article>
-        <article class="med">
-          <img class="icon" src="../img/pastillas 1.png" alt="Icono cápsulas">
-          <div class="med__name">Diazepam</div>
-          <div class="med__dose">10mg</div>
-        </article>
-        <article class="med">
-          <img class="icon" src="../img/medicamento 2.png" alt="Icono caja de medicina">
-          <div class="med__name">Losartan</div>
-          <div class="med__dose">100mg</div>
-        </article>
-      </div>
+    <!-- Authorized points list -->
+    <section class="results">
+      <h2 class="section-title">Resultados</h2>
+      <ul id="pointsList" class="points-list">
+        <!-- JS will insert <li> items here dynamically -->
+      </ul>
     </section>
   </main>
 
@@ -148,7 +136,30 @@
     </div>
   </footer>
 
-  <!-- Conexión con JS -->
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- JS: route protection + logout -->
+  <script type="module">
+    import { protectRoute, logout } from "../js/router.js";
+
+    // Only PACIENTE can enter here
+    protectRoute("PACIENTE");
+
+    // Attach logout button
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+
+    // Initialize map
+    const map = L.map("map").setView([10.9685, -74.7813], 13); // Default center (Barranquilla example)
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Group for dynamic markers
+    window.markersGroup = L.layerGroup().addTo(map);
+  </script>
+
+  <!-- JS for search logic -->
   <script type="module" src="../js/search.js"></script>
 </body>
 </html>

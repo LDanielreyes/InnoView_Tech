@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicia Sesión</title>
+  <title>Login – MedicaAqui</title>
   <link rel="stylesheet" href="../css/login.css">
 </head>
 
 <body>
-  <!-- Círculos de fondo -->
+  <!-- Decorative background circles -->
   <div class="circles">
     <span class="c c1"></span>
     <span class="c c2"></span>
@@ -20,29 +20,40 @@
   <div class="card">
     <h2 class="title">INICIA SESIÓN</h2>
 
+    <!-- Breadcrumb link back to Home -->
+    <p class="back-home">
+      <a href="../../index.html">← Volver al inicio</a>
+    </p>
+
+    <!-- Logo for login page -->
     <img class="logo" src="../img/login.png" alt="Icono login">
 
-    <!-- Formulario de login -->
+    <!-- Login form (handled by auth.js) -->
     <form class="form" id="loginForm">
+      <!-- Email input -->
       <div class="field">
         <img class="icon" src="../img/icons8-nuevo-post-64 1.png" alt="Icono email">
         <input type="email" id="email" placeholder="E-Mail" required>
       </div>
 
+      <!-- Password input -->
       <div class="field">
         <img class="icon" src="../img/icons8-contraseña-48 1.png" alt="Icono contraseña">
         <input type="password" id="password" placeholder="Contraseña" required>
       </div>
 
+      <!-- Submit button -->
       <button type="submit" class="btn">Entrar</button>
 
+      <!-- Link to Register page -->
       <p class="register">
-        ¿No te has registrado? <a href="../register/register.html">Regístrate</a>
+        ¿No te has registrado? 
+        <a href="register.html">Regístrate</a>
       </p>
     </form>
   </div>
 
-  <!-- Conexión con JS (módulo) -->
+  <!-- Connects login with JS logic -->
   <script type="module" src="../js/auth.js"></script>
 </body>
 
