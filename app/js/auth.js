@@ -1,84 +1,75 @@
-// ==========================
-// auth.js
-// Handles user authentication (register and login)
-// ==========================
+import { protectRoute } from "../../app/js/router.js";
+const API_URL = "http://localhost:3000/auth";
 
-import { register, login } from "./api.js";
-import { saveUserSession } from "./storage.js";
+//protectRoute();
 
-// ==========================
-// REGISTER LOGIC
-// ==========================
+/* -------------------- REGISTER -------------------- */
+async function registerUser(userData) {
+  try {
+    const res = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || "Registration error");
+
+    alert("Registration successful. You can now log in.");
+    window.location.href = "login.html";
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+/* -------------------- LOGIN -------------------- */
+async function loginUser(credentials) {
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+    });
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || "Login error");
+
+    localStorage.setItem("token", result.token);
+    localStorage.setItem("user", JSON.stringify(result.user));
+
+    alert("Welcome " + result.user.full_name);
+    window.location.href = "inventory.html";
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+/* -------------------- FORM HANDLERS -------------------- */
 const registerForm = document.getElementById("registerForm");
-
 if (registerForm) {
-  registerForm.addEventListener("submit", async (e) => {
+  registerForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    // Collect form data (mapped to "users" table)
-    const data = {
-      name: document.getElementById("name").value,
+    const userData = {
+      full_name: document.getElementById("name").value.trim(),
       document_type: document.getElementById("document_type").value,
-      document_number: document.getElementById("document_number").value,
-      phone: document.getElementById("phone").value,
-      eps: document.getElementById("eps").value,
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value, // will be hashed in backend
+      document_number: document.getElementById("document_number").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      eps_name: document.getElementById("eps").value.trim(), // ✅ sent as eps_name
+      email: document.getElementById("email").value.trim(),
+      password: document.getElementById("password").value,
     };
-
-    try {
-      const result = await register(data);
-
-      // If backend confirms success → redirect to login
-      if (result.success) {
-        alert("User registered successfully! Please log in.");
-        window.location.href = "../login/login.html";
-      } else {
-        alert(result.message || "Error during registration");
-      }
-    } catch (err) {
-      console.error("Register error:", err);
-      alert("Server error during registration");
-    }
+    registerUser(userData);
   });
 }
 
-// ==========================
-// LOGIN LOGIC
-// ==========================
 const loginForm = document.getElementById("loginForm");
-
 if (loginForm) {
-  loginForm.addEventListener("submit", async (e) => {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    // Collect login credentials
-    const data = {
-      email: document.getElementById("email").value,
+    const credentials = {
+      email: document.getElementById("email").value.trim(),
       password: document.getElementById("password").value,
     };
-
-    try {
-      const result = await login(data);
-
-      if (result.success) {
-        // Save session in localStorage
-        saveUserSession(result.user);
-
-        // Redirect based on role
-        if (result.user.role === "PACIENTE") {
-          window.location.href = "../search/search.html";
-        } else if (result.user.role === "FARMACEUTICO") {
-          window.location.href = "../inventory/inventory.html";
-        } else {
-          window.location.href = "../../index.html"; // fallback
-        }
-      } else {
-        alert(result.message || "Invalid credentials");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      alert("Server error during login");
-    }
+    loginUser(credentials);
   });
 }
