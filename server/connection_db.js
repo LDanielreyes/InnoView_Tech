@@ -1,23 +1,32 @@
-import mysql from "mysql2/promise"
+// Import mysql2 with promise support
+import mysql from "mysql2/promise";
+// Import dotenv to read environment variables from .env file
+import dotenv from "dotenv";
 
-//create the connection with the db
+dotenv.config(); // Load environment variables
+
+// Create a MySQL connection pool using environment variables
 export const pool = mysql.createPool({
-    host:"bmsss5jl8ma9n1xixt4n-mysql.services.clever-cloud.com",
-    database:"bmsss5jl8ma9n1xixt4n",
-    port:"3306",
-    user:"uimqguissolxfkzc",
-    password:"aMJyB55bLYlDe8O1dvbF",
-    connectionLimit: 10, // Maximum number of simultaneous connections
-    waitForConnections: true, // Allows new connections to wait for an available slot
-    queueLimit: 0 // Maximum number of connections in the queue; 0 means no limit
-})
-async function tryConnections() {
-    try {
-        const connection = await pool.getConnection()
-        console.log("Successfully connected")
-        connection.release()
-    }catch(error){
-        console.error(`Error connecting to the database: ${error.message}`)
-    }
+  host: process.env.DB_HOST,       // Database host
+  database: process.env.DB_NAME,   // Database name
+  port: 3306,                      // Default MySQL port
+  user: process.env.DB_USER,       // Database user
+  password: process.env.DB_PASS,   // Database password
+  connectionLimit: 10,             // Maximum simultaneous connections
+  waitForConnections: true,        // Queue new connections if pool is full
+  queueLimit: 0                    // 0 = no limit for queued connections
+});
+
+// Test the connection when the server starts
+async function tryConnection() {
+  try {
+    const connection = await pool.getConnection();
+    console.log(" Successfully connected to the database");
+    connection.release(); // Release connection back to the pool
+  } catch (error) {
+    console.error(` Database connection error: ${error.message}`);
+  }
 }
-tryConnections()
+
+// Run test connection
+tryConnection();

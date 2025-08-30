@@ -5,31 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MedicaAqui – Inicio</title>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google Fonts: Inter -->
   <link 
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" 
     rel="stylesheet">
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS (local build) -->
   <link href="app/css/tailwind.css" rel="stylesheet">
-</head>
-<body class="font-[Inter] flex flex-col min-h-screen">
 
-  <!-- Header -->
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- ================= HEADER ================= -->
+  <!-- Sticky header with logo on the left and navigation on the right -->
   <header class="bg-white text-gray-900 sticky top-0 shadow z-50">
     <div class="max-w-[1100px] w-[92%] mx-auto flex items-center justify-between py-4">
+      
       <!-- Logo -->
       <div>
         <img src="app/img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" 
              alt="Logo MedicaAqui" 
              class="w-[140px]">
       </div>
-      <!-- Menu -->
+
+      <!-- Navigation -->
       <nav class="flex items-center gap-4">
         <a href="app/view/login.html" 
-           class="text-gray-800 font-semibold hover:text-purple-700 transition">Iniciar Sesión</a>
+           class="text-gray-800 font-semibold hover:text-purple-700 transition">
+           Iniciar Sesión
+        </a>
         <a href="app/view/register.html" 
            class="bg-purple-700 text-white font-bold px-4 py-2 rounded-lg shadow hover:bg-purple-800 transition">
            Registrarse
@@ -38,17 +45,18 @@
     </div>
   </header>
 
-  <!-- Hero section -->
+  <!-- ================= HERO SECTION ================= -->
+  <!-- Purple hero with main text and an image side by side on large screens -->
   <main class="flex-1 w-full bg-purple-700 text-white">
     <div class="max-w-[1100px] w-[92%] mx-auto grid lg:grid-cols-2 gap-8 items-center py-16 px-4">
       
-      <!-- Texto -->
+      <!-- Hero text content -->
       <div class="space-y-4 text-center lg:text-left">
-        <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight">
+        <h1 class="text-3xl lg:text-5xl 2xl:text-6xl font-extrabold leading-tight">
           Consulta rápida y gratuita la disponibilidad de tus medicamentos en las EPS de Colombia
         </h1>
         <p class="text-lg font-semibold text-purple-200">¿Tu medicamento está disponible?</p>
-        <p class="text-purple-100 max-w-prose">
+        <p class="text-purple-100 max-w-prose mx-auto lg:mx-0">
           Ahorra tiempo y evita filas. Con MedicaAqui consulta en segundos si tu EPS tiene existencias del medicamento que necesitas.
         </p>
         <a href="app/view/login.html" 
@@ -57,25 +65,30 @@
         </a>
       </div>
 
-      <!-- Imagen -->
+      <!-- Hero illustration image -->
       <div class="grid place-items-center order-first lg:order-none">
         <img src="app/img/home.webp" 
-             alt="Ilustración de medicamentos" 
+             alt="Illustration of medicines" 
              class="w-full max-w-md rounded-md shadow-md object-cover">
       </div>
     </div>
   </main>
 
-  <!-- Features section -->
+  <!-- ================= FEATURES SECTION ================= -->
+  <!-- Three feature cards explaining how the platform works -->
   <section class="bg-white text-gray-900 py-16 px-4">
     <div class="max-w-[1100px] w-[92%] mx-auto">
+      
+      <!-- Section title -->
       <h2 class="text-center text-2xl font-extrabold text-purple-700 mb-12">¿Cómo funciona?</h2>
+      
+      <!-- Features grid -->
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         
         <!-- Feature 1 -->
         <div class="bg-purple-50 rounded-xl p-6 text-center shadow hover:shadow-lg hover:-translate-y-1 transition">
           <img src="https://unpkg.com/feather-icons/dist/icons/search.svg" 
-               alt="Buscar" 
+               alt="Search icon" 
                class="w-14 mx-auto mb-4">
           <h3 class="text-lg font-bold text-purple-700 mb-2">1. Busca tu medicamento</h3>
           <p class="text-sm text-gray-600">Ingresa el nombre y selecciona tu EPS para verificar disponibilidad.</p>
@@ -84,7 +97,7 @@
         <!-- Feature 2 -->
         <div class="bg-purple-50 rounded-xl p-6 text-center shadow hover:shadow-lg hover:-translate-y-1 transition">
           <img src="https://unpkg.com/feather-icons/dist/icons/map-pin.svg" 
-               alt="Mapa" 
+               alt="Map pin icon" 
                class="w-14 mx-auto mb-4">
           <h3 class="text-lg font-bold text-purple-700 mb-2">2. Encuentra el punto más cercano</h3>
           <p class="text-sm text-gray-600">Visualiza en el mapa las farmacias autorizadas y su stock en tiempo real.</p>
@@ -93,7 +106,7 @@
         <!-- Feature 3 -->
         <div class="bg-purple-50 rounded-xl p-6 text-center shadow hover:shadow-lg hover:-translate-y-1 transition">
           <img src="https://unpkg.com/feather-icons/dist/icons/check-circle.svg" 
-               alt="Confirmar" 
+               alt="Check circle icon" 
                class="w-14 mx-auto mb-4">
           <h3 class="text-lg font-bold text-purple-700 mb-2">3. Retira tu medicamento</h3>
           <p class="text-sm text-gray-600">Dirígete a la farmacia con disponibilidad y ahorra tiempo en tu proceso.</p>
@@ -103,7 +116,8 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ================= FOOTER ================= -->
+  <!-- Footer with links and copyright -->
   <footer class="bg-gray-900 text-purple-100 py-8 px-4 text-sm">
     <div class="max-w-[1100px] w-[92%] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
       <p>© 2025 MedicaAqui. Todos los derechos reservados</p>

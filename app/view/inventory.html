@@ -5,81 +5,122 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Inventory – Medicamentos</title>
-  <link rel="stylesheet" href="../css/inventory.css" />
+
+  <!-- Google Fonts: Inter -->
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" 
+    rel="stylesheet">
+
+  <!-- Tailwind local build -->
+  <link href="../css/tailwind.css" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
 </head>
 
-<body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">
-      <img class="logo" src="../img/logo_azul.png" alt="Logo">
+<!-- ================= DASHBOARD LAYOUT ================= -->
+<!-- Two-column grid: Sidebar on the left, main content on the right -->
+<body class="grid grid-cols-[260px_1fr] min-h-screen bg-[#e9f4ff] text-slate-900">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="bg-[#2f5180] text-[#e7f0ff] flex flex-col gap-4 p-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-2">
+      <img class="w-8 h-8" src="../img/logo_azul.png" alt="Logo">
+      <span class="font-extrabold hidden lg:inline">MedicaAqui</span>
     </div>
 
-    <div class="profile">
-      <div class="avatar" aria-hidden="true"></div>
-      <div class="profile__name">Brad Pitt</div>
-      <div class="profile__role">Farmacéutico</div>
+    <!-- User profile -->
+    <div class="grid place-items-center gap-1 py-3">
+      <div class="w-24 h-24 rounded-full border-4 border-[#bcd7ff] bg-gradient-to-br from-[#375a8d] to-[#2e4d79] grid place-items-center"></div>
+      <div class="font-bold">Brad Pitt</div>
+      <div class="text-sm text-[#cfe4ff]">Farmacéutico</div>
     </div>
 
-    <nav class="menu">
-      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/pasti.png" alt=""></span><b>Medicamentos</b></a>
-      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/acerca.png" alt=""></span><b>Acerca de</b></a>
-      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/ayuda.png" alt=""></span><b>Ayuda</b></a>
-      <a class="menu__item" href="#"><span><img class="icon-2" src="../img/ajuste.png" alt=""></span><b>Ajustes</b></a>
+    <!-- Sidebar menu -->
+    <nav class="grid gap-2">
+      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
+        <img src="../img/pasti.png" class="w-6 h-6" alt=""> Medicamentos
+      </a>
+      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
+        <img src="../img/acerca.png" class="w-6 h-6" alt=""> Acerca de
+      </a>
+      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
+        <img src="../img/ayuda.png" class="w-6 h-6" alt=""> Ayuda
+      </a>
+      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
+        <img src="../img/ajuste.png" class="w-6 h-6" alt=""> Ajustes
+      </a>
     </nav>
 
-    <!--  Botón de cerrar sesión con id -->
-    <a class="logout" href="#" id="logoutBtn">
-      Cerrar sesión <span><img class="icon-2" src="../img/logout.png" alt=""></span>
+    <!-- Logout button -->
+    <a href="#" id="logoutBtn" class="mt-auto flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[#25476f]">
+      <img src="../img/logout.png" class="w-5 h-5" alt=""> Cerrar sesión
     </a>
   </aside>
 
-  <!-- Main content -->
-  <div class="main">
-    <header class="topbar">
-      <form class="search" onsubmit="return false">
-        <input class="search__input" placeholder="Buscar…" />
-        <button class="search__btn" type="submit">
-          <img class="icon-search" src="../img/search.png" alt="">
+  <!-- ================= MAIN AREA ================= -->
+  <div class="flex flex-col min-w-0">
+
+    <!-- Topbar with search and actions -->
+    <header class="bg-white flex items-center justify-between px-4 py-2 border-b border-slate-200">
+      <!-- Search form -->
+      <form class="flex items-center gap-2 w-full max-w-sm" onsubmit="return false">
+        <input 
+          class="h-10 w-full border border-slate-300 rounded-full px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          placeholder="Buscar…" />
+        <button type="submit" class="-ml-9">
+          <img src="../img/search.png" class="w-5" alt="Buscar">
         </button>
       </form>
-
-      <div class="topbar__actions">
-        <button class="sort" title="Ordenar">
-          <img class="scroll" src="../img/scroll-2.png" alt="">
+      <!-- Actions -->
+      <div class="flex items-center gap-2">
+        <button class="w-10 h-10 border border-slate-300 rounded-lg grid place-items-center hover:bg-slate-100">
+          <img src="../img/scroll-2.png" class="w-5" alt="Ordenar">
         </button>
       </div>
     </header>
 
-    <section class="content">
-      <div class="content__head">
-        <h2>Medicamentos</h2>
+    <!-- ================= CONTENT ================= -->
+    <section class="bg-[#dff0ff] flex-1 p-4">
+      <!-- Section title -->
+      <div class="mb-4">
+        <h2 class="text-xl font-bold">Medicamentos</h2>
       </div>
 
-      <!-- Formulario CRUD -->
-      <form id="medicineForm" class="medicine-form">
+      <!-- CRUD form (create/update medicines) -->
+      <form id="medicineForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <input type="hidden" id="medicineId">
-        <input type="text" id="name" placeholder="Nombre del medicamento" required>
-        <input type="number" id="quantity" placeholder="Cantidad" required>
-        <input type="text" id="description" placeholder="Descripción">
-        <button type="submit">Guardar</button>
+        <input type="text" id="name" placeholder="Nombre del medicamento" required
+          class="px-3 py-2 rounded-lg border border-slate-300">
+        <input type="number" id="quantity" placeholder="Cantidad" required
+          class="px-3 py-2 rounded-lg border border-slate-300">
+        <input type="text" id="description" placeholder="Descripción"
+          class="px-3 py-2 rounded-lg border border-slate-300">
+        <button type="submit"
+          class="bg-green-500 hover:bg-green-600 text-white font-bold rounded-full px-4 py-2 shadow">
+          Guardar
+        </button>
       </form>
 
-      <!-- Cabecera de tabla -->
-      <div class="row row--head">
+      <!-- Table header (only visible on md+ screens) -->
+      <div class="hidden md:grid grid-cols-[1.2fr_0.7fr_1.2fr_0.8fr_90px] gap-4 text-slate-500 font-semibold text-sm pb-2 border-b border-slate-300 mb-2">
         <div>Nombre</div>
         <div>Cantidad</div>
         <div>Descripción</div>
         <div>Fecha de creación</div>
-        <div class="right"></div>
+        <div></div>
       </div>
 
-      <!-- Lista dinámica -->
-      <div id="inventoryList"></div>
+      <!-- Dynamic rows (rendered from inventory.js) -->
+      <div id="inventoryList" class="space-y-3">
+        <!-- Rows are injected dynamically here -->
+      </div>
     </section>
   </div>
 
-  <!-- Conexión con inventory.js -->
+  <!-- ================= JS ================= -->
   <script type="module" src="../js/inventory.js"></script>
 </body>
 </html>
