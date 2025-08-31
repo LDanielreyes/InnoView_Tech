@@ -8,15 +8,23 @@ import { getUserSession, clearUserSession } from "./storage.js";
 export function protectRoute(requiredRole) {
   const user = getUserSession();
 
+  console.log("Current session:", user); // ✅ Debug log
+
   // If there's no session, force login
-  if (!user) {
-    window.location.href = "../../index.html"; 
+  if (!user || !user.role) {
+    window.location.href = "../login/login.html"; // mejor llevar a login, no al home
     return;
   }
 
-  // If a role is required and doesn't match, send to home
+  // If a role is required and doesn't match, redirect to correct home
   if (requiredRole && user.role !== requiredRole) {
-    window.location.href = "../../index.html"; 
+    if (user.role === "PACIENTE") {
+      window.location.href = "../search/search.html";
+    } else if (user.role === "FARMACEUTICO") {
+      window.location.href = "../inventory/inventory.html";
+    } else {
+      window.location.href = "../../index.html";
+    }
   }
 }
 

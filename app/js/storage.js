@@ -1,25 +1,41 @@
-// storage.js
+// router.js
+import { getUserSession, clearUserSession } from "./storage.js";
 
 /**
- * Save user session data in localStorage
- * @param {Object} user - The user object returned from backend (id, name, role, token, etc.)
+ * Protect a route based on authentication and role
+ * @param {string} requiredRole - Role required for the page ("PACIENTE" or "FARMACEUTICO")
  */
-export function saveUserSession(user) {
-  localStorage.setItem("user", JSON.stringify(user));
+export function protectRoute(requiredRole) {
+  const user = getUserSession();
+  console.log("🔑 Current session:", user);
+
+  // If no session → redirect to login
+  if (!user || !user.role) {
+    console.warn("⚠️ No active session, redirecting to login...");
+    window.location.href = "../login/login.html";
+    return;
+  }
+
+  // If this page requires a role and it doesn't match
+  if (requiredRole && user.role !== requiredRole) {
+    console.warn(`⚠️ Role mismatch: required=${requiredRole}, user=${user.role}`);
+
+    // Redirect user to their correct home based on role
+    if (user.role === "PACIENTE") {
+      window.location.href = "../search/search.html";
+    } else if (user.role === "FARMACEUTICO") {
+      window.location.href = "../inventory/inventory.html";
+    } else {
+      window.location.href = "../../index.html"; // fallback
+    }
+  }
 }
 
 /**
- * Retrieve user session data from localStorage
- * @returns {Object|null} - The user object if exists, otherwise null
+ * Clear session and redirect to login
  */
-export function getUserSession() {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
-}
-
-/**
- * Clear user session data from localStorage
- */
-export function clearUserSession() {
-  localStorage.removeItem("user");
+export function logout() {
+  clearUserSession();
+  console.log("🚪 Session cleared, redirecting to login...");
+  window.location.href = "../login/login.html";
 }

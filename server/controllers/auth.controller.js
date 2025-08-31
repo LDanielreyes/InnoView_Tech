@@ -1,112 +1,148 @@
-// Import dependencies
+// ================================
+// Auth Controller
+// Handles user registration and login
+// ================================
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../connection_db.js";
+import { sendError } from "../utils/response.js"; // ⚠️ usamos solo sendError aquí
 
+// ================================
 // Generate JWT token
+// ================================
 function generateToken(user) {
   return jwt.sign(
-    { id: user.id, role: user.role },
+    {
+      id: user.id,
+      role: user.role,
+      id_authorized_point: user.id_authorized_point || null, // only for pharmacists
+    },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" } // Token valid for 1 hour
+    { expiresIn: "1h" }
   );
 }
 
-// ---------------- REGISTER (Patients only) ----------------
+// ================================
+// REGISTER (Patients only)
+// ================================
 export async function register(req, res) {
   try {
-    const { name, document_type, document_number, phone, eps, email, password } = req.body;
+    const {
+      name,
+      document_type,
+      document_number,
+      phone,
+      eps, // EPS name (not ID)
+      email,
+      password,
+    } = req.body;
 
-    // Basic validation
     if (!name || !document_type || !document_number || !phone || !eps || !email || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return sendError(res, "All fields are required", 400);
     }
 
-    // Check if email already exists
     const [existing] = await pool.query("SELECT id_user FROM users WHERE email = ?", [email]);
     if (existing.length > 0) {
-      return res.status(400).json({ success: false, message: "Email already registered" });
+      return sendError(res, "Email already registered", 400);
     }
 
-    // Hash password
+    const [epsRow] = await pool.query(
+      "SELECT id_eps FROM eps WHERE TRIM(LOWER(name_eps)) = TRIM(LOWER(?))",
+      [eps]
+    );
+    if (epsRow.length === 0) {
+      return sendError(res, `EPS '${eps}' not found in database`, 400);
+    }
+    const epsId = epsRow[0].id_eps;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert into DB
     const [result] = await pool.query(
       `INSERT INTO users (full_name, document_type, document_number, phone, email, password_hash, id_eps)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [name, document_type, document_number, phone, email, hashedPassword, eps]
+      [name, document_type, document_number, phone, email, hashedPassword, epsId]
     );
 
+    const user = {
+      id: result.insertId,
+      full_name: name,
+      email,
+      role: "PACIENTE",
+    };
+
+    // ✅ aquí devolvemos user, no data
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
-      userId: result.insertId
+      user,
     });
   } catch (error) {
     console.error("Register error:", error);
-    res.status(500).json({ success: false, message: "Server error during registration" });
+    sendError(res, "Server error during registration", 500);
   }
 }
 
-// ---------------- LOGIN (Patients + Pharmacists) ----------------
+// ================================
+// LOGIN (Patients + Pharmacists)
+// ================================
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ success: false, message: "Email and password are required" });
+      return sendError(res, "Email and password are required", 400);
     }
 
     let user = null;
-    let role = null;
 
-    // 1. Try to find user in patients (users table)
+    // Try login as patient
     const [patients] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
     if (patients.length > 0) {
       const patient = patients[0];
       const valid = await bcrypt.compare(password, patient.password_hash);
-      if (!valid) return res.status(401).json({ success: false, message: "Invalid credentials" });
+      if (!valid) return sendError(res, "Invalid credentials", 401);
 
       user = {
         id: patient.id_user,
         full_name: patient.full_name,
         email: patient.email,
-        role: "PACIENTE"
+        role: "PACIENTE",
       };
     }
 
-    // 2. If not found in patients, try pharmacists
+    // Try login as pharmacist
     if (!user) {
       const [pharmacists] = await pool.query("SELECT * FROM pharmacists WHERE email = ?", [email]);
       if (pharmacists.length > 0) {
         const pharm = pharmacists[0];
         const valid = await bcrypt.compare(password, pharm.password_hash);
-        if (!valid) return res.status(401).json({ success: false, message: "Invalid credentials" });
+        if (!valid) return sendError(res, "Invalid credentials", 401);
 
         user = {
-          id: pharm.id_pharmacists,
-          full_name: pharm.full_name,
+          id: pharm.id_pharmacist,
+          full_name: pharm.name,
           email: pharm.email,
-          role: "FARMACEUTICO"
+          role: "FARMACEUTICO",
+          id_authorized_point: pharm.id_authorized_point,
         };
       }
     }
 
-    // 3. If still not found → error
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return sendError(res, "User not found", 404);
     }
 
-    // Generate JWT
     const token = generateToken(user);
 
-    return res.json({
+    //  devolvemos user, no data
+    return res.status(200).json({
       success: true,
-      user: { ...user, token }
+      message: "Login successful",
+      user: { ...user, token },
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ success: false, message: "Server error during login" });
+    sendError(res, "Server error during login", 500);
   }
 }
