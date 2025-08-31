@@ -15,7 +15,7 @@ if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Collect form data (mapped to "users" table)
+    // Collect form data
     const data = {
       name: document.getElementById("name").value,
       document_type: document.getElementById("document_type").value,
@@ -23,13 +23,12 @@ if (registerForm) {
       phone: document.getElementById("phone").value,
       eps: document.getElementById("eps").value,
       email: document.getElementById("email").value,
-      password: document.getElementById("password").value, // will be hashed in backend
+      password: document.getElementById("password").value,
     };
 
     try {
       const result = await register(data);
 
-      // If backend confirms success → redirect to login
       if (result.success) {
         alert("User registered successfully! Please log in.");
         window.location.href = "../login/login.html";
@@ -52,7 +51,6 @@ if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Collect login credentials
     const data = {
       email: document.getElementById("email").value,
       password: document.getElementById("password").value,
@@ -61,17 +59,33 @@ if (loginForm) {
     try {
       const result = await login(data);
 
-      if (result.success) {
+      if (result.success && result.user) {
+        // Build a normalized user session object
+        const userSession = {
+          id: result.user.id,
+          full_name: result.user.full_name,
+          email: result.user.email,
+          role: result.user.role,
+          token: result.user.token || null,
+          id_authorized_point: result.user.id_authorized_point || null,
+        };
+
         // Save session in localStorage
-        saveUserSession(result.user);
+        saveUserSession(userSession);
+
+        // Debug log
+        console.log("✅ Saved user session:", userSession);
 
         // Redirect based on role
-        if (result.user.role === "PACIENTE") {
-          window.location.href = "../search/search.html";
-        } else if (result.user.role === "FARMACEUTICO") {
-          window.location.href = "../inventory/inventory.html";
+        if (userSession.role === "PACIENTE") {
+          console.log("➡ Redirecting PACIENTE to search.html");
+          window.location.href = "../view/search.html";
+        } else if (userSession.role === "FARMACEUTICO") {
+          console.log("➡ Redirecting FARMACEUTICO to inventory.html");
+          window.location.href = "../view/inventory.html";
         } else {
-          window.location.href = "../../index.html"; // fallback
+          console.log("➡ Redirecting fallback to home");
+          window.location.href = "../../index.html";
         }
       } else {
         alert(result.message || "Invalid credentials");

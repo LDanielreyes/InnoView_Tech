@@ -1,25 +1,37 @@
-// storage.js
-
 /**
- * Save user session data in localStorage
- * @param {Object} user - The user object returned from backend (id, name, role, token, etc.)
+ * Guarda la sesión del usuario en localStorage con clave según su rol
+ * @param {Object} user - Objeto del usuario con rol
  */
 export function saveUserSession(user) {
-  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.removeItem("user");
+  localStorage.removeItem("pharmacist");
+
+  if (user.role === "pharmacist") {
+    localStorage.setItem("pharmacist", JSON.stringify(user));
+  } else {
+    localStorage.setItem("user", JSON.stringify(user));
+  }
 }
 
 /**
- * Retrieve user session data from localStorage
- * @returns {Object|null} - The user object if exists, otherwise null
+ * Obtiene la sesión activa desde localStorage
+ * @returns {Object|null} - Usuario si existe
  */
 export function getUserSession() {
+  const pharmacist = localStorage.getItem("pharmacist");
   const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
+
+  return pharmacist
+    ? JSON.parse(pharmacist)
+    : user
+    ? JSON.parse(user)
+    : null;
 }
 
 /**
- * Clear user session data from localStorage
+ * Limpia la sesión app/search/search.html
  */
 export function clearUserSession() {
   localStorage.removeItem("user");
+  localStorage.removeItem("pharmacist");
 }

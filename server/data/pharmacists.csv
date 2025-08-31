@@ -1,4 +1,4 @@
-id_pharmacist,id_authorized_point,name,email,created_at,updated_at
-1,1,Carlos Gómez,cgomez@email.com,2025-01-01 08:00:00,2025-01-01 08:00:00
-2,2,Sofía Ríos,srios@email.com,2025-01-01 08:00:00,2025-01-01 08:00:00
-3,3,Andrés Pérez,aperez@email.com,2025-01-01 08:00:00,2025-01-01 08:00:00
+﻿id_pharmacist,id_authorized_point,name,email,password_hash,created_at,updated_at
+1,1,Carlos Gómez,cgomez@email.com,$2a$10$q6MEmjLgfPCMBKFXRB/tTO6Rc6/ct9JG5Yw0LkHO/npHACMwVLe5i,2025-01-01 08:00:00,2025-01-01 08:00:00
+2,2,Sofía Ríos,srios@email.com,$2a$10$HwzNKExF0j.2CLNqErkGMOivOFrqVIXUOtK0FuxWGG9NQ3kM3Rih2,2025-01-01 08:00:00,2025-01-01 08:00:00
+3,3,Andrés Pérez,aperez@email.com,$2a$10$frJTkx0Y4dyo7U6yWxWtCOwbVQ0OtuHd9MYa6D7XPKGkC1/s/n8j.,2025-01-01 08:00:00,2025-01-01 08:00:00

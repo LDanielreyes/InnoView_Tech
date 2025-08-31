@@ -7,7 +7,7 @@ import { protectRoute, logout } from "./router.js";
 import { getUserSession } from "./storage.js";
 
 // Protect this route → only FARMACEUTICO can access
-protectRoute("FARMACEUTICO");
+//protectRoute("FARMACEUTICO");
 
 // Logout button
 const logoutBtns = document.querySelectorAll(".logout");
