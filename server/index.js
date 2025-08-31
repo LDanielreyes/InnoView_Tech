@@ -283,15 +283,15 @@ app.get("/search_medicine", async (req, res) => {
 
         const query = `
             SELECT 
-                ap.name AS point_name,
-                ap.address,
-                ap.latitude,
-                ap.longitude,
-                i.quantity
-            FROM inventories i
-            JOIN medicines m ON i.id_medicine = m.id_medicine
-            JOIN authorized_points ap ON i.id_authorized_point = ap.id_authorized_point
-            WHERE m.name = ? AND ap.id_eps = ? AND i.quantity > 0
+            ap.point_name AS point_name,
+            ap.address,
+            ap.latitude,
+            ap.longitude,
+            i.quantity
+        FROM inventories i
+        JOIN medicines m ON i.id_medicine = m.id_medicine
+        JOIN authorized_points ap ON i.id_authorized_point = ap.id_authorized_point
+        WHERE m.name = 'Paracetamol' AND ap.id_eps = '1' AND i.quantity > 0
             `;
 
         const [rows] = await pool.query(query, [medicine_name, eps_id]);

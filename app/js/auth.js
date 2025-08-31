@@ -1,8 +1,6 @@
-import { protectRoute } from "../../app/js/router.js";
+import { saveUserSession } from "../../app/js/storage.js";
+
 const API_URL = "http://localhost:3000/auth";
-
-//protectRoute();
-
 /* -------------------- REGISTER -------------------- */
 async function registerUser(userData) {
   try {
@@ -32,13 +30,25 @@ async function loginUser(credentials) {
     });
 
     const result = await res.json();
-    if (!res.ok) throw new Error(result.error || "Login error");
+    if (!res.ok) throw new Error(result.message || "Login error");
 
-    localStorage.setItem("token", result.token);
-    localStorage.setItem("user", JSON.stringify(result.user));
+    const userWithRole = { ...result.user, role: result.role };
+
+    // Guardar en localStorage según rol
+    if (result.role === "pharmacist") {
+      localStorage.setItem("pharmacist", JSON.stringify(userWithRole));
+    } else {
+      localStorage.setItem("user", JSON.stringify(userWithRole));
+    }
 
     alert("Welcome " + result.user.full_name);
-    window.location.href = "inventory.html";
+
+    // Redirigir según rol
+    if (result.role === "pharmacist") {
+      window.location.href = "../view/inventory.html";
+    } else {
+      window.location.href = "../view/search.html";
+    }
   } catch (err) {
     alert(err.message);
   }
@@ -54,7 +64,7 @@ if (registerForm) {
       document_type: document.getElementById("document_type").value,
       document_number: document.getElementById("document_number").value.trim(),
       phone: document.getElementById("phone").value.trim(),
-      eps_name: document.getElementById("eps").value.trim(), // ✅ sent as eps_name
+      eps_name: document.getElementById("eps").value.trim(), // sent as eps_name
       email: document.getElementById("email").value.trim(),
       password: document.getElementById("password").value,
     };

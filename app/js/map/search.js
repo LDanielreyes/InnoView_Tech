@@ -3,12 +3,18 @@
 // Punto de entrada principal y orquestador de la búsqueda
 // ==========================
 
+
 import { initMap, addMarkersToMap, clearMarkers } from "./mapManager.js";
 import { searchMedicine } from "./api_map.js";
 import { updateResultsList } from "./uiManager.js";
-//import { protectRoute , logout } from "../router.js";
+import { logout } from "../router.js";
 
-//protectRoute("PACIENTE"); // Protege la ruta para usuarios con rol "PACIENTE"
+// Redirigir si el usuario no está autenticado como "user"
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user) {
+    window.location.href = "../../index.html";
+}
+; // Protege la ruta para usuarios con rol "user"
 
 
 
@@ -17,9 +23,9 @@ const medicineInput = document.getElementById("medicine");
 const searchForm = document.getElementById("searchForm");
 const epsField = document.getElementById("epsSelect").closest(".field");
 const logoutBtn = document.getElementById("logoutBtn");
-//if (logoutBtn) {
-//    logoutBtn.addEventListener("click", logout);
-//}
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", logout);
+}
 const EPS_ID = 1;
 
 // VARIABLES GLOBALES (manejadas por los módulos)
