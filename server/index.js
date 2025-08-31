@@ -45,6 +45,35 @@ app.get("/ping", async (req, res) => {
     res.status(500).json({ error: "Database not reachable" });
   }
 });
+app.get("/search_medicine", async (req, res) => {
+    try {
+        const { medicine_name, eps_id } = req.query;
+        if (!medicine_name || !eps_id) 
+            return res.status(400).json({ error: "medicine_name and eps_id are required" });
+
+        const query = `
+            SELECT 
+            ap.point_name AS point_name,
+            ap.address,
+            ap.latitude,
+            ap.longitude,
+            i.quantity
+        FROM inventories i
+        JOIN medicines m ON i.id_medicine = m.id_medicine
+        JOIN authorized_points ap ON i.id_authorized_point = ap.id_authorized_point
+        WHERE m.name = ? AND ap.id_eps = '1' AND i.quantity > 0
+            `;
+
+        const [rows] = await pool.query(query, [medicine_name, eps_id]);
+
+        if (!rows.length) 
+            return res.status(404).json({ message: "No medicine found in the authorized points of this EPS" });
+
+        res.json(rows);
+    } catch (err) {
+        handleError(res, err);
+    }
+});
 
 // ================================
 // Server

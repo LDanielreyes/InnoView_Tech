@@ -15,7 +15,7 @@ export default {
           600: "#3f1b6a",     // hover más oscuro
         },
         white: "#ffffff",
-        text: "#ffffff",      // texto principal
+        text: "#00000",      // texto principal
         muted: "#e7e3f6",     // gris clarito
         btn: "#ffffff",       // fondo de botones
         "btn-text": "#3d2b7b" // texto de botones

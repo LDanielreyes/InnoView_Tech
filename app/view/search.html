@@ -28,7 +28,7 @@
     <div class="max-w-[1100px] w-[92%] mx-auto flex items-center justify-between py-3">
       <!-- Brand logo -->
       <div class="flex items-center gap-2">
-        <img class="w-[150px]" src="../img/logo.png" alt="Logo MedicaAqui">
+        <img class="w-[150px]" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" alt="Logo MedicaAqui">
       </div>
       <!-- Navigation links -->
       <nav class="hidden sm:flex items-center gap-4">
@@ -58,21 +58,9 @@
           <!-- Medicine name field -->
           <div>
             <label for="medicine" class="block text-sm font-bold text-slate-800 mb-1">Nombre del Medicamento</label>
-            <input id="medicine" type="text" placeholder="Losartan 50mg" required
-              class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none" />
-          </div>
+            <input id="medicine" type="text" placeholder="Ibuprofeno" required
+  class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none text-black" />
 
-          <!-- EPS select field -->
-          <div>
-            <label for="epsSelect" class="block text-sm font-bold text-slate-800 mb-1">EPS Actual</label>
-            <select id="epsSelect" required
-              class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none">
-              <option value="" disabled selected>Seleccione EPS</option>
-              <option value="Mutualser">Mutualser</option>
-              <option value="Sanitas">Sanitas</option>
-              <option value="SURA">SURA</option>
-              <option value="Nueva EPS">Nueva EPS</option>
-            </select>
           </div>
 
           <!-- Action buttons -->
@@ -149,21 +137,8 @@
   <!-- Leaflet JS for map rendering -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- Route protection + logout -->
-  <script type="module">
-    import { protectRoute, logout } from "../js/router.js";
-    protectRoute("PACIENTE");
-    document.getElementById("logoutBtn").addEventListener("click", logout);
-
-    // Initialize map
-    const map = L.map("map").setView([10.9685, -74.7813], 13);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
-    window.markersGroup = L.layerGroup().addTo(map);
-  </script>
 
   <!-- Custom search logic -->
-  <script type="module" src="../js/search.js"></script>
+  <script type="module" src="../js/map/search.js"></script>
 </body>
 </html>
