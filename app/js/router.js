@@ -1,26 +1,26 @@
 // ================================
 // router.js
-// Controla protección de rutas y logout
+// Handles route protection and logout
 // ================================
 
 import { getUserSession, clearUserSession } from "./storage.js";
 
 /**
- * Protect a route based on authentication and role
- * @param {string} requiredRole - Optional. Ejemplo: "PACIENTE" o "FARMACEUTICO"
+ * Protects a route based on authentication and role
+ * @param {string} requiredRole - Example: "PACIENTE" or "FARMACEUTICO"
  */
 export function protectRoute(requiredRole) {
   const user = getUserSession();
 
-  console.log("Current session:", user); // ✅ Debug log
+  console.log("🔎 Current session:", user);
 
-  // Si no hay sesión → forzar login
+  // If no session or role → redirect to login
   if (!user || !user.role) {
-    window.location.href = "../view/login.html"; 
+    window.location.href = "../view/login.html";
     return;
   }
 
-  // Si el rol no coincide → redirigir a su home correcto
+  // If the role does not match → redirect to the correct home
   if (requiredRole && user.role !== requiredRole) {
     if (user.role === "PACIENTE") {
       window.location.href = "../view/search.html";
@@ -33,11 +33,9 @@ export function protectRoute(requiredRole) {
 }
 
 /**
- * Cierra sesión y redirige a login
+ * Logs out user and redirects to login
  */
 export function logout() {
   clearUserSession();
-  localStorage.removeItem("token"); // ✅ limpia token
-  localStorage.removeItem("user");  // ✅ limpia user
   window.location.href = "../view/login.html";
 }

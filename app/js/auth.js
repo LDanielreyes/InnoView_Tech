@@ -15,29 +15,46 @@ if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Collect form data
+    // Collect registration data from form inputs
     const data = {
-      name: document.getElementById("name").value,
+      name: document.getElementById("name").value.trim(),
       document_type: document.getElementById("document_type").value,
       document_number: document.getElementById("document_number").value,
       phone: document.getElementById("phone").value,
       eps: document.getElementById("eps").value,
-      email: document.getElementById("email").value,
+      email: document.getElementById("email").value.trim(),
       password: document.getElementById("password").value,
     };
 
     try {
+      // Call API to register new user
       const result = await register(data);
 
       if (result.success) {
-        alert("User registered successfully! Please log in.");
-        window.location.href = "../login/login.html";
+        Swal.fire({
+          icon: "success",
+          title: "User successfully registered",
+          text: "You can now log in.",
+          confirmButtonColor: "#4f46e5"
+        }).then(() => {
+          window.location.href = "../view/login.html"; // Redirect to login page
+        });
       } else {
-        alert(result.message || "Error during registration");
+        Swal.fire({
+          icon: "error",
+          title: "Registration error",
+          text: result.message || "Error during registration",
+          confirmButtonColor: "#dc2626"
+        });
       }
     } catch (err) {
       console.error("Register error:", err);
-      alert("Server error during registration");
+      Swal.fire({
+        icon: "error",
+        title: "Server error",
+        text: "Server error during registration",
+        confirmButtonColor: "#dc2626"
+      });
     }
   });
 }
@@ -51,48 +68,63 @@ if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Collect login credentials
     const data = {
-      email: document.getElementById("email").value,
+      email: document.getElementById("email").value.trim(),
       password: document.getElementById("password").value,
     };
 
     try {
+      // Call API to log in
       const result = await login(data);
 
       if (result.success && result.user) {
-        // Build a normalized user session object
+        // Build session object with user info
         const userSession = {
           id: result.user.id,
-          full_name: result.user.full_name,
+          full_name: result.user.full_name, // always use full_name
           email: result.user.email,
           role: result.user.role,
-          token: result.user.token || null,
+          token: result.token,
           id_authorized_point: result.user.id_authorized_point || null,
         };
 
-        // Save session in localStorage
+        // Save user session
         saveUserSession(userSession);
+        localStorage.setItem("token", result.token);
 
-        // Debug log
-        console.log("✅ Saved user session:", userSession);
-
-        // Redirect based on role
-        if (userSession.role === "PACIENTE") {
-          console.log("➡ Redirecting PACIENTE to search.html");
-          window.location.href = "../view/search.html";
-        } else if (userSession.role === "FARMACEUTICO") {
-          console.log("➡ Redirecting FARMACEUTICO to inventory.html");
-          window.location.href = "../view/inventory.html";
-        } else {
-          console.log("➡ Redirecting fallback to home");
-          window.location.href = "../../index.html";
-        }
+        // Success message before redirect
+        Swal.fire({
+          icon: "success",
+          title: "Login successful",
+          text: `Welcome ${userSession.full_name}`,
+          confirmButtonColor: "#4f46e5"
+        }).then(() => {
+          // Redirect user depending on their role
+          if (userSession.role === "PACIENTE") {
+            window.location.href = "../view/search.html";
+          } else if (userSession.role === "FARMACEUTICO") {
+            window.location.href = "../view/inventory.html";
+          } else {
+            window.location.href = "../../index.html";
+          }
+        });
       } else {
-        alert(result.message || "Invalid credentials");
+        Swal.fire({
+          icon: "error",
+          title: "Invalid credentials",
+          text: result.message || "Please check your email and password",
+          confirmButtonColor: "#dc2626"
+        });
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("Server error during login");
+      Swal.fire({
+        icon: "error",
+        title: "Server error",
+        text: "Server error during login",
+        confirmButtonColor: "#dc2626"
+      });
     }
   });
 }

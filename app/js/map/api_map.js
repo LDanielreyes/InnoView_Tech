@@ -1,19 +1,18 @@
 // ==========================
 // api_map.js
-// Funciones para interactuar con el backend
+// Functions to interact with the backend
 // ==========================
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3000/api";
 
 /**
- * Llama al endpoint de búsqueda de medicamentos del backend.
- * @param {string} medicineName - El nombre del medicamento a buscar.
- * @param {number} epsId - El ID de la EPS.
- * @returns {Promise<Array<Object>>} Una promesa que resuelve con la lista de puntos autorizados.
+ * Calls the backend endpoint to search for medicines.
+ * @param {string} medicineName - The name of the medicine to search for.
+ * @returns {Promise<Array<Object>>} List of authorized points with stock.
  */
-export async function searchMedicine(medicineName, epsId) {
+export async function searchMedicine(medicineName) {
     const response = await fetch(
-        `${API_URL}/search_medicine?medicine_name=${encodeURIComponent(medicineName)}&eps_id=${epsId}`
+        `${API_URL}/medicines/search?name=${encodeURIComponent(medicineName)}`
     );
 
     if (response.status === 404) {
@@ -21,8 +20,9 @@ export async function searchMedicine(medicineName, epsId) {
     }
 
     if (!response.ok) {
-        throw new Error("Fallo en la búsqueda de resultados.");
+        throw new Error("Search request failed.");
     }
 
-    return response.json();
+    const data = await response.json();
+    return data.data; // backend response structure: { success, message, data }
 }

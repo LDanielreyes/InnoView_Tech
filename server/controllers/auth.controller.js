@@ -6,7 +6,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../connection_db.js";
-import { sendError } from "../utils/response.js";
+import { sendSuccess, sendError } from "../utils/response.js";
 
 // ================================
 // Generate JWT token
@@ -42,7 +42,7 @@ export async function register(req, res) {
       return sendError(res, "All fields are required", 400);
     }
 
-    // Check if email exists
+    // Check if email already exists
     const [existing] = await pool.query("SELECT id_user FROM users WHERE email = ?", [email]);
     if (existing.length > 0) {
       return sendError(res, "Email already registered", 400);
@@ -61,7 +61,7 @@ export async function register(req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert user
+    // Insert new patient user
     const [result] = await pool.query(
       `INSERT INTO users (full_name, document_type, document_number, phone, email, password_hash, id_eps)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -70,19 +70,14 @@ export async function register(req, res) {
 
     const user = {
       id: result.insertId,
-      full_name: name,
+      full_name: name, //  always use full_name
       email,
       role: "PACIENTE",
     };
 
     const token = generateToken(user);
 
-    return res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      token,
-      user,
-    });
+    return sendSuccess(res, { token, user }, "User registered successfully", 201);
   } catch (error) {
     console.error("Register error:", error);
     sendError(res, "Server error during registration", 500);
@@ -111,7 +106,7 @@ export async function login(req, res) {
 
       user = {
         id: patient.id_user,
-        full_name: patient.full_name,
+        full_name: patient.full_name, //  always full_name
         email: patient.email,
         role: "PACIENTE",
       };
@@ -122,13 +117,10 @@ export async function login(req, res) {
       const [pharmacists] = await pool.query("SELECT * FROM pharmacists WHERE email = ?", [email]);
       if (pharmacists.length > 0) {
         const pharm = pharmacists[0];
-        // TODO: compara hash si la tabla de pharmacists ya guarda password
-        // const valid = await bcrypt.compare(password, pharm.password_hash);
-        // if (!valid) return sendError(res, "Invalid credentials", 401);
 
         user = {
           id: pharm.id_pharmacist,
-          full_name: pharm.name,
+          full_name: pharm.name, //  map to full_name
           email: pharm.email,
           role: "FARMACEUTICO",
           id_authorized_point: pharm.id_authorized_point,
@@ -142,12 +134,7 @@ export async function login(req, res) {
 
     const token = generateToken(user);
 
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      user,
-    });
+    return sendSuccess(res, { token, user }, "Login successful", 200);
   } catch (error) {
     console.error("Login error:", error);
     sendError(res, "Server error during login", 500);

@@ -13,13 +13,13 @@ import {
 
 const router = Router();
 
-// ✅ Todas las rutas requieren autenticación con token
+// All routes require authentication with JWT token
 router.use(verifyToken);
 
 // ---------------- CRUD ----------------
-router.get("/", getInventory);        // GET    /api/inventory
-router.post("/", addMedicine);        // POST   /api/inventory
-router.put("/:id", updateMedicine);   // PUT    /api/inventory/:id
+router.get("/", getInventory);         // GET    /api/inventory
+router.post("/", addMedicine);         // POST   /api/inventory
+router.put("/:id", updateMedicine);    // PUT    /api/inventory/:id
 router.delete("/:id", deleteMedicine); // DELETE /api/inventory/:id
 
 export default router;

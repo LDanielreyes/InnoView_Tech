@@ -17,16 +17,16 @@ export async function getMedicines(req, res) {
   }
 }
 
-// ---------------- Search medicine by name + EPS ----------------
+// ---------------- Search medicine by name (optional EPS filter) ----------------
 export async function searchMedicine(req, res) {
   try {
     const { name, eps } = req.query;
 
-    if (!name || !eps) {
-      return sendError(res, "Medicine name and EPS are required", 400);
+    if (!name) {
+      return sendError(res, "Medicine name is required", 400);
     }
 
-    const query = `
+    let query = `
       SELECT 
         ap.point_name,
         ap.address,
@@ -34,17 +34,25 @@ export async function searchMedicine(req, res) {
         ap.latitude,
         ap.longitude,
         i.quantity,
-        m.name AS medicine_name
+        m.name AS medicine_name,
+        e.name_eps
       FROM inventories i
       INNER JOIN medicines m ON i.id_medicine = m.id_medicine
       INNER JOIN authorized_points ap ON i.id_authorized_point = ap.id_authorized_point
       INNER JOIN eps e ON ap.id_eps = e.id_eps
       WHERE m.name LIKE ? 
-        AND e.name_eps = ? 
         AND i.quantity > 0
     `;
 
-    const [rows] = await pool.query(query, [`%${name}%`, eps]);
+    const params = [`%${name}%`];
+
+    // If EPS filter is provided, add it to the query
+    if (eps) {
+      query += ` AND e.name_eps = ?`;
+      params.push(eps);
+    }
+
+    const [rows] = await pool.query(query, params);
 
     if (rows.length === 0) {
       return sendError(res, "No results found", 404);

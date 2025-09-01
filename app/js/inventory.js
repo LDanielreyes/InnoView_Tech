@@ -1,5 +1,21 @@
+// ==========================
+// inventory.js
+// Manages pharmacist session and inventory operations
+// ==========================
+
 import { logout } from "./router.js";
 import { getInventory, addMedicine, updateMedicine, deleteMedicine } from "./api.js";
+import { getUserSession } from "./storage.js";
+
+// ---------------- Display pharmacist's name ----------------
+const pharmacistName = document.getElementById("pharmacistName");
+const user = getUserSession();
+
+if (user && user.role === "FARMACEUTICO") {
+  pharmacistName.textContent = user.full_name || "Pharmacist"; // always use full_name
+} else {
+  pharmacistName.textContent = "Guest";
+}
 
 // ---------------- Logout ----------------
 document.querySelectorAll(".logout").forEach((btn) =>
@@ -10,10 +26,10 @@ document.querySelectorAll(".logout").forEach((btn) =>
 const medicineForm = document.getElementById("medicineForm");
 const inventoryList = document.getElementById("inventoryList");
 const hiddenId = document.getElementById("medicineId");
-const inputMedicine = document.getElementById("medicineName"); // 👈 ahora input de texto
+const inputMedicine = document.getElementById("medicineName");
 const inputQuantity = document.getElementById("quantity");
 
-// ---------------- Load inventory into the table ----------------
+// ---------------- Load inventory ----------------
 async function loadInventory() {
   try {
     const result = await getInventory();
@@ -22,8 +38,10 @@ async function loadInventory() {
       return;
     }
 
+    // Clear current inventory list
     inventoryList.innerHTML = "";
 
+    // Render inventory rows dynamically
     result.data.forEach((item) => {
       const row = document.createElement("div");
       row.classList.add("row");
@@ -48,43 +66,79 @@ async function loadInventory() {
   }
 }
 
-// ---------------- Add / Update ----------------
+// ---------------- Add / Update medicine ----------------
 medicineForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const id = hiddenId.value;
-  const name = inputMedicine.value.trim(); // 👈 texto libre
+  const medicine = inputMedicine.value.trim(); // 👈 match backend key
   const quantity = inputQuantity.value;
 
-  if (!name || !quantity) {
-    alert("Debe escribir el nombre del medicamento y una cantidad");
+  if (!medicine || !quantity) {
+    Swal.fire({
+      icon: "warning",
+      title: "Missing fields",
+      text: "You must provide a medicine name and a quantity",
+      confirmButtonColor: "#4f46e5"
+    });
     return;
   }
 
+  // If ID exists → update medicine, otherwise → add new one
   if (id) {
     await updateMedicine(id, { quantity });
+    Swal.fire({
+      icon: "success",
+      title: "Updated",
+      text: "Medicine updated successfully",
+      confirmButtonColor: "#16a34a"
+    });
   } else {
-    await addMedicine({ name, quantity }); // 👈 ahora enviamos `name`
+    await addMedicine({ medicine, quantity }); // 👈 corrected key
+    Swal.fire({
+      icon: "success",
+      title: "Added",
+      text: "Medicine added successfully",
+      confirmButtonColor: "#16a34a"
+    });
   }
 
+  // Reset form and reload inventory
   medicineForm.reset();
   hiddenId.value = "";
   loadInventory();
 });
 
-// ---------------- Edit / Delete Actions ----------------
+// ---------------- Edit / Delete medicine ----------------
 inventoryList.addEventListener("click", async (e) => {
   if (e.target.classList.contains("delete")) {
     const id = e.target.dataset.id;
-    if (confirm("¿Eliminar este medicamento?")) {
+
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      text: "This action cannot be undone!",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it"
+    });
+
+    if (result.isConfirmed) {
       await deleteMedicine(id);
+      Swal.fire({
+        icon: "success",
+        title: "Deleted",
+        text: "Medicine deleted successfully",
+        confirmButtonColor: "#16a34a"
+      });
       loadInventory();
     }
   }
 
   if (e.target.classList.contains("edit")) {
     hiddenId.value = e.target.dataset.id;
-    inputMedicine.value = e.target.dataset.name; // 👈 cargamos nombre
+    inputMedicine.value = e.target.dataset.name;
     inputQuantity.value = e.target.dataset.qty;
   }
 });

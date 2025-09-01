@@ -11,7 +11,7 @@ const BASE_URL = "http://localhost:3000/api";
 // -------------------------------
 async function request(endpoint, options = {}) {
   try {
-    const token = localStorage.getItem("token"); // 👈 token guardado al hacer login
+    const token = localStorage.getItem("token"); // token stored after login
     const headers = {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -23,18 +23,21 @@ async function request(endpoint, options = {}) {
       headers,
     });
 
-    const data = await response.json();
+    const raw = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "API request failed");
+      throw new Error(raw.message || "API request failed");
     }
 
+    // Normalize the response structure, since backend sends { success, message, data: { token, user } }
+    const payload = raw.data || {};
+
     return {
-      success: data.success || false,
-      message: data.message || null,
-      token: data.token || null,
-      user: data.user || null,
-      data: data.data || null,
+      success: raw.success || false,
+      message: raw.message || null,
+      token: payload.token || null,
+      user: payload.user || null,
+      data: payload || null,
     };
   } catch (error) {
     console.error("API Error:", error.message);
@@ -46,7 +49,7 @@ async function request(endpoint, options = {}) {
 // AUTH
 // ================================
 
-// Register new user
+// Register a new user
 export async function register(userData) {
   return request("/auth/register", {
     method: "POST",
@@ -54,15 +57,16 @@ export async function register(userData) {
   });
 }
 
-// Login existing user
+// Login an existing user
 export async function login(credentials) {
   const result = await request("/auth/login", {
     method: "POST",
     body: JSON.stringify(credentials),
   });
+
   if (result.success && result.token) {
-    localStorage.setItem("token", result.token); // guarda token
-    localStorage.setItem("user", JSON.stringify(result.user)); // guarda user
+    localStorage.setItem("token", result.token);              // ✅ save token
+    localStorage.setItem("user", JSON.stringify(result.user)); // ✅ save user
   }
   return result;
 }
@@ -98,7 +102,7 @@ export async function addMedicine(medicineData) {
   });
 }
 
-// Update medicine by ID
+// Update a medicine by ID
 export async function updateMedicine(id, medicineData) {
   return request(`/inventory/${id}`, {
     method: "PUT",
@@ -106,7 +110,7 @@ export async function updateMedicine(id, medicineData) {
   });
 }
 
-// Delete medicine by ID
+// Delete a medicine by ID
 export async function deleteMedicine(id) {
   return request(`/inventory/${id}`, {
     method: "DELETE",

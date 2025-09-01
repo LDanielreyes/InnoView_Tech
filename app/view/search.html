@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MedicaAqui – Buscador</title>
 
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts -->
   <link 
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" 
     rel="stylesheet">
@@ -13,11 +13,13 @@
   <!-- Tailwind local build -->
   <link href="../css/tailwind.css" rel="stylesheet">
 
-  <!-- Leaflet CSS (for map rendering) -->
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
 
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
+    #map { height: 400px !important; width: 100% !important; }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900">
@@ -25,14 +27,18 @@
   <!-- ================= TOPBAR ================= -->
   <header class="bg-white sticky top-0 z-20 border-b border-slate-200 backdrop-blur">
     <div class="max-w-[1100px] w-[92%] mx-auto flex items-center justify-between py-3">
-      <!-- Brand logo -->
       <div class="flex items-center gap-2">
-        <img class="w-[150px]" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" alt="Logo MedicaAqui">
+        <img class="w-[150px]" src="../img/logo2.webp" alt="Logo MedicaAqui">
       </div>
-      <!-- Navigation links (sin Acerca de y sin Ayuda) -->
       <nav class="hidden sm:flex items-center gap-4">
         <a href="../../index.html" class="text-slate-700 font-medium hover:text-indigo-500">Inicio</a>
-        <a href="#" id="logoutBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow">Cerrar sesión</a>
+        <a href="#" id="logoutBtn" class="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow">
+          <!-- Logout icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H3m12 0l-4-4m4 4l-4 4m6-10V5a2 2 0 00-2-2H6a2 2 0 00-2 2v14a2 2 0 002 2h6a2 2 0 002-2v-1"/>
+          </svg>
+          Cerrar sesión
+        </a>
       </nav>
     </div>
   </header>
@@ -56,15 +62,22 @@
               class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none text-black" />
           </div>
 
-          <!-- Action buttons -->
           <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            <!-- Ubicación -->
             <button type="button"
               class="flex items-center justify-center gap-2 border border-indigo-500 text-indigo-500 bg-slate-100 hover:bg-indigo-50 font-bold rounded-lg px-4 py-2 transition">
-              <img src="../img/pin-de-ubicacion 1.png" alt="Ubicación" class="w-5 h-5"> Elegir Ubicación
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.38 0 2.5-1.12 2.5-2.5S13.38 6 12 6s-2.5 1.12-2.5 2.5S10.62 11 12 11zm0 0v8m0-8l6-6m-6 6l-6-6"/>
+              </svg>
+              Elegir Ubicación
             </button>
+            <!-- Buscar -->
             <button type="submit"
               class="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-lg px-4 py-2 shadow transition">
-              <img src="../img/icons8-búsqueda-50 1.png" alt="Buscar" class="w-5 h-5"> Buscar
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+              </svg>
+              Buscar
             </button>
           </div>
         </form>
@@ -74,44 +87,30 @@
 
   <!-- ================= MAIN LAYOUT ================= -->
   <main class="max-w-[1100px] w-[92%] mx-auto py-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Map section -->
     <section>
       <h2 class="text-lg font-extrabold text-slate-700 mb-3">Mapa de Puntos Autorizados</h2>
-      <div id="map" class="h-[400px] rounded-lg border border-slate-300 shadow"></div>
+      <div id="map" class="rounded-lg border border-slate-300 shadow"></div>
     </section>
 
-    <!-- Results section -->
     <section>
       <h2 class="text-lg font-extrabold text-slate-700 mb-3">Resultados</h2>
-      <ul id="pointsList" class="space-y-3">
-        <!-- Dynamic results injected by JS -->
-      </ul>
+      <ul id="pointsList" class="space-y-3"></ul>
     </section>
   </main>
 
   <!-- ================= FOOTER ================= -->
   <footer class="bg-[#2b2550] text-indigo-100 py-10">
-    <div class="max-w-[1100px] w-[92%] mx-auto grid gap-8 md:grid-cols-3">
+    <div class="max-w-[1100px] w-[92%] mx-auto grid gap-8 md:grid-cols-2">
       <div>
-        <img src="../img/logo.png" alt="Logo MedicaAqui" class="w-[190px] mb-3">
+        <img src="../img/logo_azul.webp" alt="Logo MedicaAqui" class="w-[190px] mb-3">
         <p class="text-sm text-indigo-200">
           Encuentra medicamentos disponibles en farmacias afiliadas a tu EPS en Colombia.
         </p>
       </div>
       <div>
-        <h3 class="font-bold text-white mb-2">Enlaces útiles</h3>
-        <ul class="space-y-1 text-sm">
-          <li><a href="#" class="hover:text-white">Acerca de</a></li>
-          <li><a href="#" class="hover:text-white">Términos de uso</a></li>
-          <li><a href="#" class="hover:text-white">Política de privacidad</a></li>
-          <li><a href="#" class="hover:text-white">Contactos</a></li>
-        </ul>
-      </div>
-      <div>
         <h3 class="font-bold text-white mb-2">Aviso importante</h3>
         <p class="text-sm text-indigo-200">
-          La información de disponibilidad es referencial y puede variar por sucursal. <br />
-          No almacenamos datos personales clínicos.
+          La información de disponibilidad es referencial y puede variar por sucursal.
         </p>
       </div>
     </div>
@@ -120,8 +119,11 @@
     </div>
   </footer>
 
-  <!-- ================= JS ================= -->
+   <!-- ================= JS ================= -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="../js/map/search.js"></script>
 </body>
 </html>

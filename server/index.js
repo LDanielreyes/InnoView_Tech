@@ -33,7 +33,7 @@ app.use("/api/inventory", inventoryRoutes);  // Inventory (CRUD for pharmacists)
 // Health check
 // ================================
 app.get("/", (req, res) => {
-  res.json({ message: "API is running correctly ✅" });
+  res.json({ message: "API is running correctly " });
 });
 
 // ================================
@@ -103,5 +103,5 @@ app.use((req, res) => {
 // ================================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(` Server running on http://localhost:${PORT}`);
 });

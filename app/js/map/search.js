@@ -1,104 +1,122 @@
 // ==========================
 // search.js
-// Punto de entrada principal y orquestador de la búsqueda
+// Main entry point and orchestrator for medicine search
 // ==========================
-
 
 import { initMap, addMarkersToMap, clearMarkers } from "./mapManager.js";
 import { searchMedicine } from "./api_map.js";
-import { updateResultsList } from "./uiManager.js";
+import { updateResultsList, setUserLocation } from "./uiManager.js";
 import { logout } from "../router.js";
 
-// Redirigir si el usuario no está autenticado como "user"
+// Redirect if the user is not authenticated as "user"
 const user = JSON.parse(localStorage.getItem("user"));
 if (!user) {
-    window.location.href = "../../index.html";
+  window.location.href = "../../index.html";
 }
-; // Protege la ruta para usuarios con rol "user"
 
-
-
-// CONSTANTES Y SELECTORES DEL DOM
+// CONSTANTS AND DOM SELECTORS
 const medicineInput = document.getElementById("medicine");
 const searchForm = document.getElementById("searchForm");
-//const epsField = document.getElementById("epsSelect").closest(".field");
 const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", logout);
-}
-const EPS_ID = 1;
 
-// VARIABLES GLOBALES (manejadas por los módulos)
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", logout);
+}
+
+// GLOBAL VARIABLES
 let userLocation = null;
 
 /**
- * Inicializa la aplicación al cargar el DOM.
+ * Initializes the application when DOM is loaded.
  */
 function init() {
-    initMap();
-    setupEventListeners();
+  initMap();
+  setupEventListeners();
 }
 
 /**
- * Configura los eventos de la página.
+ * Sets up page event listeners.
  */
 function setupEventListeners() {
-    if (searchForm) {
-        searchForm.addEventListener("submit", handleSearchFormSubmit);
-    }
+  if (searchForm) {
+    searchForm.addEventListener("submit", handleSearchFormSubmit);
+  }
 }
 
 /**
- * Maneja el evento de envío del formulario de búsqueda.
- * @param {Event} e - El evento de envío del formulario.
+ * Handles the search form submission event.
+ * @param {Event} e - The form submission event.
  */
 async function handleSearchFormSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const medicineName = medicineInput.value;
-    if (!medicineName) {
-        alert("Por favor, ingresa un nombre de medicamento.");
-        return;
-    }
+  const medicineName = medicineInput.value.trim();
+  if (!medicineName) {
+    Swal.fire({
+      icon: "warning",
+      title: "Missing field",
+      text: "Please enter a medicine name.",
+      confirmButtonColor: "#4f46e5"
+    });
+    return;
+  }
 
-    clearMarkers();
-    updateResultsList([], medicineName); // Limpia la lista antes de la búsqueda
+  clearMarkers();
+  // Show loading state while waiting for API response
+  updateResultsList([{ loading: true }], medicineName);
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                userLocation = [position.coords.latitude, position.coords.longitude];
-                await performSearch(medicineName, EPS_ID);
-            },
-            async (error) => {
-                console.error("Error al obtener la ubicación del usuario:", error);
-                alert("No se pudo obtener tu ubicación. Buscando farmacias sin tu posición.");
-                userLocation = null;
-                await performSearch(medicineName, EPS_ID);
-            }
-        );
-    } else {
-        alert("Tu navegador no soporta la geolocalización. Buscando farmacias sin tu posición.");
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        userLocation = [position.coords.latitude, position.coords.longitude];
+        setUserLocation(userLocation); // save in uiManager
+        await performSearch(medicineName);
+      },
+      async (error) => {
+        console.error("Error getting user location:", error);
+        Swal.fire({
+          icon: "info",
+          title: "Location unavailable",
+          text: "Could not get your location. Searching pharmacies without your position.",
+          confirmButtonColor: "#4f46e5"
+        });
         userLocation = null;
-        await performSearch(medicineName, EPS_ID);
-    }
+        setUserLocation(null); // clear in uiManager
+        await performSearch(medicineName);
+      }
+    );
+  } else {
+    Swal.fire({
+      icon: "info",
+      title: "Geolocation not supported",
+      text: "Your browser does not support geolocation. Searching pharmacies without your position.",
+      confirmButtonColor: "#4f46e5"
+    });
+    userLocation = null;
+    setUserLocation(null);
+    await performSearch(medicineName);
+  }
 }
 
 /**
- * Orquesta la llamada a la API y la actualización de la UI.
- * @param {string} medicineName - Nombre del medicamento.
- * @param {number} epsId - ID de la EPS.
+ * Orchestrates the API call and UI update.
+ * @param {string} medicineName - Name of the medicine.
  */
-async function performSearch(medicineName, epsId) {
-    try {
-        const authorizedPoints = await searchMedicine(medicineName, epsId);
-        addMarkersToMap(authorizedPoints, userLocation);
-        updateResultsList(authorizedPoints, medicineName);
-    } catch (err) {
-        console.error("Error durante la búsqueda:", err);
-        alert("Ocurrió un error al buscar. Por favor, inténtalo de nuevo.");
-    }
+async function performSearch(medicineName) {
+  try {
+    const authorizedPoints = await searchMedicine(medicineName);
+    addMarkersToMap(authorizedPoints, userLocation);
+    updateResultsList(authorizedPoints, medicineName);
+  } catch (err) {
+    console.error("Error during search:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Search error",
+      text: "An error occurred while searching. Please try again.",
+      confirmButtonColor: "#dc2626"
+    });
+  }
 }
 
-// Inicializa la aplicación cuando el DOM esté listo
+// Initialize the application when DOM is ready
 document.addEventListener("DOMContentLoaded", init);
