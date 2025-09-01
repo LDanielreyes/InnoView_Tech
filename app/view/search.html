@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MedicaAqui – Buscador</title>
+
+  <!-- Google Fonts: Inter -->
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" 
+    rel="stylesheet">
+
+  <!-- Tailwind local build -->
+
+  <!-- Leaflet CSS (for map rendering) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+  <script type="module" crossorigin src="/Innoview_Tech/assets/search-CH-pWj8X.js"></script>
+  <link rel="modulepreload" crossorigin href="/Innoview_Tech/assets/storage-kfwF2ZLp.js">
+  <link rel="stylesheet" crossorigin href="/Innoview_Tech/assets/tailwind-D9X6_6k_.css">
+</head>
+<body class="bg-slate-100 text-slate-900">
+
+  <!-- ================= TOPBAR ================= -->
+  <!-- Sticky topbar with logo on the left and navigation on the right -->
+  <header class="bg-white sticky top-0 z-20 border-b border-slate-200 backdrop-blur">
+    <div class="max-w-[1100px] w-[92%] mx-auto flex items-center justify-between py-3">
+      <!-- Brand logo -->
+      <div class="flex items-center gap-2">
+        <img class="w-[150px]" src="/Innoview_Tech/assets/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom%201-OIyc8i5k.png" alt="Logo MedicaAqui">
+      </div>
+      <!-- Navigation links -->
+      <nav class="hidden sm:flex items-center gap-4">
+        <a href="../../index.html" class="text-slate-700 font-medium hover:text-indigo-500">Inicio</a>
+        <a href="#" class="text-slate-700 font-medium hover:text-indigo-500">Acerca de</a>
+        <a href="#" class="text-slate-700 font-medium hover:text-indigo-500">Ayuda</a>
+        <a href="#" id="logoutBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow">Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <!-- Gradient background with title, subtitle and search form -->
+  <section class="bg-gradient-to-b from-teal-300 via-indigo-600 to-purple-900 text-white py-12 sm:py-16 text-center">
+    <div class="max-w-[1100px] w-[92%] mx-auto">
+      <!-- Hero Title -->
+      <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide">
+        ENCUENTRA TU MEDICAMENTO CERCA DE TI
+      </h1>
+      <p class="mt-2 text-white/90 font-medium">
+        Consulta disponibilidad en farmacias afiliadas a tu EPS en tiempo real
+      </p>
+
+      <!-- ================= SEARCH CARD ================= -->
+      <div class="bg-white rounded-xl shadow-lg border mt-6 p-6 max-w-2xl mx-auto text-left">
+        <form id="searchForm" class="grid gap-4">
+          <!-- Medicine name field -->
+          <div>
+            <label for="medicine" class="block text-sm font-bold text-slate-800 mb-1">Nombre del Medicamento</label>
+            <input id="medicine" type="text" placeholder="Ibuprofeno" required
+  class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none text-black" />
+
+          </div>
+
+          <!-- Action buttons -->
+          <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            <button type="button"
+              class="flex items-center justify-center gap-2 border border-indigo-500 text-indigo-500 bg-slate-100 hover:bg-indigo-50 font-bold rounded-lg px-4 py-2 transition">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAARsSURBVHgBrVZrTBRXFL4zs8Ba2EUEQ/oQiaFpi22t/MAfhZA2gSa8H9qqyGtFDLUqBXlsjRZqsU2NqaaxpY2xtiVpQ9OQNq1ibQoqKw+tvERiu3RdwIXtLgszO7Msztx7O2OYMPJYdhNPMsnMN/e73zn3fnPuEGDlIAzFhvToyOgTQUiznkKUHxZBTEE4Aa2D/9msH8eciWkSIeRxEg/vSON7xl2Rmg3nEUcAlQYAO2e/xcyy7YDABBlAxUQErosTGIxJLcDACSr8j1GnpRyAD0Ey9cwdTg8F53F2dF/svtDlkno5PCmQq3VbpLGOuuk+iQu8DIKt5czTVQK0HqHf9pJIuutgJV0tQOZD9p5XHHwS1zoqBN5a81BEWQWZ/3x+aHPOH5m/vNmamSRWslBsompyt8gV/tVb6oHnbQEEfQhjU/Voi3ivkrH6LafCZ2shspcjPFWBsUO87OUYcu8jXPhK4Wql2NRR17WpSgg9Cg1Xm87R5RgpS/8sufElexmCLj1EF7Z1J8j49+m/pjCHBWQrQ6glp32jMtnJcghNZdZvlhVi9AiZD1r/UmRD0jVQ4KqwIN5TS1BItgbNOCoRUnCI6Sr6rshRYo9uGsOI34x54BiYs+htHV1K04AK/ISQlhEuIYQSG19dMyPav22HoXQOw5cGeg5Ncw9FFguVRB+IECABmnob22QsSM2/Exzg2UAdYx1uTQAgotZsrJCxH0znrvNiWu9uOvzkIqHI0OggJL7smh14IGNqwj90hudo4DnwjHvWSSA/rQx00pdnJDus1a4LXiQ0RBvtUha6yNwQGXNw7h6EAoOBZ6sSJOWvoWcnumQgLiQtTBDnumG7bl2SYdRhdCGro1p+/vy1i8/dLkDCta3m1OVUWrKHdw4WILh/0webZezWDkfN3zq8fCsa3wtdlj08q6iAvF8isEP5EOm3NESDR81DNCReeXYoDyFLMVYahbi3G+MRnQfX3Rzv3WNlyVUnYpsi5yD09Fcq7Wo1ADkbivsHdrHmS5nD+ubUbr1Zx4zEhsXdDVEj8NRZwl+eY+cLB6ImXRgOTVmKgaLBLlx7cqwI8RAjYv15lR+YtzRxvwAfeYBxnVt0prQoT/hhZGb6jiY0b/4IzB8R1EgRz5PitM98rfJs16Ko42u7t0FozGNNwIdOLCVzZ7vL1JkDcXpYusYrQvdb40XtWZAfznU0eCmmshbSJ69mCnzXVud+sEJDVQb1z/aps61pgtCWZs5biXglzbZXHMubcyelg48CPgbZm8ONtqZBePDFU+HLDUqJKA1pS0XoZrbbAnyoZJFYfzaEXRnS57fkEpI3MiHfnyVIZvC5koVBXE2GQk8GXDgZ1ZOBsCEFSZ19xUq82Wj8p+X3KAsHsCHZOTjHIVvfYPrGWIy/GzwdBbz4IfF2TYmLibYSNx9yJnwV84WW8ncZOXW5ViVUv35Z/Snw8c9npaA6E+lvf4pH8Md4CA1Jti/B/HH/2IP8Od45/FuCcwT46LD/AbDxHCmYviCmAAAAAElFTkSuQmCC" alt="Ubicación" class="w-5 h-5"> Elegir Ubicación
+            </button>
+            <button type="submit"
+              class="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-lg px-4 py-2 shadow transition">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKSSURBVHgBrVVNqBJRFL7OmxisCJFEwkVCQosHwos2LgJrE2KEBFK4CQoEKSh7FOHKbStLd0FuIgShlQ+EIEKMNrqQRJTUaFFZ/uL//0znXm5yixlninfgevGe73zfuWfOnEFI3nR0oS1+VdMp/JeCwaDe7XZf7na7F0RRNOl0urHFYikUi8WDQCDwjeJ2YK2RBuN+k5dKpVuSJPUleVu1Wq3nLpdLoHG8GvGmDO12+xUlEev1+st0On0tn8+fy2Qyl7LZbBjOf1D/F7idkUlsKznqdDoRGvi9XC5b5YDRaFSYzWavKe6z3+8/gtQskUjs0YAeEJxgMmKfyybD1Wp1gMFwuydsgrI2Go0IuFKpXKVHOwpQIpBMJo8DfIxXOBw+qkjs8XgMOGPoiobNZhOQeqsRgWq1+gInFI/HryiCptPpScAYgLxYq9XmcCSpkIv4RxCE93hvNBq7iuTz+Zy0E8dxU/RvNmN5ZMmNRmMfXpLler0+A/XjNJASTL/fP4t3uMFXRZDdbv8J2yee53cBaKW+bXUnZbNarTfwbjKZMkpAQgIvyR3aim+Yc04poV6vdxOD4d14y/LICkA5eMBWcUCz2XyKtlihULhIE1lCp5hYUTkjPR2JRE7hlqSBH2Kx2Hmv16vHPqfTyft8vtPD4fAZdi4WCwKCTrvNkCtmTzomFAqZIabIDCo8S0p4lsBa07M2nj2TyUSiQvc1C2BLpVLXIegdZNYBkhmsMXTTR5g5+7iEMF/uYmJGIKhF4A+nw+HQQ1cYzGbzMQZD/JiQFVgul/taBBBS/xKRBwi3ufeXwGMN8aq2EQDCB5h4MBgQATz/0SHYRgCewUNMnMvlHjG+QxEgREC8R89Ua/5fAizxL9sw17O/Af7XAAAAAElFTkSuQmCC" alt="Buscar" class="w-5 h-5"> Buscar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN LAYOUT ================= -->
+  <!-- Two-column layout: map on the left, results on the right -->
+  <main class="max-w-[1100px] w-[92%] mx-auto py-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Map section -->
+    <section>
+      <h2 class="text-lg font-extrabold text-slate-700 mb-3">Mapa de Puntos Autorizados</h2>
+      <div id="map" class="h-[400px] rounded-lg border border-slate-300 shadow"></div>
+    </section>
+
+    <!-- Results section -->
+    <section>
+      <h2 class="text-lg font-extrabold text-slate-700 mb-3">Resultados</h2>
+      <ul id="pointsList" class="space-y-3">
+        <!-- Dynamic results injected by JS -->
+      </ul>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <!-- Footer with 3 columns: brand, links and disclaimer -->
+  <footer class="bg-[#2b2550] text-indigo-100 py-10">
+    <div class="max-w-[1100px] w-[92%] mx-auto grid gap-8 md:grid-cols-3">
+      <!-- Brand column -->
+      <div>
+        <img src="../img/logo.png" alt="Logo MedicaAqui" class="w-[190px] mb-3">
+        <p class="text-sm text-indigo-200">
+          Encuentra medicamentos disponibles en farmacias afiliadas a tu EPS en Colombia.
+        </p>
+      </div>
+      <!-- Links column -->
+      <div>
+        <h3 class="font-bold text-white mb-2">Enlaces útiles</h3>
+        <ul class="space-y-1 text-sm">
+          <li><a href="#" class="hover:text-white">Acerca de</a></li>
+          <li><a href="#" class="hover:text-white">Términos de uso</a></li>
+          <li><a href="#" class="hover:text-white">Política de privacidad</a></li>
+          <li><a href="#" class="hover:text-white">Contactos</a></li>
+        </ul>
+      </div>
+      <!-- Disclaimer column -->
+      <div>
+        <h3 class="font-bold text-white mb-2">Aviso importante</h3>
+        <p class="text-sm text-indigo-200">
+          La información de disponibilidad es referencial y puede variar por sucursal. <br />
+          No almacenamos datos personales clínicos.
+        </p>
+      </div>
+    </div>
+    <!-- Copyright -->
+    <div class="max-w-[1100px] w-[92%] mx-auto border-t border-white/20 mt-6 pt-4 text-center text-sm text-indigo-300">
+      © 2025 MedicaAqui. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <!-- ================= JS ================= -->
+  <!-- Leaflet JS for map rendering -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+  <!-- Custom search logic -->
+</body>
+</html>
