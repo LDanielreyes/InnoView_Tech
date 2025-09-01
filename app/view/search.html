@@ -23,28 +23,23 @@
 <body class="bg-slate-100 text-slate-900">
 
   <!-- ================= TOPBAR ================= -->
-  <!-- Sticky topbar with logo on the left and navigation on the right -->
   <header class="bg-white sticky top-0 z-20 border-b border-slate-200 backdrop-blur">
     <div class="max-w-[1100px] w-[92%] mx-auto flex items-center justify-between py-3">
       <!-- Brand logo -->
       <div class="flex items-center gap-2">
         <img class="w-[150px]" src="../img/Lucid_Origin_a_surreal_and_vibrant_cinematic_photo_of_Design_a_2-Photoroom 1.png" alt="Logo MedicaAqui">
       </div>
-      <!-- Navigation links -->
+      <!-- Navigation links (sin Acerca de y sin Ayuda) -->
       <nav class="hidden sm:flex items-center gap-4">
         <a href="../../index.html" class="text-slate-700 font-medium hover:text-indigo-500">Inicio</a>
-        <a href="#" class="text-slate-700 font-medium hover:text-indigo-500">Acerca de</a>
-        <a href="#" class="text-slate-700 font-medium hover:text-indigo-500">Ayuda</a>
         <a href="#" id="logoutBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow">Cerrar sesión</a>
       </nav>
     </div>
   </header>
 
   <!-- ================= HERO ================= -->
-  <!-- Gradient background with title, subtitle and search form -->
   <section class="bg-gradient-to-b from-teal-300 via-indigo-600 to-purple-900 text-white py-12 sm:py-16 text-center">
     <div class="max-w-[1100px] w-[92%] mx-auto">
-      <!-- Hero Title -->
       <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide">
         ENCUENTRA TU MEDICAMENTO CERCA DE TI
       </h1>
@@ -55,12 +50,10 @@
       <!-- ================= SEARCH CARD ================= -->
       <div class="bg-white rounded-xl shadow-lg border mt-6 p-6 max-w-2xl mx-auto text-left">
         <form id="searchForm" class="grid gap-4">
-          <!-- Medicine name field -->
           <div>
             <label for="medicine" class="block text-sm font-bold text-slate-800 mb-1">Nombre del Medicamento</label>
             <input id="medicine" type="text" placeholder="Ibuprofeno" required
-  class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none text-black" />
-
+              class="w-full h-11 px-3 rounded-lg border border-slate-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none text-black" />
           </div>
 
           <!-- Action buttons -->
@@ -80,7 +73,6 @@
   </section>
 
   <!-- ================= MAIN LAYOUT ================= -->
-  <!-- Two-column layout: map on the left, results on the right -->
   <main class="max-w-[1100px] w-[92%] mx-auto py-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Map section -->
     <section>
@@ -98,17 +90,14 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <!-- Footer with 3 columns: brand, links and disclaimer -->
   <footer class="bg-[#2b2550] text-indigo-100 py-10">
     <div class="max-w-[1100px] w-[92%] mx-auto grid gap-8 md:grid-cols-3">
-      <!-- Brand column -->
       <div>
         <img src="../img/logo.png" alt="Logo MedicaAqui" class="w-[190px] mb-3">
         <p class="text-sm text-indigo-200">
           Encuentra medicamentos disponibles en farmacias afiliadas a tu EPS en Colombia.
         </p>
       </div>
-      <!-- Links column -->
       <div>
         <h3 class="font-bold text-white mb-2">Enlaces útiles</h3>
         <ul class="space-y-1 text-sm">
@@ -118,7 +107,6 @@
           <li><a href="#" class="hover:text-white">Contactos</a></li>
         </ul>
       </div>
-      <!-- Disclaimer column -->
       <div>
         <h3 class="font-bold text-white mb-2">Aviso importante</h3>
         <p class="text-sm text-indigo-200">
@@ -127,18 +115,13 @@
         </p>
       </div>
     </div>
-    <!-- Copyright -->
     <div class="max-w-[1100px] w-[92%] mx-auto border-t border-white/20 mt-6 pt-4 text-center text-sm text-indigo-300">
       © 2025 MedicaAqui. Todos los derechos reservados.
     </div>
   </footer>
 
   <!-- ================= JS ================= -->
-  <!-- Leaflet JS for map rendering -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-
-  <!-- Custom search logic -->
   <script type="module" src="../js/map/search.js"></script>
 </body>
 </html>

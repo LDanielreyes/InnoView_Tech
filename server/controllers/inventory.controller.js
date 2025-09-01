@@ -14,7 +14,13 @@ export async function getInventory(req, res) {
     }
 
     const [rows] = await pool.query(
-      `SELECT i.id_inventory, m.name AS medicine, i.quantity, i.created_at, i.updated_at
+      `SELECT 
+         i.id_inventory,
+         i.id_medicine,
+         m.name AS medicine,
+         i.quantity,
+         i.created_at,
+         i.updated_at
        FROM inventories i
        JOIN medicines m ON i.id_medicine = m.id_medicine
        WHERE i.id_authorized_point = ?`,
@@ -28,11 +34,10 @@ export async function getInventory(req, res) {
   }
 }
 
-// ---------------- Add medicine (or update if exists) ----------------
+// ---------------- Add medicine ----------------
 export async function addMedicine(req, res) {
   try {
     const { id_medicine, quantity } = req.body;
-
     if (!id_medicine || !quantity) {
       return sendError(res, "id_medicine and quantity are required", 400);
     }
@@ -40,7 +45,7 @@ export async function addMedicine(req, res) {
     await pool.query(
       `INSERT INTO inventories (id_authorized_point, id_medicine, quantity)
        VALUES (?, ?, ?)
-       ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)`,
+       ON DUPLICATE KEY UPDATE quantity = VALUES(quantity)`,
       [req.user.id_authorized_point, id_medicine, quantity]
     );
 
@@ -56,7 +61,6 @@ export async function updateMedicine(req, res) {
   try {
     const { quantity } = req.body;
     const { id } = req.params;
-
     if (!quantity) {
       return sendError(res, "Quantity is required", 400);
     }

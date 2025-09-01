@@ -6,7 +6,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../connection_db.js";
-import { sendError } from "../utils/response.js"; // ⚠️ usamos solo sendError aquí
+import { sendError } from "../utils/response.js";
 
 // ================================
 // Generate JWT token
@@ -16,7 +16,7 @@ function generateToken(user) {
     {
       id: user.id,
       role: user.role,
-      id_authorized_point: user.id_authorized_point || null, // only for pharmacists
+      id_authorized_point: user.id_authorized_point || null,
     },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
@@ -33,7 +33,7 @@ export async function register(req, res) {
       document_type,
       document_number,
       phone,
-      eps, // EPS name (not ID)
+      eps,
       email,
       password,
     } = req.body;
@@ -42,11 +42,13 @@ export async function register(req, res) {
       return sendError(res, "All fields are required", 400);
     }
 
+    // Check if email exists
     const [existing] = await pool.query("SELECT id_user FROM users WHERE email = ?", [email]);
     if (existing.length > 0) {
       return sendError(res, "Email already registered", 400);
     }
 
+    // Find EPS ID
     const [epsRow] = await pool.query(
       "SELECT id_eps FROM eps WHERE TRIM(LOWER(name_eps)) = TRIM(LOWER(?))",
       [eps]
@@ -56,11 +58,13 @@ export async function register(req, res) {
     }
     const epsId = epsRow[0].id_eps;
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Insert user
     const [result] = await pool.query(
       `INSERT INTO users (full_name, document_type, document_number, phone, email, password_hash, id_eps)
-      VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [name, document_type, document_number, phone, email, hashedPassword, epsId]
     );
 
@@ -71,10 +75,12 @@ export async function register(req, res) {
       role: "PACIENTE",
     };
 
-    // ✅ aquí devolvemos user, no data
+    const token = generateToken(user);
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
+      token,
       user,
     });
   } catch (error) {
@@ -116,8 +122,9 @@ export async function login(req, res) {
       const [pharmacists] = await pool.query("SELECT * FROM pharmacists WHERE email = ?", [email]);
       if (pharmacists.length > 0) {
         const pharm = pharmacists[0];
-        //const valid = await bcrypt.compare(password, pharm.password_hash);
-        //if (!valid) return sendError(res, "Invalid credentials", 401);
+        // TODO: compara hash si la tabla de pharmacists ya guarda password
+        // const valid = await bcrypt.compare(password, pharm.password_hash);
+        // if (!valid) return sendError(res, "Invalid credentials", 401);
 
         user = {
           id: pharm.id_pharmacist,
@@ -135,11 +142,11 @@ export async function login(req, res) {
 
     const token = generateToken(user);
 
-    //  devolvemos user, no data
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      user: { ...user, token },
+      token,
+      user,
     });
   } catch (error) {
     console.error("Login error:", error);

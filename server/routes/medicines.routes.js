@@ -1,17 +1,18 @@
-// server/routes/medicines.routes.js
+// ================================
+// Medicines Routes
+// ================================
+
 import { Router } from "express";
 import { getMedicines, searchMedicine } from "../controllers/medicines.controller.js";
 
 const router = Router();
 
-// ---------------- Medicines Routes ----------------
-
-// Get all medicines
-// Example: GET http://localhost:3000/medicines
+// -------------------- GET ALL MEDICINES --------------------
+// Example: GET http://localhost:3000/api/medicines
 router.get("/", getMedicines);
 
-// Search medicine by name and EPS
-// Example: GET http://localhost:3000/medicines/search?name=Ibuprofeno&eps=SURA
+// -------------------- SEARCH MEDICINE --------------------
+// Example: GET http://localhost:3000/api/medicines/search?name=Ibuprofeno&eps=SURA
 router.get("/search", searchMedicine);
 
 export default router;

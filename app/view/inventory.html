@@ -16,11 +16,18 @@
 
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
+    .row { 
+      display: grid; 
+      grid-template-columns: 1.5fr 1fr 1fr 90px; 
+      gap: 1rem; 
+      align-items: center; 
+      background: #fff; 
+      padding: 0.5rem; 
+      border-radius: 0.5rem; 
+    }
   </style>
 </head>
 
-<!-- ================= DASHBOARD LAYOUT ================= -->
-<!-- Two-column grid: Sidebar on the left, main content on the right -->
 <body class="grid grid-cols-[260px_1fr] min-h-screen bg-[#e9f4ff] text-slate-900">
 
   <!-- ================= SIDEBAR ================= -->
@@ -33,7 +40,7 @@
 
     <!-- User profile -->
     <div class="grid place-items-center gap-1 py-3">
-      <div class="w-24 h-24 rounded-full border-4 border-[#bcd7ff] bg-gradient-to-br from-[#375a8d] to-[#2e4d79] grid place-items-center"></div>
+      <div class="w-24 h-24 rounded-full border-4 border-[#bcd7ff] bg-gradient-to-br from-[#375a8d] to-[#2e4d79]"></div>
       <div class="font-bold">Brad Pitt</div>
       <div class="text-sm text-[#cfe4ff]">Farmacéutico</div>
     </div>
@@ -43,19 +50,10 @@
       <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
         <img src="../img/pasti.png" class="w-6 h-6" alt=""> Medicamentos
       </a>
-      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
-        <img src="../img/acerca.png" class="w-6 h-6" alt=""> Acerca de
-      </a>
-      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
-        <img src="../img/ayuda.png" class="w-6 h-6" alt=""> Ayuda
-      </a>
-      <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg font-semibold hover:bg-[#25476f]">
-        <img src="../img/ajuste.png" class="w-6 h-6" alt=""> Ajustes
-      </a>
     </nav>
 
     <!-- Logout button -->
-    <a href="#" id="logoutBtn" class="mt-auto flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[#25476f]">
+    <a href="#" class="logout mt-auto flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[#25476f]">
       <img src="../img/logout.png" class="w-5 h-5" alt=""> Cerrar sesión
     </a>
   </aside>
@@ -63,9 +61,8 @@
   <!-- ================= MAIN AREA ================= -->
   <div class="flex flex-col min-w-0">
 
-    <!-- Topbar with search and actions -->
+    <!-- Topbar -->
     <header class="bg-white flex items-center justify-between px-4 py-2 border-b border-slate-200">
-      <!-- Search form -->
       <form class="flex items-center gap-2 w-full max-w-sm" onsubmit="return false">
         <input 
           class="h-10 w-full border border-slate-300 rounded-full px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -74,29 +71,23 @@
           <img src="../img/search.png" class="w-5" alt="Buscar">
         </button>
       </form>
-      <!-- Actions -->
-      <div class="flex items-center gap-2">
-        <button class="w-10 h-10 border border-slate-300 rounded-lg grid place-items-center hover:bg-slate-100">
-          <img src="../img/scroll-2.png" class="w-5" alt="Ordenar">
-        </button>
-      </div>
     </header>
 
     <!-- ================= CONTENT ================= -->
     <section class="bg-[#dff0ff] flex-1 p-4">
-      <!-- Section title -->
       <div class="mb-4">
         <h2 class="text-xl font-bold">Medicamentos</h2>
       </div>
 
-      <!-- CRUD form (create/update medicines) -->
-      <form id="medicineForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      <!-- CRUD form -->
+      <form id="medicineForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
         <input type="hidden" id="medicineId">
-        <input type="text" id="name" placeholder="Nombre del medicamento" required
+
+        <!-- Input de texto en lugar del select -->
+        <input type="text" id="medicineName" placeholder="Nombre del medicamento" required
           class="px-3 py-2 rounded-lg border border-slate-300">
+
         <input type="number" id="quantity" placeholder="Cantidad" required
-          class="px-3 py-2 rounded-lg border border-slate-300">
-        <input type="text" id="description" placeholder="Descripción"
           class="px-3 py-2 rounded-lg border border-slate-300">
         <button type="submit"
           class="bg-green-500 hover:bg-green-600 text-white font-bold rounded-full px-4 py-2 shadow">
@@ -104,18 +95,17 @@
         </button>
       </form>
 
-      <!-- Table header (only visible on md+ screens) -->
-      <div class="hidden md:grid grid-cols-[1.2fr_0.7fr_1.2fr_0.8fr_90px] gap-4 text-slate-500 font-semibold text-sm pb-2 border-b border-slate-300 mb-2">
+      <!-- Table header -->
+      <div class="hidden md:grid grid-cols-[1.5fr_1fr_1fr_90px] gap-4 text-slate-500 font-semibold text-sm pb-2 border-b border-slate-300 mb-2">
         <div>Nombre</div>
         <div>Cantidad</div>
-        <div>Descripción</div>
         <div>Fecha de creación</div>
         <div></div>
       </div>
 
-      <!-- Dynamic rows (rendered from inventory.js) -->
+      <!-- Dynamic rows -->
       <div id="inventoryList" class="space-y-3">
-        <!-- Rows are injected dynamically here -->
+        <!-- Aquí JS inyecta las filas -->
       </div>
     </section>
   </div>

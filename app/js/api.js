@@ -4,29 +4,35 @@
 // ================================
 
 // Base URL of backend API
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://localhost:3000/api";
 
 // -------------------------------
 // Helper function for API requests
 // -------------------------------
 async function request(endpoint, options = {}) {
   try {
+    const token = localStorage.getItem("token"); // 👈 token guardado al hacer login
+    const headers = {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    };
+
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      headers: { "Content-Type": "application/json" },
       ...options,
+      headers,
     });
 
     const data = await response.json();
 
-    // Throw error if response failed
     if (!response.ok) {
       throw new Error(data.message || "API request failed");
     }
 
-    // Always return the same structure
     return {
       success: data.success || false,
       message: data.message || null,
+      token: data.token || null,
       user: data.user || null,
       data: data.data || null,
     };
@@ -50,15 +56,25 @@ export async function register(userData) {
 
 // Login existing user
 export async function login(credentials) {
-  return request("/auth/login", {
+  const result = await request("/auth/login", {
     method: "POST",
     body: JSON.stringify(credentials),
   });
+  if (result.success && result.token) {
+    localStorage.setItem("token", result.token); // guarda token
+    localStorage.setItem("user", JSON.stringify(result.user)); // guarda user
+  }
+  return result;
 }
 
 // ================================
 // MEDICINES
 // ================================
+
+// Get all medicines (for pharmacists)
+export async function getMedicines() {
+  return request("/medicines");
+}
 
 // Search medicines (for patients)
 export async function searchMedicine(name) {

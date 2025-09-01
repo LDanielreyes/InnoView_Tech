@@ -1,6 +1,6 @@
-// ==================================
+// ================================
 // Auth Routes
-// ==================================
+// ================================
 
 import { Router } from "express";
 import { register, login } from "../controllers/auth.controller.js";
@@ -9,14 +9,14 @@ import { register, login } from "../controllers/auth.controller.js";
 const router = Router();
 
 // -------------------- REGISTER --------------------
-// Patients will use this endpoint to create an account
-// POST http://localhost:3000/auth/register
+// Patients use this endpoint to create an account
+// POST http://localhost:3000/api/auth/register
 router.post("/register", register);
 
 // -------------------- LOGIN --------------------
-// Both patients and pharmacists will use this endpoint
-// POST http://localhost:3000/auth/login
+// Patients + Pharmacists use this endpoint
+// POST http://localhost:3000/api/auth/login
 router.post("/login", login);
 
-// Export router as default (required for index.js import)
+// Export router
 export default router;

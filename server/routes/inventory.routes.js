@@ -1,8 +1,9 @@
-// server/routes/inventory.routes.js
-import { Router } from "express";
-import { verifyToken } from "../middleware/auth.middleware.js"; // ✅ Correct path (singular)
+// ================================
+// Inventory Routes
+// ================================
 
-// Import inventory controllers
+import { Router } from "express";
+import { verifyToken } from "../middleware/auth.middleware.js";
 import {
   getInventory,
   addMedicine,
@@ -12,13 +13,13 @@ import {
 
 const router = Router();
 
-// All routes require JWT authentication
+// ✅ Todas las rutas requieren autenticación con token
 router.use(verifyToken);
 
-// CRUD routes for inventory (pharmacist only)
-router.get("/", getInventory);       // Get inventory
-router.post("/", addMedicine);       // Add medicine
-router.put("/:id", updateMedicine);  // Update medicine
-router.delete("/:id", deleteMedicine); // Delete medicine
+// ---------------- CRUD ----------------
+router.get("/", getInventory);        // GET    /api/inventory
+router.post("/", addMedicine);        // POST   /api/inventory
+router.put("/:id", updateMedicine);   // PUT    /api/inventory/:id
+router.delete("/:id", deleteMedicine); // DELETE /api/inventory/:id
 
 export default router;
