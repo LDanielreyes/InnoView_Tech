@@ -101,16 +101,9 @@ app.get("/api/search_medicine", async (req, res) => {
 // ================================
 app.use(express.static(path.join(__dirname, "../dist")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
-});
-
-// ================================
-// Fallback for undefined API routes
-// (kept at the very end to avoid breaking frontend)
-// ================================
+// ⚠️ En Express 5, se reemplaza app.get("*") por esto:
 app.use((req, res) => {
-  res.status(404).json({ error: "Endpoint not found" });
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
 // ================================
