@@ -4,6 +4,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";                
+import { fileURLToPath } from "url";    
 
 // Import DB connection
 import { pool } from "./connection_db.js";
@@ -16,6 +18,9 @@ import inventoryRoutes from "./routes/inventory.routes.js";
 dotenv.config();
 const app = express();
 
+// For __dirname in ES modules 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 // ================================
 // Middlewares
 // ================================
@@ -23,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 // ================================
-// Routes (todas con prefijo /api)
+// Routes (all prefixed with /api)
 // ================================
 app.use("/api/auth", authRoutes);            // Auth (register, login)
 app.use("/api/medicines", medicineRoutes);   // Medicines (list, search)
@@ -32,8 +37,8 @@ app.use("/api/inventory", inventoryRoutes);  // Inventory (CRUD for pharmacists)
 // ================================
 // Health check
 // ================================
-app.get("/", (req, res) => {
-  res.json({ message: "API is running correctly " });
+app.get("/api", (req, res) => {
+  res.json({ message: "API is running correctly" });
 });
 
 // ================================
@@ -92,7 +97,17 @@ app.get("/api/search_medicine", async (req, res) => {
 });
 
 // ================================
-// Fallback para rutas no definidas
+// Serve frontend (Vite dist folder) ✅
+// ================================
+app.use(express.static(path.join(__dirname, "../dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
+});
+
+// ================================
+// Fallback for undefined API routes
+// (kept at the very end to avoid breaking frontend)
 // ================================
 app.use((req, res) => {
   res.status(404).json({ error: "Endpoint not found" });

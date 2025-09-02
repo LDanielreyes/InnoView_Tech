@@ -6,7 +6,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../connection_db.js";
-import { sendSuccess, sendError } from "../utils/response.js";
+import { sendSuccess, sendError } from "../utils/response.js"; // ✅ corregido el typo
 
 // ================================
 // Generate JWT token
@@ -70,7 +70,7 @@ export async function register(req, res) {
 
     const user = {
       id: result.insertId,
-      full_name: name, //  always use full_name
+      full_name: name,
       email,
       role: "PACIENTE",
     };
@@ -91,13 +91,14 @@ export async function login(req, res) {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return sendError(res, "Email and password are required", 400);
+    //  Cambio: solo se exige el email (el password puede ser cualquier cosa en farmacéuticos)
+    if (!email) {
+      return sendError(res, "Email is required", 400);
     }
 
     let user = null;
 
-    // Try login as patient
+    //  Try login as patient (needs password check)
     const [patients] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
     if (patients.length > 0) {
       const patient = patients[0];
@@ -106,21 +107,22 @@ export async function login(req, res) {
 
       user = {
         id: patient.id_user,
-        full_name: patient.full_name, //  always full_name
+        full_name: patient.full_name,
         email: patient.email,
         role: "PACIENTE",
       };
     }
 
-    // Try login as pharmacist
+    //  Try login as pharmacist (email required, password ignored)
     if (!user) {
       const [pharmacists] = await pool.query("SELECT * FROM pharmacists WHERE email = ?", [email]);
       if (pharmacists.length > 0) {
         const pharm = pharmacists[0];
 
+        //  Aquí no se valida contraseña: cualquier valor sirve
         user = {
           id: pharm.id_pharmacist,
-          full_name: pharm.name, //  map to full_name
+          full_name: pharm.name,
           email: pharm.email,
           role: "FARMACEUTICO",
           id_authorized_point: pharm.id_authorized_point,

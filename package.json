@@ -7,7 +7,8 @@
     "frontend": "vite",
     "backend": "nodemon server/index.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server/index.js"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.12",

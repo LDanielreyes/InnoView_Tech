@@ -5,14 +5,33 @@
 
 let map;
 let markersGroup;
-let routingControl = null; //  reference to the active route
+let routingControl = null; // reference to the active route
+
+// Default icon for pharmacies (blue pin)
+const pharmacyIcon = L.icon({
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+  shadowUrl: "https://unpkg.com/leaflet/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+// Special icon for the user (red pin)
+const userIcon = L.icon({
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl: "https://unpkg.com/leaflet/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
 
 /**
  * Initializes the Leaflet map with the default view.
  */
 export function initMap() {
-  // If map already exists, do not create it again
-  if (map) return;
+  if (map) return; // avoid re-creating map
 
   map = L.map("map").setView([10.9685, -74.7813], 13); // Default: Barranquilla
 
@@ -25,22 +44,13 @@ export function initMap() {
 }
 
 /**
- * Adds markers to the map and adjusts the zoom to make them visible.
- * @param {Array<Object>} points - Pharmacy points with availability.
- * @param {Array<number> | null} userLocation - User coordinates.
+ * Adds user and pharmacy markers to the map and adjusts the view.
  */
 export function addMarkersToMap(points, userLocation) {
   const bounds = L.latLngBounds([]);
 
-  //  User location marker
+  // User location marker
   if (userLocation) {
-    const userIcon = L.icon({
-      iconUrl: "../img/pin-de-ubicacion%201.png",
-      iconSize: [38, 38],
-      iconAnchor: [19, 38],
-      popupAnchor: [0, -30],
-    });
-
     L.marker(userLocation, { icon: userIcon })
       .addTo(markersGroup)
       .bindPopup("You are here!")
@@ -49,16 +59,16 @@ export function addMarkersToMap(points, userLocation) {
     bounds.extend(userLocation);
   }
 
-  //  Pharmacy markers
+  // Pharmacy markers
   points.forEach((point) => {
     if (point.latitude && point.longitude) {
-      const marker = L.marker([point.latitude, point.longitude])
+      const marker = L.marker([point.latitude, point.longitude], { icon: pharmacyIcon })
         .addTo(markersGroup)
         .bindPopup(
           `<b>${point.point_name}</b><br>${point.address}<br>Stock: ${point.quantity}`
         );
 
-      //  On marker click → draw route from user location
+      // On marker click → draw route from user location
       marker.on("click", () => {
         if (userLocation) {
           showRoute(userLocation, [point.latitude, point.longitude]);
@@ -77,7 +87,7 @@ export function addMarkersToMap(points, userLocation) {
 }
 
 /**
- * Clears all markers from the map.
+ * Clears all markers and any active route.
  */
 export function clearMarkers() {
   if (markersGroup) {
@@ -90,23 +100,17 @@ export function clearMarkers() {
 }
 
 /**
- * Draws a route from the user’s location to the selected pharmacy point.
- * @param {Array<number>} start - User coordinates [lat, lng]
- * @param {Array<number>} end - Destination coordinates [lat, lng]
+ * Draws a route from the user’s location to the selected pharmacy.
  */
 export function showRoute(start, end) {
   if (!map) return;
 
-  // Remove previous route if exists
   if (routingControl) {
     map.removeControl(routingControl);
   }
 
   routingControl = L.Routing.control({
-    waypoints: [
-      L.latLng(start[0], start[1]),
-      L.latLng(end[0], end[1]),
-    ],
+    waypoints: [L.latLng(start[0], start[1]), L.latLng(end[0], end[1])],
     routeWhileDragging: false,
     addWaypoints: false,
     lineOptions: {
