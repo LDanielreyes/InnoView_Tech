@@ -28,8 +28,13 @@ export async function addMedicine(req, res) {
   try {
     const { medicine, quantity } = req.body;
 
-    if (!medicine || !quantity) {
-      return sendError(res, "Medicine name and quantity are required", 400);
+    // Validar que exista nombre y cantidad válida
+    if (!medicine || quantity === undefined || quantity === null || isNaN(quantity)) {
+      return sendError(res, "Medicine name and a valid quantity are required", 400);
+    }
+
+    if (quantity < 0) {
+      return sendError(res, "Quantity cannot be negative", 400);
     }
 
     // 1. Check if medicine exists
@@ -71,8 +76,12 @@ export async function updateMedicine(req, res) {
     const { id } = req.params;
     const { quantity } = req.body;
 
-    if (!quantity) {
-      return sendError(res, "Quantity is required", 400);
+    if (quantity === undefined || quantity === null || isNaN(quantity)) {
+      return sendError(res, "Quantity must be a valid number", 400);
+    }
+
+    if (quantity < 0) {
+      return sendError(res, "Quantity cannot be negative", 400);
     }
 
     const [result] = await pool.query(
@@ -136,3 +145,4 @@ export async function searchInventory(req, res) {
     return sendError(res, "Error searching inventory", 500);
   }
 }
+ 
