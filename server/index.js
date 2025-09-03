@@ -4,8 +4,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";                
-import { fileURLToPath } from "url";    
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Import DB connection
 import { pool } from "./connection_db.js";
@@ -18,7 +18,7 @@ import inventoryRoutes from "./routes/inventory.routes.js";
 dotenv.config();
 const app = express();
 
-// For __dirname in ES modules 
+// For __dirname in ES modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ================================
@@ -30,9 +30,9 @@ app.use(express.json());
 // ================================
 // Routes (all prefixed with /api)
 // ================================
-app.use("/api/auth", authRoutes);            // Auth (register, login)
-app.use("/api/medicines", medicineRoutes);   // Medicines (list, search)
-app.use("/api/inventory", inventoryRoutes);  // Inventory (CRUD for pharmacists)
+app.use("/api/auth", authRoutes); // Auth (register, login)
+app.use("/api/medicines", medicineRoutes); // Medicines (list, search)
+app.use("/api/inventory", inventoryRoutes); // Inventory (CRUD for pharmacists)
 
 // ================================
 // Health check
@@ -84,9 +84,9 @@ app.get("/api/search_medicine", async (req, res) => {
     const [rows] = await pool.query(query, [medicine_name, eps_id]);
 
     if (!rows.length) {
-      return res
-        .status(404)
-        .json({ message: "No medicine found in the authorized points of this EPS" });
+      return res.status(404).json({
+        message: "No medicine found in the authorized points of this EPS",
+      });
     }
 
     res.json(rows);
@@ -97,11 +97,21 @@ app.get("/api/search_medicine", async (req, res) => {
 });
 
 // ================================
-// Serve frontend (Vite dist folder) 
+// Serve frontend (Vite dist folder)
 // ================================
 app.use(express.static(path.join(__dirname, "../dist")));
 
-//  En Express 5, se reemplaza app.get("*") por esto:
+// ================================
+// Serve raw views and assets (so you can navigate login/register/etc.)
+// ================================
+app.use("/view", express.static(path.join(__dirname, "../app/view")));
+app.use("/js", express.static(path.join(__dirname, "../app/js")));
+app.use("/css", express.static(path.join(__dirname, "../app/css")));
+app.use("/img", express.static(path.join(__dirname, "../app/img")));
+
+// ================================
+// Fallback for SPA routes
+// ================================
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
