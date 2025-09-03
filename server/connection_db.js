@@ -12,7 +12,7 @@ export const pool = mysql.createPool({
   port: 3306,                      // Default MySQL port
   user: process.env.DB_USER,       // Database user
   password: process.env.DB_PASS,   // Database password
-  connectionLimit: 10,             // Maximum simultaneous connections
+  connectionLimit: 5,              //  Match Clever Cloud limit
   waitForConnections: true,        // Queue new connections if pool is full
   queueLimit: 0                    // 0 = no limit for queued connections
 });
@@ -21,10 +21,10 @@ export const pool = mysql.createPool({
 async function tryConnection() {
   try {
     const connection = await pool.getConnection();
-    console.log(" Successfully connected to the database");
+    console.log("  Successfully connected to the database");
     connection.release(); // Release connection back to the pool
   } catch (error) {
-    console.error(` Database connection error: ${error.message}`);
+    console.error(`  Database connection error: ${error.message}`);
   }
 }
 
