@@ -13,7 +13,7 @@ export async function getInventory(req, res) {
        FROM inventories i
        JOIN medicines m ON i.id_medicine = m.id_medicine
        WHERE i.id_authorized_point = ?`,
-      [req.user.id_authorized_point] // 👈 comes from login pharmacist
+      [req.user.id_authorized_point] 
     );
 
     return sendSuccess(res, rows, "Inventory fetched successfully");

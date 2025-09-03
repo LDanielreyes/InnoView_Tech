@@ -2,23 +2,23 @@
 export default {
   content: [
     "./index.html",
-    "./app/**/*.{html,js}" // detecta todos tus html y js dentro de app
+    "./app/**/*.{html,js}"
   ],
   theme: {
     extend: {
       fontFamily: {
-        inter: ["Inter", "system-ui", "sans-serif"], // tu fuente global
+        inter: ["Inter", "system-ui", "sans-serif"], 
       },
       colors: {
         purple: {
-          DEFAULT: "#4b217a", // fondo principal
-          600: "#3f1b6a",     // hover más oscuro
+          DEFAULT: "#4b217a", 
+          600: "#3f1b6a",     
         },
         white: "#ffffff",
-        text: "#00000",      // texto principal
-        muted: "#e7e3f6",     // gris clarito
-        btn: "#ffffff",       // fondo de botones
-        "btn-text": "#3d2b7b" // texto de botones
+        text: "#00000",      
+        muted: "#e7e3f6",   
+        btn: "#ffffff",     
+        "btn-text": "#3d2b7b" 
       },
       boxShadow: {
         soft: "0 10px 30px rgba(0,0,0,.25)",

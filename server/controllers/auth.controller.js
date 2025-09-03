@@ -6,7 +6,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../connection_db.js";
-import { sendSuccess, sendError } from "../utils/response.js"; // ✅ corregido el typo
+import { sendSuccess, sendError } from "../utils/response.js"; 
 
 // ================================
 // Generate JWT token

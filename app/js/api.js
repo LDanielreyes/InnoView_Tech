@@ -65,8 +65,8 @@ export async function login(credentials) {
   });
 
   if (result.success && result.token) {
-    localStorage.setItem("token", result.token);              // ✅ save token
-    localStorage.setItem("user", JSON.stringify(result.user)); // ✅ save user
+    localStorage.setItem("token", result.token);              
+    localStorage.setItem("user", JSON.stringify(result.user));
   }
   return result;
 }
@@ -94,7 +94,7 @@ export async function getInventory() {
   return request("/inventory");
 }
 
-// ✅ NEW: Search medicines in inventory (for pharmacists)
+//  NEW: Search medicines in inventory (for pharmacists)
 export async function searchInventory(query) {
   return request(`/inventory/search?name=${encodeURIComponent(query)}`);
 }

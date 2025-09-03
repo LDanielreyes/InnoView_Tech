@@ -74,7 +74,7 @@ medicineForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const id = hiddenId.value;
-  const medicine = inputMedicine.value.trim(); // 👈 match backend key
+  const medicine = inputMedicine.value.trim(); 
   const quantity = inputQuantity.value;
 
   if (!medicine || !quantity) {
@@ -97,7 +97,7 @@ medicineForm.addEventListener("submit", async (e) => {
       confirmButtonColor: "#16a34a"
     });
   } else {
-    await addMedicine({ medicine, quantity }); // 👈 corrected key
+    await addMedicine({ medicine, quantity }); 
     Swal.fire({
       icon: "success",
       title: "Added",
