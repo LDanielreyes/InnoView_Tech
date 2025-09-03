@@ -1,172 +1,209 @@
 # InnoView Tech
 
-InnoView Tech is a full-stack web application designed to help users quickly search for medicines available in affiliated pharmacies. The platform provides real-time availability information, an interactive map to locate pharmacies, and simple tools for managing inventory.
+InnoView Tech is a **full-stack web application** that helps patients quickly check the real-time availability of medicines in pharmacies affiliated with their EPS.  
 
-It combines a modern, responsive frontend with a robust backend to ensure seamless user experience and reliable data handling.
+The platform solves a key problem: **patients often waste time searching across multiple pharmacies for their prescribed medicines**. With InnoView Tech, they can:
+- Find where the medicine is available.  
+- View the **address and location on a map**.  
+- See the **real-time stock** in each pharmacy.  
 
- Key Features
+At the same time, pharmacists can manage their inventory (add, edit, or delete medicines) through a dedicated interface.
 
-User Authentication – secure login, registration, and logout functionality.
+---
 
-Real-time Medicine Search – query affiliated pharmacies for drug availability.
+##  Deploy
 
-Interactive Map – powered by LeafletJS to visualize pharmacy locations near the user.
+The application is deployed on **Render** and publicly available at:  
+ https://innoview-tech-yzty.onrender.com  
 
-Inventory Management – backend controllers and routes to handle stock and medicine records.
+---
 
-Modern UI/UX – built with TailwindCSS for a responsive and clean interface.
+##  End-to-End Demo Flow
 
-Fast Development Workflow – Vite bundler provides hot reload and fast builds.
+1. **Patient Registration** → Create an account.  
+2. **Login** → Authenticate with email and password.  
+3. **Medicine Search** → Search for a medicine and see results on the interactive map.  
+4. **Pharmacist Inventory** → Add, edit, or delete stock in authorized points.  
 
-RESTful API – clean separation of frontend and backend logic.
+This flow demonstrates the **complete navigability of the app in the cloud (end-to-end)**.
 
-# Tech Stack
+---
 
-Frontend:
+##  Key Features
 
-HTML5
+- **User Authentication** – Secure login, registration, and logout.  
+- **Real-time Medicine Search** – Availability in pharmacies linked to each EPS.  
+- **Interactive Map** – Powered by **LeafletJS** to locate nearby pharmacies.  
+- **Inventory Management** – CRUD of medicines for pharmacists.  
+- **Modern UI/UX** – Responsive design with **TailwindCSS**.  
+- **RESTful API** – Clear separation of frontend and backend.  
 
-CSS3
- with TailwindCSS
+---
 
-JavaScript ES6+
+##  Tech Stack
 
-LeafletJS
- for map rendering
+### Frontend
+- **HTML5**, **CSS3 (TailwindCSS)**, **JavaScript ES6+**  
+- **LeafletJS** for interactive maps  
+- **Vite** as a bundler and multipage builder  
 
-Vite
- for frontend bundling and dev server
+### Backend
+- **Node.js**, **Express.js**  
+- **MySQL (Clever Cloud)**  
+- **JWT** and **bcryptjs** for authentication  
 
-# Backend:
+### Build Tools
+- **PostCSS**, **TailwindCSS**  
+- **dotenv** for environment variables  
 
-Node.js
+---
 
-Express.js
- for routing and middleware
+##  Project Structure
 
-Controllers and routes for auth, inventory, and medicines management
-
-Middleware for authentication and structured responses
-
-Build Tools & Config:
-
-PostCSS
-
-TailwindCSS custom configuration
-
-.env for environment variables
-
-# Project Structure
 InnoView_Tech/
 ├── app/
-│   ├── css/                 # Tailwind CSS build and styles
-│   ├── js/                  # Frontend logic
-│   │   ├── auth.js
-│   │   ├── inventory.js
-│   │   ├── router.js
-│   │   ├── storage.js
-│   │   └── map/
-│   │       ├── api_map.js
-│   │       ├── mapManager.js
-│   │       ├── search.js
-│   │       └── uiManager.js
-│   └── view/                
-│       ├── login.html
-│       ├── register.html
-│       ├── search.html
-│       └── inventory.html
+│ ├── css/
+│ ├── js/
+│ └── view/
+│ ├── login.html
+│ ├── register.html
+│ ├── search.html
+│ └── inventory.html
 ├── server/
-│   ├── controllers/         
-│   ├── routes/              
-│   ├── middleware/          
-│   ├── utils/               
-│   ├── index.js             
-│   └── connection_db.js     
+│ ├── controllers/
+│ ├── routes/
+│ ├── middleware/
+│ └── index.js
 ├── index.html
+├── vite.config.js
 ├── package.json
-├── tailwind.config.js
-├── postcss.config.js
 └── .env
 
-# Installation & Setup
-Prerequisites
+yaml
+Copiar código
 
-Node.js
- v16+
+---
 
-npm
- or yarn
+## Installation & Setup (Local)
 
-Steps
+### Prerequisites
+- **Node.js v20+**
+- **npm** or **yarn**
+- **MySQL** database (Clever Cloud or local)
+
+### Steps
+bash
 # Clone repo
-git clone https://github.com/your-username/InnoView_Tech.git
+git clone https://github.com/LDanielreyes/InnoView_Tech.git
 cd InnoView_Tech
 
 # Install dependencies
 npm install
 
 # Configure environment variables
-cp .env.example .env   # (or create manually)
+cp .env.example .env
 
-# Start development server
-npm run dev
+# Run backend
+npm run backend
+
+# Run frontend (dev mode)
+npm run frontend
 
 # Build for production
 npm run build
-npm run start
+npm start
+Open at: http://localhost:3000
 
-# Usage
+# Environment Variables
+Variable	Description	Example
+DB_HOST	Database host	xxx.mysql.db.clever-cloud.com
+DB_USER	Database username	abc123
+DB_PASS	Database password	mypassword
+DB_NAME	Database name	healthcare_system
+JWT_SECRET	Secret key for JWT auth	myjwtsecret
 
-Open the app at http://localhost:3000 (or configured port).
-
-Register or log in.
-
-Use the search form to find medicines available in affiliated pharmacies.
-
-Explore results on the interactive map.
-
-Manage inventory through admin tools.
-
-# API Endpoints (Backend)
+# API Endpoints (Examples)
 Method	Endpoint	Description
 POST	/api/auth/login	User login
 POST	/api/auth/register	User registration
 GET	/api/inventory	Get inventory list
-POST	/api/inventory	Add inventory item
-GET	/api/medicines	Get available medicines
-📸 Screenshots
+POST	/api/inventory	Add medicine to inventory
+GET	/api/medicines	List available medicines
 
-(You can add UI screenshots here to showcase the app)
+# Database Schema (Overview)
+eps → Stores EPS records.
 
-# Contributing
+authorized_points → Linked to EPS, represents pharmacies.
 
-Contributions are welcome!
+users → Patients with credentials.
 
-Fork this repo
+pharmacists → Pharmacists linked to authorized points.
 
-Create a new branch (feature/your-feature)
+medicines → Catalog of medicines.
 
-Commit changes
+inventories → Medicines + quantity per authorized point.
 
-Push and open a PR
+# Security Considerations
+Patients’ passwords are hashed with bcryptjs.
 
-# Authors & Contributors
+JWT tokens used for secure authentication.
 
-Oscar Ochoa – Lead Developer
+Pharmacist login simplified for MVP (can be extended with stricter auth).
 
-Team InnoView – Design & Backend integration
+# Known Limitations
+The free Clever Cloud MySQL plan allows only 5 concurrent connections.
 
-Community contributors – Improvements and fixes
+MVP version: Pharmacists can log in without strict password validation.
 
-If you contribute to this project, feel free to add your name here!
+# Future Improvements / Roadmap
+More robust role management (admin EPS, superadmin).
 
-# Contact
+Real-time notifications for medicine availability.
 
-Email: contact@innotech.com
+Integration with external EPS APIs.
 
-GitHub: @your-username
+Optimized queries for faster medicine search.
+
+# Testing
+Tested with Postman for API endpoints.
+
+Example cases:
+
+Registration with duplicate email.
+
+Login with invalid credentials.
+
+Inventory CRUD operations.
+
+Search returning empty results.
+
+# Team Roles
+Frontend – Tailwind, Vite, LeafletJS.
+
+Backend – Express, MySQL, JWT.
+
+DevOps – Deploy on Render + Clever Cloud DB.
+
+PM – Project organization, user stories.
+
+
+
+Search (map)
+
+Inventory
+
+# Authors
+Oscar Leonardo Ochoa Perez – Backend Integration
+
+Lucas Daniel Chacon – Backend Integration
+
+Gabriel Payares – Frontend Development
+
+Fabian Camilo Lougo – Backend Integration
+
+Jaider Rodriguez – Frontend Development
 
 # License
 
 This project is licensed under the MIT License.
-You are free to use, modify, and distribute it under the terms of the license.
+You are free to use, modify, and distribute it under the license terms.
