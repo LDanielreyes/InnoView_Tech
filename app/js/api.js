@@ -94,6 +94,11 @@ export async function getInventory() {
   return request("/inventory");
 }
 
+// ✅ NEW: Search medicines in inventory (for pharmacists)
+export async function searchInventory(query) {
+  return request(`/inventory/search?name=${encodeURIComponent(query)}`);
+}
+
 // Add a new medicine
 export async function addMedicine(medicineData) {
   return request("/inventory", {

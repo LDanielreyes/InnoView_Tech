@@ -97,11 +97,11 @@ app.get("/api/search_medicine", async (req, res) => {
 });
 
 // ================================
-// Serve frontend (Vite dist folder) ✅
+// Serve frontend (Vite dist folder) 
 // ================================
 app.use(express.static(path.join(__dirname, "../dist")));
 
-// ⚠️ En Express 5, se reemplaza app.get("*") por esto:
+//  En Express 5, se reemplaza app.get("*") por esto:
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });

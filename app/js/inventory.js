@@ -4,7 +4,7 @@
 // ==========================
 
 import { logout } from "./router.js";
-import { getInventory, addMedicine, updateMedicine, deleteMedicine } from "./api.js";
+import { getInventory, addMedicine, updateMedicine, deleteMedicine, searchInventory } from "./api.js";
 import { getUserSession } from "./storage.js";
 
 // ---------------- Display pharmacist's name ----------------
@@ -28,6 +28,32 @@ const inventoryList = document.getElementById("inventoryList");
 const hiddenId = document.getElementById("medicineId");
 const inputMedicine = document.getElementById("medicineName");
 const inputQuantity = document.getElementById("quantity");
+const searchInput = document.getElementById("searchInput");
+
+// ---------------- Render inventory rows ----------------
+function renderInventory(data) {
+  inventoryList.innerHTML = "";
+
+  data.forEach((item) => {
+    const row = document.createElement("div");
+    row.classList.add("row");
+
+    row.innerHTML = `
+      <div class="medicine-name">${item.medicine}</div>
+      <div>${item.quantity}</div>
+      <div>${new Date(item.created_at).toLocaleDateString()}</div>
+      <div class="flex gap-2 justify-end">
+        <button class="edit bg-yellow-400 hover:bg-yellow-500 px-2 py-1 rounded text-white"
+                data-id="${item.id_inventory}"
+                data-name="${item.medicine}"
+                data-qty="${item.quantity}">✏️</button>
+        <button class="delete bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-white"
+                data-id="${item.id_inventory}">🗑️</button>
+      </div>
+    `;
+    inventoryList.appendChild(row);
+  });
+}
 
 // ---------------- Load inventory ----------------
 async function loadInventory() {
@@ -37,30 +63,7 @@ async function loadInventory() {
       console.error(result.message);
       return;
     }
-
-    // Clear current inventory list
-    inventoryList.innerHTML = "";
-
-    // Render inventory rows dynamically
-    result.data.forEach((item) => {
-      const row = document.createElement("div");
-      row.classList.add("row");
-
-      row.innerHTML = `
-        <div>${item.medicine}</div>
-        <div>${item.quantity}</div>
-        <div>${new Date(item.created_at).toLocaleDateString()}</div>
-        <div class="flex gap-2 justify-end">
-          <button class="edit bg-yellow-400 hover:bg-yellow-500 px-2 py-1 rounded text-white"
-                  data-id="${item.id_inventory}"
-                  data-name="${item.medicine}"
-                  data-qty="${item.quantity}">✏️</button>
-          <button class="delete bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-white"
-                  data-id="${item.id_inventory}">🗑️</button>
-        </div>
-      `;
-      inventoryList.appendChild(row);
-    });
+    renderInventory(result.data);
   } catch (err) {
     console.error("Error loading inventory:", err);
   }
@@ -142,6 +145,28 @@ inventoryList.addEventListener("click", async (e) => {
     inputQuantity.value = e.target.dataset.qty;
   }
 });
+
+// ---------------- Search inventory (real-time, backend) ----------------
+if (searchInput) {
+  searchInput.addEventListener("input", async () => {
+    const query = searchInput.value.trim();
+
+    if (query.length === 0) {
+      // Si no hay texto, recargamos todo el inventario
+      loadInventory();
+      return;
+    }
+
+    try {
+      const result = await searchInventory(query);
+      if (result.success) {
+        renderInventory(result.data);
+      }
+    } catch (err) {
+      console.error("Error searching inventory:", err);
+    }
+  });
+}
 
 // ---------------- Init ----------------
 loadInventory();

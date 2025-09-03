@@ -111,3 +111,28 @@ export async function deleteMedicine(req, res) {
     return sendError(res, "Error deleting medicine", 500);
   }
 }
+
+// ---------------- SEARCH MEDICINE IN INVENTORY ----------------
+export async function searchInventory(req, res) {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return sendError(res, "Missing search parameter 'name'", 400);
+    }
+
+    const [rows] = await pool.query(
+      `SELECT i.id_inventory, m.name AS medicine, i.quantity, i.created_at
+       FROM inventories i
+       JOIN medicines m ON i.id_medicine = m.id_medicine
+       WHERE i.id_authorized_point = ? 
+       AND m.name LIKE ?`,
+      [req.user.id_authorized_point, `%${name}%`]
+    );
+
+    return sendSuccess(res, rows, "Search completed successfully");
+  } catch (error) {
+    console.error("searchInventory error:", error);
+    return sendError(res, "Error searching inventory", 500);
+  }
+}

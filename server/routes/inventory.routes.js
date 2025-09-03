@@ -9,6 +9,7 @@ import {
   addMedicine,
   updateMedicine,
   deleteMedicine,
+  searchInventory, //  importamos la nueva función
 } from "../controllers/inventory.controller.js";
 
 const router = Router();
@@ -21,5 +22,8 @@ router.get("/", getInventory);         // GET    /api/inventory
 router.post("/", addMedicine);         // POST   /api/inventory
 router.put("/:id", updateMedicine);    // PUT    /api/inventory/:id
 router.delete("/:id", deleteMedicine); // DELETE /api/inventory/:id
+
+// ---------------- SEARCH ----------------
+router.get("/search", searchInventory); // GET    /api/inventory/search?name=xxx
 
 export default router;

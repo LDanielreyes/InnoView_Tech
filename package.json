@@ -22,15 +22,12 @@
     "vite": "^7.1.2"
   },
   "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "csv-parser": "^3.2.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "leaflet-routing-machine": "^3.2.12",
     "mysql2": "^3.14.3"
   }
 }
